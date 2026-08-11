@@ -1,0 +1,920 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>What's New — Rescribe</title>
+<meta name="description" content="Walkthroughs of what changed in the Rescribe doctor and nurse apps, newest first.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#6A3FA0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0D1412" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  body { margin: 0; }
+  img { max-width: 100%; height: auto; }
+</style>
+</head>
+<body>
+<style>
+  :root {
+    --bg: #F3F6F4;
+    --surface: #FFFFFF;
+    --surface-2: #E9EEEB;
+    --panel: #12201C;
+    --panel-ink: #D9E6E1;
+    --ink: #14201D;
+    --ink-2: #4B5B56;
+    --ink-3: #7C8B86;
+    --line: #D5DEDA;
+    --line-strong: #B9C6C1;
+    --accent: #0C6B5E;
+    --accent-2: #0A5449;
+    --accent-soft: #DFEDE9;
+
+    --s-occupied: #2E62C4;
+    --s-vacant: #1E7F55;
+    --s-reserved: #7A4FC7;
+    --s-housekeeping: #B0730D;
+    --s-maintenance: #A8443A;
+    --s-pending: #5F7180;
+    --s-transfer: #0B7A8A;
+
+    --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, ui-serif, serif;
+    --font-body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+    --panel-accent: #7FBFB1;
+
+    --wrap: 68rem;
+    --radius: 4px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0D1412;
+      --surface: #151E1B;
+      --surface-2: #1C2724;
+      --panel: #0A100E;
+      --panel-ink: #CFE0DA;
+      --ink: #E7EFEC;
+      --ink-2: #A7B8B2;
+      --ink-3: #778782;
+      --line: #29352F;
+      --line-strong: #3A4A44;
+      --accent: #56C3AE;
+      --accent-2: #7FD6C4;
+      --accent-soft: #15302A;
+
+      --s-occupied: #6E9BEE;
+      --s-vacant: #55BE8B;
+      --s-reserved: #AE8CF0;
+      --s-housekeeping: #E0A73E;
+      --s-maintenance: #E07E71;
+      --s-pending: #93A6B3;
+      --s-transfer: #45B6C6;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #0D1412;
+    --surface: #151E1B;
+    --surface-2: #1C2724;
+    --panel: #0A100E;
+    --panel-ink: #CFE0DA;
+    --ink: #E7EFEC;
+    --ink-2: #A7B8B2;
+    --ink-3: #778782;
+    --line: #29352F;
+    --line-strong: #3A4A44;
+    --accent: #56C3AE;
+    --accent-2: #7FD6C4;
+    --accent-soft: #15302A;
+    --s-occupied: #6E9BEE;
+    --s-vacant: #55BE8B;
+    --s-reserved: #AE8CF0;
+    --s-housekeeping: #E0A73E;
+    --s-maintenance: #E07E71;
+    --s-pending: #93A6B3;
+    --s-transfer: #45B6C6;
+  }
+
+  :root[data-theme="light"] {
+    --bg: #F3F6F4;
+    --surface: #FFFFFF;
+    --surface-2: #E9EEEB;
+    --panel: #12201C;
+    --panel-ink: #D9E6E1;
+    --ink: #14201D;
+    --ink-2: #4B5B56;
+    --ink-3: #7C8B86;
+    --line: #D5DEDA;
+    --line-strong: #B9C6C1;
+    --accent: #0C6B5E;
+    --accent-2: #0A5449;
+    --accent-soft: #DFEDE9;
+    --s-occupied: #2E62C4;
+    --s-vacant: #1E7F55;
+    --s-reserved: #7A4FC7;
+    --s-housekeeping: #B0730D;
+    --s-maintenance: #A8443A;
+    --s-pending: #5F7180;
+    --s-transfer: #0B7A8A;
+  }
+
+  /* Anchor offsets use scroll-padding on the scroll container: an embedding
+     WebView may force `scroll-margin-top: 0` on every element, which would
+     otherwise drop headings behind the sticky tab bar. */
+  html { scroll-padding-top: 4.5rem; }
+  html:has(.tabbar) { scroll-padding-top: 7.5rem; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: var(--wrap);
+    margin: 0 auto;
+    padding: 3rem 1.5rem 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3.5rem;
+  }
+
+  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; text-wrap: balance; line-height: 1.15; }
+  h1 { font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -0.015em; }
+  h2 { font-size: clamp(1.5rem, 3vw, 1.9rem); letter-spacing: -0.01em; }
+  h3 { font-size: 1.2rem; }
+  h4 { font-size: 1rem; font-family: var(--font-body); font-weight: 650; }
+  p { max-width: 65ch; }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  /* ---------- header ---------- */
+  .masthead { display: flex; flex-direction: column; gap: 1rem; border-bottom: 2px solid var(--ink); padding-bottom: 1.75rem; }
+  .masthead p.lede { font-size: 1.1rem; color: var(--ink-2); }
+  .meta { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-3); }
+  .meta b { color: var(--ink-2); font-weight: 500; }
+  .printbtn {
+    align-self: flex-start; cursor: pointer;
+    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em;
+    color: var(--accent); background: transparent;
+    border: 1px solid var(--accent); border-radius: 999px;
+    padding: 0.4rem 0.9rem; min-height: 2.25rem;
+  }
+  .printbtn:hover, .printbtn:focus-visible { background: var(--accent-soft); }
+
+  /* ---------- sticky nav ---------- */
+  .docnav {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; gap: 0.15rem; overflow-x: auto; overscroll-behavior-x: contain;
+    background: var(--bg); border-bottom: 1px solid var(--line);
+    margin: 0 -1.5rem; padding: 0.5rem 1.5rem;
+    scrollbar-width: none;
+  }
+  .docnav::-webkit-scrollbar { display: none; }
+  .docnav a {
+    flex: none; text-decoration: none; color: var(--ink-2);
+    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em;
+    padding: 0.35rem 0.6rem; border-radius: 999px; white-space: nowrap;
+  }
+  .docnav a:hover, .docnav a:focus-visible { color: var(--accent); background: var(--accent-soft); }
+
+  /* ---------- sections ---------- */
+  section { display: flex; flex-direction: column; gap: 1.25rem; scroll-margin-top: 4rem; min-width: 0; }
+  .page > * { min-width: 0; }
+  .tree-wrap, .table-wrap { min-width: 0; max-width: 100%; }
+  .section-head { display: flex; flex-direction: column; gap: 0.35rem; border-left: 3px solid var(--accent); padding-left: 0.9rem; }
+
+  /* ---------- screen index ---------- */
+  .screens { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1rem; }
+  .screen-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.1rem 1.2rem;
+    display: flex; flex-direction: column; gap: 0.4rem;
+    text-decoration: none; color: inherit;
+  }
+  .screen-card:hover, .screen-card:focus-visible { border-color: var(--accent); outline: none; }
+  .screen-card .num { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-3); letter-spacing: 0.1em; }
+  .screen-card .name { font-family: var(--font-display); font-size: 1.15rem; }
+  .screen-card .desc { font-size: 0.88rem; color: var(--ink-2); }
+
+  /* ---------- tree panel ---------- */
+  .tree-wrap {
+    background: var(--panel); border-radius: var(--radius); border: 1px solid var(--line-strong);
+    overflow-x: auto; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch;
+  }
+  .tree-title {
+    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--panel-accent); padding: 0.75rem 1.2rem; border-bottom: 1px solid rgba(255,255,255,0.09);
+    position: sticky; left: 0;
+  }
+  pre.tree {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    line-height: 1.65;
+    color: var(--panel-ink);
+    padding: 1.2rem;
+    margin: 0;
+    white-space: pre;
+  }
+  pre.tree .b { color: #FFFFFF; font-weight: 600; }
+  pre.tree .n { color: #8FD6C4; }
+  pre.tree .c { color: #7E9089; }
+  pre.tree .a { color: #E8B75F; }
+
+  /* ---------- tables ---------- */
+  .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
+  th, td { text-align: left; padding: 0.65rem 0.9rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); background: var(--surface-2); white-space: nowrap; }
+  tbody tr:last-child td { border-bottom: none; }
+  td:first-child { font-weight: 600; white-space: nowrap; }
+  td code, p code, li code { font-family: var(--font-mono); font-size: 0.85em; background: var(--surface-2); padding: 0.1em 0.35em; border-radius: 3px; }
+
+  /* ---------- status legend ---------- */
+  .chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); gap: 0.6rem; }
+  .chip { display: flex; gap: 0.7rem; align-items: flex-start; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 0.6rem 0.8rem; }
+  .dot { width: 0.7rem; height: 0.7rem; border-radius: 50%; margin-top: 0.4rem; flex: none; background: var(--tone); }
+  .chip .text { display: flex; flex-direction: column; gap: 0.1rem; }
+  .chip .label { display: block; font-weight: 600; font-size: 0.9rem; color: var(--tone); }
+  .chip .what { display: block; font-size: 0.82rem; color: var(--ink-2); line-height: 1.45; }
+
+  /* ---------- wireframe ---------- */
+  .wire {
+    background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--radius);
+    padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem; max-width: 34rem;
+  }
+  .wire-row { display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; }
+  .wire .bed { font-family: var(--font-mono); font-weight: 700; font-size: 1.1rem; }
+  .wire .pill { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.2rem 0.55rem; border-radius: 999px; background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent); }
+  .wire .pt { font-weight: 650; font-size: 1rem; }
+  .wire dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr)); gap: 0.6rem 1rem; margin: 0; }
+  .wire dl > div { display: flex; flex-direction: column; gap: 0.1rem; }
+  .wire dt { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); }
+  .wire dd { margin: 0; font-size: 0.88rem; font-variant-numeric: tabular-nums; }
+  .wire .actions { display: flex; gap: 0.4rem; flex-wrap: wrap; border-top: 1px dashed var(--line); padding-top: 0.7rem; }
+  .wire .btn { font-size: 0.75rem; padding: 0.25rem 0.6rem; border: 1px solid var(--line-strong); border-radius: 3px; color: var(--ink-2); }
+  .caption { font-size: 0.8rem; color: var(--ink-3); max-width: 60ch; }
+
+  /* ---------- count dashboard mock ---------- */
+  .counts { display: grid; grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr)); gap: 0.6rem; }
+  .count {
+    background: var(--surface); border: 1px solid var(--line); border-top: 3px solid var(--tone);
+    border-radius: var(--radius); padding: 0.7rem 0.8rem; display: flex; flex-direction: column; gap: 0.15rem;
+  }
+  .count .n { font-family: var(--font-mono); font-size: 1.5rem; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--tone); }
+  .count .l { font-size: 0.75rem; color: var(--ink-2); }
+
+  /* ---------- callout ---------- */
+  .note { background: var(--accent-soft); border-left: 3px solid var(--accent); border-radius: 0 var(--radius) var(--radius) 0; padding: 0.9rem 1.1rem; }
+  .note p { margin: 0; font-size: 0.92rem; color: var(--ink); }
+  .note p + p { margin-top: 0.5rem; }
+
+  /* ---------- flow ---------- */
+  ol.flow { list-style: none; counter-reset: step; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem; }
+  ol.flow li { counter-increment: step; display: grid; grid-template-columns: 2rem 1fr; gap: 0.9rem; align-items: start; }
+  ol.flow li::before {
+    content: counter(step, decimal-leading-zero);
+    font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; color: var(--accent);
+    border: 1px solid var(--line-strong); border-radius: 50%; width: 2rem; height: 2rem;
+    display: grid; place-items: center;
+  }
+  ol.flow li > strong { grid-column: 2; display: block; }
+  ol.flow li > span { grid-column: 2; font-size: 0.9rem; color: var(--ink-2); }
+
+  ul.plain { padding-left: 1.1rem; margin: 0; display: flex; flex-direction: column; gap: 0.35rem; }
+  ul.plain li { font-size: 0.92rem; color: var(--ink-2); }
+  ul.plain li b { color: var(--ink); font-weight: 650; }
+
+  footer { border-top: 1px solid var(--line); padding-top: 1.25rem; font-size: 0.82rem; color: var(--ink-3); }
+
+  a { color: var(--accent); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .swipe { display: none; font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.06em; color: var(--ink-3); }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 900px) {
+    .page { padding: 2.25rem 1.25rem 3.5rem; gap: 2.75rem; }
+    .docnav { margin: 0 -1.25rem; padding: 0.5rem 1.25rem; }
+  }
+
+  @media (max-width: 640px) {
+    body { font-size: 15px; }
+    .page { padding: 1.5rem 0.9rem 3rem; gap: 2.25rem; }
+    .docnav { margin: 0 -0.9rem; padding: 0.45rem 0.9rem; }
+    .masthead { gap: 0.7rem; padding-bottom: 1.25rem; }
+    .masthead p.lede { font-size: 1rem; }
+    .meta { flex-direction: column; gap: 0.2rem; }
+    .screens { grid-template-columns: 1fr; }
+    .chips { grid-template-columns: 1fr; }
+    .counts { grid-template-columns: repeat(2, 1fr); }
+    .section-head { padding-left: 0.7rem; }
+    .tree-title { padding: 0.6rem 0.9rem; font-size: 0.66rem; }
+    pre.tree { font-size: 0.66rem; line-height: 1.55; padding: 0.9rem; }
+    th, td { padding: 0.55rem 0.7rem; }
+    table { font-size: 0.85rem; min-width: 32rem; }
+    .wire { padding: 0.85rem; }
+    .wire dl { grid-template-columns: repeat(2, 1fr); }
+    .note { padding: 0.8rem 0.9rem; }
+    ol.flow li { grid-template-columns: 1.6rem 1fr; gap: 0.6rem; }
+    ol.flow li::before { width: 1.6rem; height: 1.6rem; font-size: 0.66rem; }
+    .swipe { display: block; }
+  }
+
+  @media (max-width: 380px) {
+    pre.tree { font-size: 0.6rem; }
+    .counts { grid-template-columns: 1fr 1fr; }
+    .wire dl { grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+  }
+
+  @media print {
+    body { background: #fff; }
+    .tree-wrap { break-inside: avoid; }
+    .docnav, .swipe { display: none !important; }
+  }
+
+  /* ---------- per-document accents ---------- */
+  .page[data-doc="doctor"] { --accent: #17537E; --accent-2: #0F3F63; --accent-soft: #E1EBF3; --panel-accent: #86BCE4; }
+  .page[data-doc="paper"]  { --accent: #8A5510; --accent-2: #6B420C; --accent-soft: #F4E9D9; --panel-accent: #E0A64B; }
+  @media (prefers-color-scheme: dark) {
+    .page[data-doc="doctor"] { --accent: #69B0E4; --accent-2: #9BCCEF; --accent-soft: #12293A; --panel-accent: #86BCE4; }
+    .page[data-doc="paper"]  { --accent: #E0A64B; --accent-2: #EEC383; --accent-soft: #2D2110; --panel-accent: #E0A64B; }
+  }
+  :root[data-theme="dark"] .page[data-doc="doctor"] { --accent: #69B0E4; --accent-2: #9BCCEF; --accent-soft: #12293A; --panel-accent: #86BCE4; }
+  :root[data-theme="dark"] .page[data-doc="paper"]  { --accent: #E0A64B; --accent-2: #EEC383; --accent-soft: #2D2110; --panel-accent: #E0A64B; }
+  :root[data-theme="light"] .page[data-doc="doctor"] { --accent: #17537E; --accent-2: #0F3F63; --accent-soft: #E1EBF3; --panel-accent: #86BCE4; }
+  :root[data-theme="light"] .page[data-doc="paper"]  { --accent: #8A5510; --accent-2: #6B420C; --accent-soft: #F4E9D9; --panel-accent: #E0A64B; }
+
+  /* ---------- module tabs (index page) ---------- */
+  .tabbar {
+    position: sticky; top: 0; z-index: 30;
+    display: flex; gap: 0.3rem; overflow-x: auto; overscroll-behavior-x: contain;
+    background: var(--bg); border-bottom: 1px solid var(--line-strong);
+    padding: 0.55rem 1.5rem; scrollbar-width: none;
+  }
+  .tabbar::-webkit-scrollbar { display: none; }
+  .tabbar .tabinner { display: flex; gap: 0.3rem; width: 100%; max-width: var(--wrap); margin: 0 auto; }
+  .tabbar button {
+    flex: none; cursor: pointer; white-space: nowrap;
+    font-family: var(--font-mono); font-size: 0.76rem; letter-spacing: 0.06em;
+    color: var(--ink-3); background: transparent;
+    border: 1px solid transparent; border-radius: 999px;
+    padding: 0.45rem 0.95rem; min-height: 2.4rem;
+  }
+  .tabbar button:hover { color: var(--ink); }
+  .tabbar button[aria-selected="true"] { color: var(--ink); background: var(--surface); border-color: var(--line-strong); }
+  body:has(.tabbar) .docnav { top: 3.4rem; }
+  [hidden] { display: none !important; }
+  @media (max-width: 640px) {
+    .tabbar { padding: 0.5rem 0.9rem; }
+    .tabbar button { font-size: 0.72rem; padding: 0.4rem 0.75rem; }
+  }
+
+  /* ---------- global search ---------- */
+  .search { position: relative; flex: 1 1 9rem; min-width: 6rem; margin-left: auto; }
+  .search input {
+    width: 100%; min-height: 2.4rem;
+    font-family: var(--font-mono); font-size: 0.76rem; color: var(--ink);
+    background: var(--surface); border: 1px solid var(--line-strong); border-radius: 999px;
+    padding: 0.4rem 0.9rem;
+  }
+  .search input::placeholder { color: var(--ink-3); }
+  .results {
+    position: absolute; top: calc(100% + 0.4rem); right: 0;
+    width: min(28rem, 88vw); max-height: 60vh; overflow-y: auto;
+    background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--radius);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.18); z-index: 40;
+  }
+  .results button {
+    display: block; width: 100%; text-align: left; cursor: pointer;
+    background: transparent; border: none; border-bottom: 1px solid var(--line);
+    padding: 0.6rem 0.85rem; color: inherit; font-family: var(--font-body);
+  }
+  .results button:last-child { border-bottom: none; }
+  .results button:hover, .results button.on { background: var(--accent-soft); }
+  .results .where { display: block; font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); }
+  .results .what { display: block; font-weight: 650; font-size: 0.9rem; }
+  .results .snip { display: block; font-size: 0.8rem; color: var(--ink-2); line-height: 1.45; }
+  .results .snip mark, .results .what mark { background: var(--accent-soft); color: var(--accent); padding: 0 0.1em; }
+  .results .empty { padding: 0.7rem 0.85rem; font-size: 0.85rem; color: var(--ink-3); }
+
+  /* ---------- what's new ---------- */
+  .page[data-doc="whatsnew"] { --accent: #6A3FA0; --accent-2: #52307E; --accent-soft: #EEE7F6; --panel-accent: #B79BE0; }
+  @media (prefers-color-scheme: dark) {
+    .page[data-doc="whatsnew"] { --accent: #B79BE0; --accent-2: #CDBAEC; --accent-soft: #241A33; --panel-accent: #B79BE0; }
+  }
+  :root[data-theme="dark"] .page[data-doc="whatsnew"] { --accent: #B79BE0; --accent-2: #CDBAEC; --accent-soft: #241A33; --panel-accent: #B79BE0; }
+  :root[data-theme="light"] .page[data-doc="whatsnew"] { --accent: #6A3FA0; --accent-2: #52307E; --accent-soft: #EEE7F6; --panel-accent: #B79BE0; }
+
+  figure.shot { margin: 0.6rem 0 0; display: flex; flex-direction: column; gap: 0.4rem; max-width: 22rem; }
+  ol.flow li > figure.shot { grid-column: 2; }
+  figure.shot img { display: block; width: 100%; border: 1px solid var(--line-strong); border-radius: var(--radius); background: var(--surface); }
+  figure.shot figcaption { font-size: 0.78rem; color: var(--ink-3); line-height: 1.45; }
+  figure.shot .missing {
+    display: grid; place-items: center; min-height: 9rem; padding: 1rem; text-align: center;
+    border: 1px dashed var(--line-strong); border-radius: var(--radius);
+    background: var(--surface-2); color: var(--ink-3);
+    font-family: var(--font-mono); font-size: 0.7rem; line-height: 1.6;
+  }
+</style><div class="tabbar"><div class="tabinner"><div class="search"><input type="search" id="q" placeholder="Search all pages…" autocomplete="off" aria-label="Search the documentation"></div></div></div>
+<div class="page" data-doc="whatsnew">
+
+  <header class="masthead">
+    <span class="eyebrow">Release Notes · Newest first</span>
+    <h1>What&rsquo;s New</h1>
+    <p class="lede">Each entry is a full walkthrough of one new feature &mdash; what it replaces, what you need, every screen you will see, and what to do when it misbehaves. Written to be read in a training session, not skimmed.</p>
+    <div class="meta">
+      <span><b>Covers:</b> Doctor app, Nurse app, Paperless Documentation</span>
+      <span><b>Latest entry:</b> August 2026</span>
+    </div>
+    <button class="printbtn" type="button" onclick="window.print()">Print / Save as PDF</button>
+  </header>
+
+  <nav class="docnav" aria-label="Entries">
+    <a href="#wn-permissions">Aug 2026 · Document permissions</a>
+    <a href="#wn-page-slider">Aug 2026 · Page slider</a>
+    <a href="#wn-fingerprint">Aug 2026 · Fingerprint capture</a>
+    <a href="#wn-fixes">Aug 2026 · Fixes &amp; improvements</a>
+  </nav>
+
+  <section id="wn-permissions">
+    <div class="section-head">
+      <span class="eyebrow">August 2026 &middot; Doctor app, Nurse app, Paperless Documentation</span>
+      <h2>Document actions now follow the user&rsquo;s role permissions</h2>
+    </div>
+
+    <p>What a signed-in user may do with patient documents &mdash; create, edit, delete, view, print, e-mail, send on WhatsApp &mdash; is now decided by the permissions set for their role in Rescribe, not by the app. An action the role does not carry appears <b>greyed out</b> on screen and does not respond to a tap.</p>
+
+    <div class="note">
+      <p><b>Who this is for:</b> every hospital that keeps different rights for consultants, junior doctors, nurses and ward staff. Until now the app showed all seven document actions to everyone who could reach the screen.</p>
+    </div>
+
+    <h3>The seven permissions</h3>
+    <p>All of them sit under the <b>Patient Document</b> module in role configuration. They are read from the server after sign-in &mdash; nothing is configured inside the app.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Permission</th><th>Without it, the user cannot&hellip;</th><th>Where it shows</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Patient Document &minus; Add</td><td>Start a new document, add a page, or add an overlay to a page</td><td>Documents list, history, canvas toolbar</td></tr>
+          <tr><td>Patient Document &minus; Edit</td><td>Write on, correct or re-save an existing document</td><td>Canvas &mdash; pen, eraser, shapes, copy tools, Save</td></tr>
+          <tr><td>Patient Document &minus; Delete</td><td>Delete a document, or delete a page from one</td><td>History, preview, canvas</td></tr>
+          <tr><td>Patient Document &minus; View</td><td>Open a document to read it</td><td>Documents list, history, preview</td></tr>
+          <tr><td>Patient Document &minus; Pdf Print</td><td>Print, or save the document as a PDF</td><td>Documents list, preview, unified preview</td></tr>
+          <tr><td>Patient Document &minus; Send Email</td><td>E-mail the document out</td><td>Documents list, share sheet</td></tr>
+          <tr><td>Patient Document &minus; Send WhatsApp</td><td>Send the document on WhatsApp</td><td>Documents list, share sheet</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="swipe">Swipe the table sideways to read every column &rarr;</p>
+
+    <h3>Greyed out, not hidden</h3>
+    <p>A blocked action stays on screen at reduced opacity and ignores taps. That is deliberate: staff can see the button exists and that their role does not carry it, instead of hunting for a control that vanished and reporting it as a bug. If a user says &ldquo;the Print button is faded&rdquo;, the answer is a role change in Rescribe, not an app fix.</p>
+
+    <h3>When the permissions are read</h3>
+    <ol class="flow">
+      <li><strong>At app start</strong><span>The list saved from the last session is loaded before the first screen is drawn, so the correct buttons are live immediately &mdash; including on a tablet that opens with no network.</span></li>
+      <li><strong>On the dashboard</strong><span>The app asks the server for the current list and replaces the saved one. A role changed in Rescribe takes effect on the next dashboard load &mdash; no reinstall, no update.</span></li>
+      <li><strong>When the network is down</strong><span>The refresh fails quietly and the last known list stays in force. Permissions are never widened because a request failed.</span></li>
+      <li><strong>On sign-out</strong><span>The list is dropped with the rest of the session. The next user starts from their own permissions, never the previous user&rsquo;s.</span></li>
+    </ol>
+
+    <div class="note">
+      <p><b>Blocked until the answer arrives.</b> If nothing is known yet &mdash; a brand-new install signed in for the first time with no network &mdash; every gated action stays disabled. The safe failure is &ldquo;cannot do it yet&rdquo;, never &ldquo;can do everything&rdquo;. Get the tablet online once and it settles.</p>
+      <p><b>Clear Cache is safe.</b> Clearing the cache from the menu re-reads the permissions from the server. If the server cannot be reached at that moment the previous list is put back, so the user is not left with a screen of dead buttons.</p>
+    </div>
+
+    <h3>When it does not look right</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>What you see</th><th>What it means</th><th>What to do</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Every document action is faded</td><td>No permission list has reached this tablet yet</td><td>Connect to the network and open the dashboard once</td></tr>
+          <tr><td>One action is faded, the rest work</td><td>The role does not carry that permission</td><td>Change the role in Rescribe, then reopen the dashboard on the tablet</td></tr>
+          <tr><td>A permission was granted but the button is still faded</td><td>The tablet is still on the previously read list</td><td>Return to the dashboard, or sign out and back in</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="wn-page-slider">
+    <div class="section-head">
+      <span class="eyebrow">August 2026 &middot; Paperless Documentation</span>
+      <h2>A page slider for long documents</h2>
+    </div>
+
+    <p>A twenty-one page nursing chart used to be twenty swipes away from its last page. The <b>Page n / n</b> chip on the bottom toolbar is now a button: tap it and a slider appears, drag the slider and the document jumps straight to the page you let go on.</p>
+
+    <div class="note">
+      <p><b>Who this is for:</b> anyone working in long ward files &mdash; bedside monitoring charts, intake-output records, multi-day nursing notes. It is on both the writing canvas and the document preview, and it behaves the same way in each.</p>
+    </div>
+
+    <h3>The flow, screen by screen</h3>
+    <ol class="flow">
+      <li>
+        <strong>Tap the &ldquo;Page n / n&rdquo; chip</strong>
+        <span>Bottom toolbar, between <b>Reset</b> and <b>Add Page</b>. It was only a page counter before; it is now the switch that opens the slider.</span>
+        <figure class="shot">
+          <img src="assets/whatsnew/slider/slider-1-page-chip.png" alt="The bottom toolbar with the Page 12 / 21 chip circled" loading="lazy">
+          <figcaption>Tap the page chip on the bottom toolbar.</figcaption>
+        </figure>
+      </li>
+      <li>
+        <strong>The slider opens above the toolbar</strong>
+        <span>A track with tick marks appears just under the page &mdash; every page is ticked in a short document, every fifth page in a long one, so start, middle and end are easy to read.</span>
+        <figure class="shot">
+          <img src="assets/whatsnew/slider/slider-2-open.png" alt="The page slider open below the document preview, above the bottom toolbar" loading="lazy">
+          <figcaption>The slider sits below the preview and hides itself again after a few seconds.</figcaption>
+        </figure>
+      </li>
+      <li>
+        <strong>Drag to the page you want</strong>
+        <span>A small <b>Page N</b> bubble follows the thumb so you can see where you are before committing. The document itself does not move while you drag.</span>
+      </li>
+      <li>
+        <strong>Let go</strong>
+        <span>The document jumps once, to the page under your finger. Releasing is what turns the page &mdash; dragging across fifteen pages does not render fifteen pages, which is why the jump is instant instead of a fifteen-page flick.</span>
+      </li>
+      <li>
+        <strong>It puts itself away</strong>
+        <span>The slider hides about three seconds after the last touch, giving the page back the screen. Tap the chip again to bring it back. The countdown pauses while a finger is down, so it cannot vanish mid-drag.</span>
+      </li>
+    </ol>
+
+    <h3>Worth knowing</h3>
+    <ul class="plain">
+      <li><b>Three pages or more.</b> On a one or two page document the chip stays a plain counter &mdash; a slider would be slower than a swipe.</li>
+      <li><b>The old ways still work.</b> Swiping the page and the left / right arrows are unchanged; the slider is for distance, not for the next page.</li>
+      <li><b>Deleting or adding a page mid-drag is safe.</b> The track reshapes to the new page count and the jump is clamped to a page that exists.</li>
+      <li><b>Keyboard.</b> With a keyboard attached, the left and right arrow keys step the slider one page at a time.</li>
+    </ul>
+
+    <p class="caption">Short reference version: <a href="paperless.html#p-canvas" data-goto="paper#p-canvas">Paperless Documentation &rarr; Canvas &sect;4.2 Pages and view</a>.</p>
+  </section>
+
+  <section id="wn-fingerprint">
+    <div class="section-head">
+      <span class="eyebrow">August 2026 · Paperless Documentation</span>
+      <h2>Fingerprint capture on the document canvas</h2>
+    </div>
+
+    <p>A patient&rsquo;s or attendant&rsquo;s thumb impression can now be taken with a USB fingerprint scanner and placed straight onto the document being written on. It behaves like every other overlay &mdash; drag it, resize it, undo it &mdash; so it drops into the signature block of a consent form the same way a doctor stamp drops onto a prescription.</p>
+
+    <div class="note">
+      <p><b>Who this is for:</b> any ward or OPD that still collects an inked thumb impression on consent forms, admission papers, high-risk consents or discharge summaries. Those are the forms that currently force a paper detour in an otherwise paperless flow.</p>
+    </div>
+
+    <h3>What it replaces</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Step</th><th>Before</th><th>Now</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Take the impression</td><td>Ink pad, thumb, paper form</td><td>Finger on the scanner, on the tablet already in hand</td></tr>
+          <tr><td>Attach to the record</td><td>Scan or photograph the signed page, upload it separately</td><td>Impression lands on the page being written, in one action</td></tr>
+          <tr><td>Correct a bad impression</td><td>Re-print the form, take it again</td><td><b>Retry</b> in the preview, or undo the overlay</td></tr>
+          <tr><td>Storage</td><td>Physical file plus a scanned copy</td><td>Part of the saved document, nothing loose</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Before you start &mdash; the hardware</h3>
+    <ul class="plain">
+      <li><b>Scanner:</b> Mantra MFS500 is the recommended, tested device. Secugen Hamster Pro and Hamster Plus are also supported.</li>
+      <li><b>Cable:</b> the scanner is USB. On a tablet it connects through a USB OTG adapter &mdash; the same kind used for a USB pen drive.</li>
+      <li><b>Connect it first.</b> Plug the scanner in before tapping Fingerprint. With nothing connected the app says <i>&ldquo;No fingerprint scanner connected.&rdquo;</i></li>
+      <li><b>Permission, once:</b> the first capture after the tablet is switched on shows an Android dialog asking to allow the app to use the scanner. Tap allow. If the scanner is plugged in <i>after</i> the app is already open, the first tap may report <i>&ldquo;USB permission denied. Tap again to retry.&rdquo;</i> &mdash; allow the dialog, tap Fingerprint again, and it works.</li>
+      <li><b>Sharing one scanner:</b> nothing is bound to a device or a user. One scanner can be carried between tablets on the round.</li>
+    </ul>
+
+    <h3>The flow, screen by screen</h3>
+    <p>Open the document in the canvas first &mdash; this lives inside the drawing screen, not the document list. Everything below happens on the page you are already writing on.</p>
+
+    <ol class="flow">
+      <li>
+        <strong>Tap the overlay button on the canvas toolbar</strong>
+        <span>Top toolbar, between the document icon and the print icon &mdash; the small picture-in-a-frame icon. This is the same button used for photos, barcodes and doctor stamps.</span>
+        <figure class="shot">
+          <img src="assets/whatsnew/fingerprint/fp-1-overlay-button.png" alt="Canvas toolbar with the overlay button marked" loading="lazy">
+          <figcaption>The overlay button on the canvas toolbar.</figcaption>
+        </figure>
+      </li>
+      <li>
+        <strong>Pick Fingerprint in the &ldquo;Choose one&rdquo; sheet</strong>
+        <span>The sheet slides up from the bottom. Fingerprint is the last option in the top row, after Patient Image. The doctor-stamp list below it is unchanged.</span>
+        <figure class="shot">
+          <img src="assets/whatsnew/fingerprint/fp-2-choose-one.png" alt="The Choose one overlay sheet with Fingerprint as the last option in the top row" loading="lazy">
+          <figcaption>&ldquo;Choose one&rdquo; sheet &mdash; Fingerprint sits beside Patient Image.</figcaption>
+        </figure>
+      </li>
+      <li>
+        <strong>Place the finger on the scanner</strong>
+        <span>The screen dims and shows <i>&ldquo;Place finger on scanner&hellip;&rdquo;</i> while the device wakes up. Press the pad of the finger flat and centred on the glass and hold it still until the message clears. Do not roll the finger.</span>
+      </li>
+      <li>
+        <strong>Check the impression, then Insert</strong>
+        <span>The captured print is shown for approval. <b>Insert</b> accepts it, <b>Retry</b> takes it again without leaving the dialog, and <b>&times;</b> closes without placing anything. Look at the ridges: they should be clearly separated, not a black smudge.</span>
+        <figure class="shot">
+          <img src="assets/whatsnew/fingerprint/fp-3-captured.png" alt="Fingerprint Captured dialog showing the impression with Retry and Insert buttons" loading="lazy">
+          <figcaption>Approval step &mdash; Insert to accept, Retry to capture again.</figcaption>
+        </figure>
+      </li>
+      <li>
+        <strong>Drag it into the signature box</strong>
+        <span>After Insert the impression appears on the page with selection handles: drag from the middle to move it, pull a corner to resize, the red <b>&times;</b> removes it, the green tick commits it. Normally it goes into the <i>Patient / Attendant&rsquo;s Signature</i> box.</span>
+        <figure class="shot">
+          <img src="assets/whatsnew/fingerprint/fp-4-place.png" alt="The inserted fingerprint overlay on the document with drag and resize handles" loading="lazy">
+          <figcaption>Freshly inserted &mdash; movable and resizable until committed.</figcaption>
+        </figure>
+      </li>
+      <li>
+        <strong>Save the document</strong>
+        <span>Tap <b>SAVE</b>. The impression is part of the page from then on, exactly like a stamp or a photo, and it appears on the printed and shared copies.</span>
+        <figure class="shot">
+          <img src="assets/whatsnew/fingerprint/fp-5-done.png" alt="The finished document page with the fingerprint placed in the signature block" loading="lazy">
+          <figcaption>Committed into the signature block, ready to save.</figcaption>
+        </figure>
+      </li>
+    </ol>
+
+    <h3>What is stored &mdash; and what is not</h3>
+    <div class="note">
+      <p><b>It is a picture, nothing more.</b> The impression is placed on the document as an image, the same as a photo or a stamp. It is saved with the document and nowhere else.</p>
+      <p><b>No identity check happens.</b> Nothing is sent to Aadhaar or any biometric service, nothing is matched against a database, and no fingerprint template is created or kept. The app cannot tell you whose finger it was &mdash; it records the impression on the form, which is what the consent form needed in the first place.</p>
+      <p><b>It follows the document.</b> Because it is part of the page, it is covered by the same offline sync, the same history and the same sharing rules as everything else drawn on that document.</p>
+    </div>
+
+    <h3>When it does not work</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>What you see</th><th>What it means</th><th>What to do</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>&ldquo;No fingerprint scanner connected.&rdquo;</td><td>Nothing usable on the USB port</td><td>Check the OTG adapter and the cable at both ends; try the scanner on another tablet to rule the device out</td></tr>
+          <tr><td>&ldquo;USB permission denied. Tap again to retry.&rdquo;</td><td>The scanner was plugged in after the app opened, so Android has not been asked yet</td><td>Allow the permission dialog, then tap Fingerprint again</td></tr>
+          <tr><td>Print looks partial</td><td>Normal &mdash; the sensor images the pad of the fingertip, not the whole finger</td><td>Nothing. A partial pad impression is what these scanners produce</td></tr>
+          <tr><td>Ridges smudged or solid black</td><td>Too much pressure, damp finger, or a dirty sensor</td><td>Wipe the glass, dry the finger, press flat but lightly, then <b>Retry</b></td></tr>
+          <tr><td>Very faint impression</td><td>Too little contact, or dry skin</td><td>Press the finger fully flat and hold still; <b>Retry</b></td></tr>
+          <tr><td>Placed in the wrong spot</td><td>Overlay was committed before positioning</td><td>Undo on the canvas toolbar, then place it again</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Worth saying in training</h3>
+    <ul class="plain">
+      <li>Take the impression <b>at the same moment as the stamp</b>, not as a separate trip &mdash; it is one more tap in the identify-and-stamp step of the bedside flow.</li>
+      <li>Keep it <b>inside the signature box</b>. An impression drawn across a barcode or QR code can stop that code scanning.</li>
+      <li><b>Retry costs nothing.</b> Staff hesitate to re-take because the paper version wasted a form; here it does not.</li>
+      <li>The scanner needs no setup screen, no pairing and no login. Plug in, allow once, use.</li>
+    </ul>
+
+    <p class="caption">Short reference version of this flow: <a href="paperless.html#p-canvas" data-goto="paper#p-canvas">Paperless Documentation &rarr; Canvas &sect;4.7 Fingerprint capture</a>.</p>
+  </section>
+
+  <section id="wn-fixes">
+    <div class="section-head">
+      <span class="eyebrow">August 2026 &middot; Since the 30 July build</span>
+      <h2>Fixes and improvements</h2>
+    </div>
+
+    <p>Nothing here needs to be learned &mdash; the same screens, working better. Listed so support knows what changed if a user asks why something behaves differently from last month.</p>
+
+    <h3>Speed and stability</h3>
+    <ul class="plain">
+      <li>Documents open on the first page while the remaining pages load behind it, instead of waiting for the whole file.</li>
+      <li>Page switching in the canvas and the preview is smoother; pages that were opened once come back instantly.</li>
+      <li>Saving writes several pages at a time and streams the upload to disk, so a long document saves faster and holds far less memory.</li>
+      <li>Large documents no longer run the tablet out of memory &mdash; image caching now evicts what is off screen.</li>
+      <li>Templates and print assets are fetched and cached ahead of use, so printing starts sooner.</li>
+      <li>Background downloads are throttled, so a sync in progress no longer slows the screen in front of the user.</li>
+    </ul>
+
+    <h3>Offline</h3>
+    <ul class="plain">
+      <li>Appointment history, appointment booking, patient search and check-in status are cached, so those screens open with real data when the network is out.</li>
+      <li>If the location cannot be read, the last known location is used instead of leaving the field empty.</li>
+      <li>Signing out no longer discards the tablet&rsquo;s device registration, and the sign-out confirmation now warns when documents are still waiting to sync.</li>
+      <li>Clearer wording on the offline messages, and consistent behaviour on actions that need a connection.</li>
+    </ul>
+
+    <h3>Screens and controls</h3>
+    <ul class="plain">
+      <li>Read-only notes no longer zoom on a double tap, and their height is measured correctly, so text is not cut off.</li>
+      <li>Date pickers keep the current time when a date is picked, instead of resetting to midnight; dates and times across the app follow IST consistently.</li>
+      <li>The today&rsquo;s-appointment screen no longer flashes &ldquo;no appointments&rdquo; while it is still loading.</li>
+      <li>Tapping a patient in the list opens a patient info dialog, and patient photos load more reliably.</li>
+      <li>Stylus handwriting-to-text is turned off inside text fields, so the keyboard behaves the same with a stylus as with a finger.</li>
+      <li>Print output uses one image quality throughout, so a printed page looks the same wherever it was printed from.</li>
+      <li>Fingerprint scanner USB permission handling is more forgiving when the scanner is plugged in after the app is already open.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>New entries are added here as features ship. The module tabs stay the reference documentation &mdash; this tab is the walkthrough for what changed.</p>
+  </footer>
+
+</div>
+<style>
+  @media print {
+    @page { size: A4; margin: 14mm 11mm; }
+    :root {
+      --bg: #F3F6F4; --surface: #FFFFFF; --surface-2: #E9EEEB;
+      --panel: #12201C; --panel-ink: #D9E6E1; --panel-accent: #7FBFB1;
+      --ink: #14201D; --ink-2: #4B5B56; --ink-3: #7C8B86;
+      --line: #D5DEDA; --line-strong: #B9C6C1;
+      --accent: #0C6B5E; --accent-2: #0A5449; --accent-soft: #DFEDE9;
+      --s-occupied: #2E62C4; --s-vacant: #1E7F55; --s-reserved: #7A4FC7;
+      --s-housekeeping: #B0730D; --s-maintenance: #A8443A;
+      --s-pending: #5F7180; --s-transfer: #0B7A8A;
+    }
+    html, body { background: #fff !important; }
+    .page { padding: 0 !important; gap: 2.25rem !important; max-width: none !important; }
+    .docnav, .swipe, .printbtn, .tabbar { display: none !important; }
+    .tree-wrap { overflow: visible !important; break-inside: avoid; page-break-inside: avoid; }
+    .tree-wrap.tall { break-inside: auto; page-break-inside: auto; }
+    pre.tree { font-size: 0.7rem !important; line-height: 1.55 !important; }
+    .table-wrap, .wire, .note, .chips, .counts { break-inside: avoid; page-break-inside: avoid; }
+    section { break-inside: auto; }
+    h2, h3 { break-after: avoid; page-break-after: avoid; }
+    .section-head { break-inside: avoid; page-break-inside: avoid; break-after: avoid; page-break-after: avoid; }
+    .screen-card, ol.flow li, .chip, tr, figure.shot { break-inside: avoid; page-break-inside: avoid; }
+    a { text-decoration: none; color: inherit; }
+  }
+</style><script>
+(function () {
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tabbar button'));
+  var panels = {};
+  tabs.forEach(function (t) { panels[t.dataset.target] = document.getElementById(t.dataset.target); });
+  var names = Object.keys(panels);
+  var DEFAULT = names[0];
+
+  function show(name, push) {
+    if (!panels[name]) return;
+    tabs.forEach(function (t) {
+      var on = t.dataset.target === name;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      panels[t.dataset.target].hidden = !on;
+    });
+    document.title = panels[name].dataset.title;
+    if (push) history.replaceState(null, '', '#' + name);
+  }
+
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () {
+      show(t.dataset.target, true);
+      window.scrollTo(0, 0);
+    });
+  });
+
+  window.addEventListener('hashchange', function () {
+    var h = location.hash.replace('#', '');
+    if (panels[h]) { show(h, false); window.scrollTo(0, 0); }
+  });
+
+  if (DEFAULT) {
+    var initial = location.hash.replace('#', '');
+    if (panels[initial]) { show(initial, false); window.scrollTo(0, 0); }
+    else { show(DEFAULT, false); }
+  }
+
+  /* ---- go to a section, switching tab first when there is one ---- */
+  function goto(tab, id) {
+    if (tab && panels[tab]) show(tab, true);
+    var el = document.getElementById(id);
+    if (el) el.scrollIntoView();
+  }
+
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a[data-goto]') : null;
+    if (!a) return;
+    var parts = a.dataset.goto.split('#');
+    if (!panels[parts[0]] && tabs.length) return;      /* panel absent: follow the href */
+    if (!document.getElementById(parts[1])) return;
+    e.preventDefault();
+    goto(parts[0], parts[1]);
+  });
+
+  /* ---- global search across every panel on the page ---- */
+  var box = document.getElementById('q');
+  if (!box) return;
+  var wrap = box.parentNode;
+  var idx = [];
+
+  (tabs.length ? names.map(function (n) { return [n, panels[n]]; })
+               : [[null, document]]).forEach(function (pair) {
+    var tab = pair[0], root = pair[1];
+    var label = tab ? document.querySelector('.tabbar button[data-target="' + tab + '"]').textContent
+                    : (document.querySelector('.masthead h1') || {}).textContent || 'This page';
+    Array.prototype.forEach.call(root.querySelectorAll('section[id]'), function (sec) {
+      var h = sec.querySelector('h2');
+      idx.push({
+        tab: tab, id: sec.id, where: label,
+        what: h ? h.textContent.trim() : sec.id,
+        text: sec.textContent.replace(/\s+/g, ' ').trim()
+      });
+    });
+  });
+
+  var list = null, hits = [], cur = -1;
+
+  function esc(s) { return s.replace(/[&<>"]/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+  function mark(s, q) {
+    var i = s.toLowerCase().indexOf(q);
+    if (i < 0) return esc(s);
+    return esc(s.slice(0, i)) + '<mark>' + esc(s.slice(i, i + q.length)) + '</mark>' + esc(s.slice(i + q.length));
+  }
+
+  function snippet(text, q) {
+    var i = text.toLowerCase().indexOf(q);
+    if (i < 0) return '';
+    var from = Math.max(0, i - 45), to = Math.min(text.length, i + q.length + 85);
+    return (from ? '…' : '') + mark(text.slice(from, to), q) + (to < text.length ? '…' : '');
+  }
+
+  function close() { if (list) { list.remove(); list = null; } hits = []; cur = -1; }
+
+  function run() {
+    var q = box.value.trim().toLowerCase();
+    close();
+    if (q.length < 2) return;
+    hits = idx.filter(function (e) {
+      return e.what.toLowerCase().indexOf(q) >= 0 || e.text.toLowerCase().indexOf(q) >= 0;
+    }).slice(0, 30);
+    list = document.createElement('div');
+    list.className = 'results';
+    if (!hits.length) {
+      list.innerHTML = '<div class="empty">No matches for “' + esc(box.value.trim()) + '”</div>';
+    } else {
+      list.innerHTML = hits.map(function (e, n) {
+        return '<button type="button" data-n="' + n + '">' +
+               '<span class="where">' + esc(e.where) + '</span>' +
+               '<span class="what">' + mark(e.what, q) + '</span>' +
+               '<span class="snip">' + snippet(e.text, q) + '</span></button>';
+      }).join('');
+    }
+    wrap.appendChild(list);
+  }
+
+  function pick(n) {
+    var e = hits[n];
+    if (!e) return;
+    box.value = '';
+    close();
+    box.blur();
+    goto(e.tab, e.id);
+  }
+
+  box.addEventListener('input', run);
+  box.addEventListener('focus', function () { if (box.value.trim().length > 1) run(); });
+
+  box.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { box.value = ''; close(); box.blur(); return; }
+    if (!hits.length) return;
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      cur = (cur + (e.key === 'ArrowDown' ? 1 : hits.length - 1)) % hits.length;
+      Array.prototype.forEach.call(list.querySelectorAll('button'), function (b, i) {
+        b.classList.toggle('on', i === cur);
+        if (i === cur) b.scrollIntoView({ block: 'nearest' });
+      });
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      pick(cur < 0 ? 0 : cur);
+    }
+  });
+
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('.results button') : null;
+    if (b) { pick(+b.dataset.n); return; }
+    if (list && !wrap.contains(e.target)) close();
+  });
+})();
+</script>
+</body>
+</html>

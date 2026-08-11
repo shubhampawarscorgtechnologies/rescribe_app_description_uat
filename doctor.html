@@ -1,0 +1,1068 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Doctor Module — Functional Map</title>
+<meta name="description" content="How the Rescribe doctor app works — screen by screen, for support teams and hospital staff.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#17537E" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0D1412" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🩺</text></svg>">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  body { margin: 0; }
+  img { max-width: 100%; height: auto; }
+</style>
+</head>
+<body>
+<style>
+  :root {
+    --bg: #F3F6F4;
+    --surface: #FFFFFF;
+    --surface-2: #E9EEEB;
+    --panel: #12201C;
+    --panel-ink: #D9E6E1;
+    --ink: #14201D;
+    --ink-2: #4B5B56;
+    --ink-3: #7C8B86;
+    --line: #D5DEDA;
+    --line-strong: #B9C6C1;
+    --accent: #0C6B5E;
+    --accent-2: #0A5449;
+    --accent-soft: #DFEDE9;
+
+    --s-occupied: #2E62C4;
+    --s-vacant: #1E7F55;
+    --s-reserved: #7A4FC7;
+    --s-housekeeping: #B0730D;
+    --s-maintenance: #A8443A;
+    --s-pending: #5F7180;
+    --s-transfer: #0B7A8A;
+
+    --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, ui-serif, serif;
+    --font-body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+    --panel-accent: #7FBFB1;
+
+    --wrap: 68rem;
+    --radius: 4px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0D1412;
+      --surface: #151E1B;
+      --surface-2: #1C2724;
+      --panel: #0A100E;
+      --panel-ink: #CFE0DA;
+      --ink: #E7EFEC;
+      --ink-2: #A7B8B2;
+      --ink-3: #778782;
+      --line: #29352F;
+      --line-strong: #3A4A44;
+      --accent: #56C3AE;
+      --accent-2: #7FD6C4;
+      --accent-soft: #15302A;
+
+      --s-occupied: #6E9BEE;
+      --s-vacant: #55BE8B;
+      --s-reserved: #AE8CF0;
+      --s-housekeeping: #E0A73E;
+      --s-maintenance: #E07E71;
+      --s-pending: #93A6B3;
+      --s-transfer: #45B6C6;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #0D1412;
+    --surface: #151E1B;
+    --surface-2: #1C2724;
+    --panel: #0A100E;
+    --panel-ink: #CFE0DA;
+    --ink: #E7EFEC;
+    --ink-2: #A7B8B2;
+    --ink-3: #778782;
+    --line: #29352F;
+    --line-strong: #3A4A44;
+    --accent: #56C3AE;
+    --accent-2: #7FD6C4;
+    --accent-soft: #15302A;
+    --s-occupied: #6E9BEE;
+    --s-vacant: #55BE8B;
+    --s-reserved: #AE8CF0;
+    --s-housekeeping: #E0A73E;
+    --s-maintenance: #E07E71;
+    --s-pending: #93A6B3;
+    --s-transfer: #45B6C6;
+  }
+
+  :root[data-theme="light"] {
+    --bg: #F3F6F4;
+    --surface: #FFFFFF;
+    --surface-2: #E9EEEB;
+    --panel: #12201C;
+    --panel-ink: #D9E6E1;
+    --ink: #14201D;
+    --ink-2: #4B5B56;
+    --ink-3: #7C8B86;
+    --line: #D5DEDA;
+    --line-strong: #B9C6C1;
+    --accent: #0C6B5E;
+    --accent-2: #0A5449;
+    --accent-soft: #DFEDE9;
+    --s-occupied: #2E62C4;
+    --s-vacant: #1E7F55;
+    --s-reserved: #7A4FC7;
+    --s-housekeeping: #B0730D;
+    --s-maintenance: #A8443A;
+    --s-pending: #5F7180;
+    --s-transfer: #0B7A8A;
+  }
+
+  /* Anchor offsets use scroll-padding on the scroll container: an embedding
+     WebView may force `scroll-margin-top: 0` on every element, which would
+     otherwise drop headings behind the sticky tab bar. */
+  html { scroll-padding-top: 4.5rem; }
+  html:has(.tabbar) { scroll-padding-top: 7.5rem; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: var(--wrap);
+    margin: 0 auto;
+    padding: 3rem 1.5rem 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3.5rem;
+  }
+
+  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; text-wrap: balance; line-height: 1.15; }
+  h1 { font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -0.015em; }
+  h2 { font-size: clamp(1.5rem, 3vw, 1.9rem); letter-spacing: -0.01em; }
+  h3 { font-size: 1.2rem; }
+  h4 { font-size: 1rem; font-family: var(--font-body); font-weight: 650; }
+  p { max-width: 65ch; }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  /* ---------- header ---------- */
+  .masthead { display: flex; flex-direction: column; gap: 1rem; border-bottom: 2px solid var(--ink); padding-bottom: 1.75rem; }
+  .masthead p.lede { font-size: 1.1rem; color: var(--ink-2); }
+  .meta { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-3); }
+  .meta b { color: var(--ink-2); font-weight: 500; }
+  .printbtn {
+    align-self: flex-start; cursor: pointer;
+    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em;
+    color: var(--accent); background: transparent;
+    border: 1px solid var(--accent); border-radius: 999px;
+    padding: 0.4rem 0.9rem; min-height: 2.25rem;
+  }
+  .printbtn:hover, .printbtn:focus-visible { background: var(--accent-soft); }
+
+  /* ---------- sticky nav ---------- */
+  .docnav {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; gap: 0.15rem; overflow-x: auto; overscroll-behavior-x: contain;
+    background: var(--bg); border-bottom: 1px solid var(--line);
+    margin: 0 -1.5rem; padding: 0.5rem 1.5rem;
+    scrollbar-width: none;
+  }
+  .docnav::-webkit-scrollbar { display: none; }
+  .docnav a {
+    flex: none; text-decoration: none; color: var(--ink-2);
+    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em;
+    padding: 0.35rem 0.6rem; border-radius: 999px; white-space: nowrap;
+  }
+  .docnav a:hover, .docnav a:focus-visible { color: var(--accent); background: var(--accent-soft); }
+
+  /* ---------- sections ---------- */
+  section { display: flex; flex-direction: column; gap: 1.25rem; scroll-margin-top: 4rem; min-width: 0; }
+  .page > * { min-width: 0; }
+  .tree-wrap, .table-wrap { min-width: 0; max-width: 100%; }
+  .section-head { display: flex; flex-direction: column; gap: 0.35rem; border-left: 3px solid var(--accent); padding-left: 0.9rem; }
+
+  /* ---------- screen index ---------- */
+  .screens { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1rem; }
+  .screen-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.1rem 1.2rem;
+    display: flex; flex-direction: column; gap: 0.4rem;
+    text-decoration: none; color: inherit;
+  }
+  .screen-card:hover, .screen-card:focus-visible { border-color: var(--accent); outline: none; }
+  .screen-card .num { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-3); letter-spacing: 0.1em; }
+  .screen-card .name { font-family: var(--font-display); font-size: 1.15rem; }
+  .screen-card .desc { font-size: 0.88rem; color: var(--ink-2); }
+
+  /* ---------- tree panel ---------- */
+  .tree-wrap {
+    background: var(--panel); border-radius: var(--radius); border: 1px solid var(--line-strong);
+    overflow-x: auto; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch;
+  }
+  .tree-title {
+    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--panel-accent); padding: 0.75rem 1.2rem; border-bottom: 1px solid rgba(255,255,255,0.09);
+    position: sticky; left: 0;
+  }
+  pre.tree {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    line-height: 1.65;
+    color: var(--panel-ink);
+    padding: 1.2rem;
+    margin: 0;
+    white-space: pre;
+  }
+  pre.tree .b { color: #FFFFFF; font-weight: 600; }
+  pre.tree .n { color: #8FD6C4; }
+  pre.tree .c { color: #7E9089; }
+  pre.tree .a { color: #E8B75F; }
+
+  /* ---------- tables ---------- */
+  .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
+  th, td { text-align: left; padding: 0.65rem 0.9rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); background: var(--surface-2); white-space: nowrap; }
+  tbody tr:last-child td { border-bottom: none; }
+  td:first-child { font-weight: 600; white-space: nowrap; }
+  td code, p code, li code { font-family: var(--font-mono); font-size: 0.85em; background: var(--surface-2); padding: 0.1em 0.35em; border-radius: 3px; }
+
+  /* ---------- status legend ---------- */
+  .chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); gap: 0.6rem; }
+  .chip { display: flex; gap: 0.7rem; align-items: flex-start; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 0.6rem 0.8rem; }
+  .dot { width: 0.7rem; height: 0.7rem; border-radius: 50%; margin-top: 0.4rem; flex: none; background: var(--tone); }
+  .chip .text { display: flex; flex-direction: column; gap: 0.1rem; }
+  .chip .label { display: block; font-weight: 600; font-size: 0.9rem; color: var(--tone); }
+  .chip .what { display: block; font-size: 0.82rem; color: var(--ink-2); line-height: 1.45; }
+
+  /* ---------- wireframe ---------- */
+  .wire {
+    background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--radius);
+    padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem; max-width: 34rem;
+  }
+  .wire-row { display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; }
+  .wire .bed { font-family: var(--font-mono); font-weight: 700; font-size: 1.1rem; }
+  .wire .pill { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.2rem 0.55rem; border-radius: 999px; background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent); }
+  .wire .pt { font-weight: 650; font-size: 1rem; }
+  .wire dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr)); gap: 0.6rem 1rem; margin: 0; }
+  .wire dl > div { display: flex; flex-direction: column; gap: 0.1rem; }
+  .wire dt { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); }
+  .wire dd { margin: 0; font-size: 0.88rem; font-variant-numeric: tabular-nums; }
+  .wire .actions { display: flex; gap: 0.4rem; flex-wrap: wrap; border-top: 1px dashed var(--line); padding-top: 0.7rem; }
+  .wire .btn { font-size: 0.75rem; padding: 0.25rem 0.6rem; border: 1px solid var(--line-strong); border-radius: 3px; color: var(--ink-2); }
+  .caption { font-size: 0.8rem; color: var(--ink-3); max-width: 60ch; }
+
+  /* ---------- count dashboard mock ---------- */
+  .counts { display: grid; grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr)); gap: 0.6rem; }
+  .count {
+    background: var(--surface); border: 1px solid var(--line); border-top: 3px solid var(--tone);
+    border-radius: var(--radius); padding: 0.7rem 0.8rem; display: flex; flex-direction: column; gap: 0.15rem;
+  }
+  .count .n { font-family: var(--font-mono); font-size: 1.5rem; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--tone); }
+  .count .l { font-size: 0.75rem; color: var(--ink-2); }
+
+  /* ---------- callout ---------- */
+  .note { background: var(--accent-soft); border-left: 3px solid var(--accent); border-radius: 0 var(--radius) var(--radius) 0; padding: 0.9rem 1.1rem; }
+  .note p { margin: 0; font-size: 0.92rem; color: var(--ink); }
+  .note p + p { margin-top: 0.5rem; }
+
+  /* ---------- flow ---------- */
+  ol.flow { list-style: none; counter-reset: step; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem; }
+  ol.flow li { counter-increment: step; display: grid; grid-template-columns: 2rem 1fr; gap: 0.9rem; align-items: start; }
+  ol.flow li::before {
+    content: counter(step, decimal-leading-zero);
+    font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; color: var(--accent);
+    border: 1px solid var(--line-strong); border-radius: 50%; width: 2rem; height: 2rem;
+    display: grid; place-items: center;
+  }
+  ol.flow li > strong { grid-column: 2; display: block; }
+  ol.flow li > span { grid-column: 2; font-size: 0.9rem; color: var(--ink-2); }
+
+  ul.plain { padding-left: 1.1rem; margin: 0; display: flex; flex-direction: column; gap: 0.35rem; }
+  ul.plain li { font-size: 0.92rem; color: var(--ink-2); }
+  ul.plain li b { color: var(--ink); font-weight: 650; }
+
+  footer { border-top: 1px solid var(--line); padding-top: 1.25rem; font-size: 0.82rem; color: var(--ink-3); }
+
+  a { color: var(--accent); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .swipe { display: none; font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.06em; color: var(--ink-3); }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 900px) {
+    .page { padding: 2.25rem 1.25rem 3.5rem; gap: 2.75rem; }
+    .docnav { margin: 0 -1.25rem; padding: 0.5rem 1.25rem; }
+  }
+
+  @media (max-width: 640px) {
+    body { font-size: 15px; }
+    .page { padding: 1.5rem 0.9rem 3rem; gap: 2.25rem; }
+    .docnav { margin: 0 -0.9rem; padding: 0.45rem 0.9rem; }
+    .masthead { gap: 0.7rem; padding-bottom: 1.25rem; }
+    .masthead p.lede { font-size: 1rem; }
+    .meta { flex-direction: column; gap: 0.2rem; }
+    .screens { grid-template-columns: 1fr; }
+    .chips { grid-template-columns: 1fr; }
+    .counts { grid-template-columns: repeat(2, 1fr); }
+    .section-head { padding-left: 0.7rem; }
+    .tree-title { padding: 0.6rem 0.9rem; font-size: 0.66rem; }
+    pre.tree { font-size: 0.66rem; line-height: 1.55; padding: 0.9rem; }
+    th, td { padding: 0.55rem 0.7rem; }
+    table { font-size: 0.85rem; min-width: 32rem; }
+    .wire { padding: 0.85rem; }
+    .wire dl { grid-template-columns: repeat(2, 1fr); }
+    .note { padding: 0.8rem 0.9rem; }
+    ol.flow li { grid-template-columns: 1.6rem 1fr; gap: 0.6rem; }
+    ol.flow li::before { width: 1.6rem; height: 1.6rem; font-size: 0.66rem; }
+    .swipe { display: block; }
+  }
+
+  @media (max-width: 380px) {
+    pre.tree { font-size: 0.6rem; }
+    .counts { grid-template-columns: 1fr 1fr; }
+    .wire dl { grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+  }
+
+  @media print {
+    body { background: #fff; }
+    .tree-wrap { break-inside: avoid; }
+    .docnav, .swipe { display: none !important; }
+  }
+
+  /* ---------- per-document accents ---------- */
+  .page[data-doc="doctor"] { --accent: #17537E; --accent-2: #0F3F63; --accent-soft: #E1EBF3; --panel-accent: #86BCE4; }
+  .page[data-doc="paper"]  { --accent: #8A5510; --accent-2: #6B420C; --accent-soft: #F4E9D9; --panel-accent: #E0A64B; }
+  @media (prefers-color-scheme: dark) {
+    .page[data-doc="doctor"] { --accent: #69B0E4; --accent-2: #9BCCEF; --accent-soft: #12293A; --panel-accent: #86BCE4; }
+    .page[data-doc="paper"]  { --accent: #E0A64B; --accent-2: #EEC383; --accent-soft: #2D2110; --panel-accent: #E0A64B; }
+  }
+  :root[data-theme="dark"] .page[data-doc="doctor"] { --accent: #69B0E4; --accent-2: #9BCCEF; --accent-soft: #12293A; --panel-accent: #86BCE4; }
+  :root[data-theme="dark"] .page[data-doc="paper"]  { --accent: #E0A64B; --accent-2: #EEC383; --accent-soft: #2D2110; --panel-accent: #E0A64B; }
+  :root[data-theme="light"] .page[data-doc="doctor"] { --accent: #17537E; --accent-2: #0F3F63; --accent-soft: #E1EBF3; --panel-accent: #86BCE4; }
+  :root[data-theme="light"] .page[data-doc="paper"]  { --accent: #8A5510; --accent-2: #6B420C; --accent-soft: #F4E9D9; --panel-accent: #E0A64B; }
+
+  /* ---------- module tabs (index page) ---------- */
+  .tabbar {
+    position: sticky; top: 0; z-index: 30;
+    display: flex; gap: 0.3rem; overflow-x: auto; overscroll-behavior-x: contain;
+    background: var(--bg); border-bottom: 1px solid var(--line-strong);
+    padding: 0.55rem 1.5rem; scrollbar-width: none;
+  }
+  .tabbar::-webkit-scrollbar { display: none; }
+  .tabbar .tabinner { display: flex; gap: 0.3rem; width: 100%; max-width: var(--wrap); margin: 0 auto; }
+  .tabbar button {
+    flex: none; cursor: pointer; white-space: nowrap;
+    font-family: var(--font-mono); font-size: 0.76rem; letter-spacing: 0.06em;
+    color: var(--ink-3); background: transparent;
+    border: 1px solid transparent; border-radius: 999px;
+    padding: 0.45rem 0.95rem; min-height: 2.4rem;
+  }
+  .tabbar button:hover { color: var(--ink); }
+  .tabbar button[aria-selected="true"] { color: var(--ink); background: var(--surface); border-color: var(--line-strong); }
+  body:has(.tabbar) .docnav { top: 3.4rem; }
+  [hidden] { display: none !important; }
+  @media (max-width: 640px) {
+    .tabbar { padding: 0.5rem 0.9rem; }
+    .tabbar button { font-size: 0.72rem; padding: 0.4rem 0.75rem; }
+  }
+
+  /* ---------- global search ---------- */
+  .search { position: relative; flex: 1 1 9rem; min-width: 6rem; margin-left: auto; }
+  .search input {
+    width: 100%; min-height: 2.4rem;
+    font-family: var(--font-mono); font-size: 0.76rem; color: var(--ink);
+    background: var(--surface); border: 1px solid var(--line-strong); border-radius: 999px;
+    padding: 0.4rem 0.9rem;
+  }
+  .search input::placeholder { color: var(--ink-3); }
+  .results {
+    position: absolute; top: calc(100% + 0.4rem); right: 0;
+    width: min(28rem, 88vw); max-height: 60vh; overflow-y: auto;
+    background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--radius);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.18); z-index: 40;
+  }
+  .results button {
+    display: block; width: 100%; text-align: left; cursor: pointer;
+    background: transparent; border: none; border-bottom: 1px solid var(--line);
+    padding: 0.6rem 0.85rem; color: inherit; font-family: var(--font-body);
+  }
+  .results button:last-child { border-bottom: none; }
+  .results button:hover, .results button.on { background: var(--accent-soft); }
+  .results .where { display: block; font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); }
+  .results .what { display: block; font-weight: 650; font-size: 0.9rem; }
+  .results .snip { display: block; font-size: 0.8rem; color: var(--ink-2); line-height: 1.45; }
+  .results .snip mark, .results .what mark { background: var(--accent-soft); color: var(--accent); padding: 0 0.1em; }
+  .results .empty { padding: 0.7rem 0.85rem; font-size: 0.85rem; color: var(--ink-3); }
+
+  /* ---------- what's new ---------- */
+  .page[data-doc="whatsnew"] { --accent: #6A3FA0; --accent-2: #52307E; --accent-soft: #EEE7F6; --panel-accent: #B79BE0; }
+  @media (prefers-color-scheme: dark) {
+    .page[data-doc="whatsnew"] { --accent: #B79BE0; --accent-2: #CDBAEC; --accent-soft: #241A33; --panel-accent: #B79BE0; }
+  }
+  :root[data-theme="dark"] .page[data-doc="whatsnew"] { --accent: #B79BE0; --accent-2: #CDBAEC; --accent-soft: #241A33; --panel-accent: #B79BE0; }
+  :root[data-theme="light"] .page[data-doc="whatsnew"] { --accent: #6A3FA0; --accent-2: #52307E; --accent-soft: #EEE7F6; --panel-accent: #B79BE0; }
+
+  figure.shot { margin: 0.6rem 0 0; display: flex; flex-direction: column; gap: 0.4rem; max-width: 22rem; }
+  ol.flow li > figure.shot { grid-column: 2; }
+  figure.shot img { display: block; width: 100%; border: 1px solid var(--line-strong); border-radius: var(--radius); background: var(--surface); }
+  figure.shot figcaption { font-size: 0.78rem; color: var(--ink-3); line-height: 1.45; }
+  figure.shot .missing {
+    display: grid; place-items: center; min-height: 9rem; padding: 1rem; text-align: center;
+    border: 1px dashed var(--line-strong); border-radius: var(--radius);
+    background: var(--surface-2); color: var(--ink-3);
+    font-family: var(--font-mono); font-size: 0.7rem; line-height: 1.6;
+  }
+</style><div class="tabbar"><div class="tabinner"><div class="search"><input type="search" id="q" placeholder="Search all pages…" autocomplete="off" aria-label="Search the documentation"></div></div></div>
+<div class="page" data-doc="doctor">
+
+  <header class="masthead">
+    <span class="eyebrow">Doctor Module · Functional Documentation</span>
+    <h1>Doctor App — Screen &amp; Feature Map</h1>
+    <p class="lede">What a doctor can see and do inside the app, screen by screen. Written for support staff and hospital stakeholders — no technical background needed.</p>
+    <div class="meta">
+      <span><b>Application:</b> Rescribe — Doctor login</span>
+      <span><b>Screens:</b> 5 primary</span>
+      <span><b>Works offline:</b> Yes, with sync queue</span>
+    </div>
+    <button class="printbtn" type="button" onclick="window.print()">Print / Save as PDF</button>
+  </header>
+
+  <nav class="docnav" aria-label="Sections">
+    <a href="#d-start">Start here</a>
+    <a href="#d-tree">Full tree</a>
+    <a href="#d-main">1 · Main</a>
+    <a href="#d-today">2 · Today's Appointment</a>
+    <a href="#d-appt">3 · Appointment List</a>
+    <a href="#d-search">4 · Search</a>
+    <a href="#d-menu">5 · Menu</a>
+    <a href="#d-config">Configurable parts</a>
+    <a href="#d-day">A day</a>
+    <a href="#d-terms">Terms</a>
+  </nav>
+
+  <section id="d-start">
+    <div class="section-head">
+      <span class="eyebrow">Start here</span>
+      <h2>The app in five screens</h2>
+    </div>
+    <p>A doctor logging in gets five top-level screens. Everything else in this document sits underneath one of them.</p>
+    <div class="screens">
+      <a class="screen-card" href="#d-main">
+        <span class="num">SCREEN 1</span>
+        <span class="name">Main</span>
+        <span class="desc">Branch selection, dashboard, and the way into admitted (IPD) patients.</span>
+      </a>
+      <a class="screen-card" href="#d-today">
+        <span class="num">SCREEN 2</span>
+        <span class="name">Today's Appointment</span>
+        <span class="desc">Today's in-person and online consultations, with calling and messaging.</span>
+      </a>
+      <a class="screen-card" href="#d-appt">
+        <span class="num">SCREEN 3</span>
+        <span class="name">Appointment List</span>
+        <span class="desc">All appointments with filters, and three quick views per patient.</span>
+      </a>
+      <a class="screen-card" href="#d-search">
+        <span class="num">SCREEN 4</span>
+        <span class="name">Search</span>
+        <span class="desc">Find any patient or any past visit — and reopen a visit's documents.</span>
+      </a>
+      <a class="screen-card" href="#d-menu">
+        <span class="num">SCREEN 5</span>
+        <span class="name">Menu</span>
+        <span class="desc">Profile, schedule, templates, complaint mapper, and device housekeeping.</span>
+      </a>
+    </div>
+  </section>
+
+  <section id="d-tree">
+    <div class="section-head">
+      <span class="eyebrow">Overview</span>
+      <h2>Complete functionality tree</h2>
+    </div>
+    <p>The full map on one page. Each branch is expanded and explained in the sections that follow.</p>
+    <div class="tree-wrap tall">
+      <div class="tree-title">Doctor module — full tree</div>
+<pre class="tree"><span class="b">DOCTOR APP</span>
+│
+├── <span class="b">1. MAIN SCREEN</span>
+│   ├── <span class="n">Select Branch</span>
+│   ├── <span class="n">Chat · Scanner · Notifications</span>   <span class="c">top-bar shortcuts</span>
+│   ├── <span class="n">Display Dashboard</span>
+│   │
+│   └── <span class="n">Admitted Patient card</span> → <span class="n">Admitted Patients List</span>
+│       ├── Search field &amp; filters
+│       ├── Tap patient → <span class="c">patient info dialog (full details)</span>
+│       └── Six options per admitted patient
+│           ├── <span class="n">Facesheet</span>
+│           │   ├── Facesheet Dashboard
+│           │   ├── Previous History <span class="c">day-wise: documents, IPD, OPD,</span>
+│           │   │   <span class="c">prescriptions, medications, orders · print chart data · copy prescription</span>
+│           │   ├── Visit History      <span class="c">medical records — daycare / IPD / OPD</span>
+│           │   ├── Investigation History <span class="c">history · reports (LIS/RIS) · LIS list</span>
+│           │   ├── <span class="a">Configurable tabs</span> <span class="c">(set in web app → EMR settings → patient menu builder)</span>
+│           │   │   ├── Care Team
+│           │   │   ├── Consultation Chart <span class="c">components also configurable</span>
+│           │   │   ├── Prescriptions
+│           │   │   ├── Vital Sheet Chart      <span class="a">EDITABLE</span>
+│           │   │   ├── Intake / Output Chart  <span class="a">EDITABLE</span>
+│           │   │   └── MAR Chart
+│           │   └── Print PDF
+│           ├── <span class="n">Medication</span>       <span class="c">ongoing medications listing</span>
+│           ├── <span class="n">Investigation</span>    <span class="c">history · reports · LIS list</span>
+│           ├── <span class="n">Vitals</span>           <span class="a">EDITABLE</span> <span class="c">vitals + ventilator parameters</span>
+│           ├── <span class="n">Orders</span>           <span class="c">list by status · add medicine / lab / radiology · edit</span>
+│           └── <span class="n">Pen Mode</span>         <span class="c">paperless documentation — see separate map</span>
+│
+├── <span class="b">2. TODAY'S APPOINTMENT</span>
+│   ├── <span class="n">Today's in-person + online consultation patients</span>
+│   ├── Search field &amp; filters
+│   ├── <span class="n">Online consultation</span> → video call · audio call · messages
+│   │   └── <span class="c">requires the patient to have the Rescribe Patient App installed</span>
+│   ├── <span class="n">Visit History</span>
+│   ├── <span class="n">Update status</span>
+│   └── <span class="n">Open Facesheet</span>
+│
+├── <span class="b">3. APPOINTMENT LIST</span>
+│   ├── <span class="n">In-person + online appointments</span>
+│   ├── Filters — name · date · status
+│   └── Three buttons per row
+│       ├── <span class="n">Visit History</span>          <span class="c">medical records — OPD / IPD</span>
+│       ├── <span class="n">Investigation History</span>  <span class="c">history · reports · LIS list</span>
+│       └── <span class="n">Details</span>                <span class="c">appointment booking details</span>
+│
+├── <span class="b">4. SEARCH SCREEN</span>  <span class="c">two tabs</span>
+│   ├── <span class="n">Patient List</span>
+│   │   ├── Patients with status &amp; info · search · filters
+│   │   ├── Visit History
+│   │   └── Investigation History
+│   └── <span class="n">Visit List</span>
+│       ├── Visited patients with status &amp; info · search · filters
+│       └── Tap a visit → <span class="n">Pen Mode</span> opens
+│           <span class="c">add / edit / update documents for an earlier visit</span>
+│
+└── <span class="b">5. MENU SCREEN</span>
+    ├── <span class="n">Profile</span>  <span class="c">view &amp; update — photo, name, education, about me,</span>
+    │   <span class="c">speciality services, email, experience, mobile number</span>
+    ├── <span class="n">Appointment History</span>
+    ├── <span class="n">Modify Schedule</span>         <span class="c">extend/delay in-person &amp; online slots</span>
+    ├── <span class="n">Delay Notification</span>      <span class="c">tell waiting patients you are running late</span>
+    ├── <span class="n">Change Password</span>
+    ├── <span class="n">Templates</span>               <span class="c">preview · edit · delete · add new</span>
+    ├── <span class="n">Complaint Mapper</span>        <span class="c">add · edit · delete complaint mappings</span>
+    ├── <span class="n">Clear Cache</span>
+    ├── <span class="n">View Sync Pending Offline Data</span>
+    └── <span class="n">Logout</span>
+</pre>
+    </div>
+    <p class="swipe">Swipe the panel sideways to read the full width &rarr;</p>
+    <p class="caption">Reading the tree: <code>├──</code> and <code>└──</code> mark items inside the branch above them. <span style="color:var(--s-housekeeping);font-weight:600">EDITABLE</span> means the doctor can enter or change data there. <span style="color:var(--s-housekeeping);font-weight:600">Configurable</span> means the hospital controls it from the web application, so it differs between sites.</p>
+  </section>
+
+  <section id="d-main">
+    <div class="section-head">
+      <span class="eyebrow">Screen 1</span>
+      <h2>Main Screen</h2>
+    </div>
+    <p>The landing screen. It sets the working branch, surfaces the dashboard, and is the route into admitted (IPD) patients.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Element</th><th>What it does</th><th>Why it matters</th></tr></thead>
+        <tbody>
+          <tr><td>Select Branch</td><td>Chooses which hospital branch the doctor is working at.</td><td>Consultants who cover more than one site use a single login.</td></tr>
+          <tr><td>Chat</td><td>Opens the message list with patients on online consultation.</td><td>Follow-up questions without a call.</td></tr>
+          <tr><td>Scanner</td><td>Scans a patient's QR / barcode to open that patient directly.</td><td>Fastest way to pull up the right patient at the bedside.</td></tr>
+          <tr><td>Notifications</td><td>Alerts raised for this doctor.</td><td>New results, schedule changes, patient actions.</td></tr>
+          <tr><td>Display Dashboard</td><td>Summary counts and cards for the selected branch.</td><td>First read of the day — workload at a glance.</td></tr>
+          <tr><td>Admitted Patient card</td><td>Opens the Admitted Patients List.</td><td>The entry point for all ward (IPD) work.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="swipe">Swipe the table sideways to read every column &rarr;</p>
+
+    <h3>1.1 Admitted Patients List</h3>
+    <p>Every patient admitted under the doctor, with identity and admission details, a search field and filters. Tapping a patient opens a <b>patient info dialog</b> with the full details. Each patient carries six options.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Option</th><th>What it opens</th><th>Editable</th></tr></thead>
+        <tbody>
+          <tr><td>Facesheet</td><td>The complete clinical record for the admission — see 1.2.</td><td>Partly</td></tr>
+          <tr><td>Medication</td><td>Ongoing medications listing for the patient.</td><td>No</td></tr>
+          <tr><td>Investigation</td><td>Investigation History — the three-part view described in 1.3.</td><td>No</td></tr>
+          <tr><td>Vitals</td><td>Vital sheets for vitals and ventilator parameters.</td><td>Yes</td></tr>
+          <tr><td>Orders</td><td>Order list by status, plus new medicine / lab / radiology orders.</td><td>Yes</td></tr>
+          <tr><td>Pen Mode</td><td>Paperless documentation for this patient — full detail in the Paperless Documentation map.</td><td>Yes</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="swipe">Swipe the table sideways to read every column &rarr;</p>
+
+    <h3>1.2 Facesheet</h3>
+    <p>The clinical record for the admission. Three views are always present; the rest of the tabs are built per hospital in the web application.</p>
+    <div class="tree-wrap">
+      <div class="tree-title">Facesheet — sub-tree</div>
+<pre class="tree"><span class="b">FACESHEET</span>
+│
+├── <span class="n">Facesheet Dashboard</span>   <span class="c">patient summary at a glance</span>
+│
+├── <span class="n">Previous History</span>      <span class="c">everything recorded, day by day</span>
+│   ├── Documents          ├── Prescriptions
+│   ├── IPD details        ├── Medications
+│   ├── OPD details        └── Orders
+│   ├── <span class="a">Print chart data</span>
+│   └── <span class="a">Copy a prescription</span>  <span class="c">reuse an earlier prescription</span>
+│
+├── <span class="n">Visit History</span>          <span class="c">medical records across daycare / IPD / OPD</span>
+│
+├── <span class="n">Investigation History</span>
+│   ├── History            <span class="c">what was ordered — X-ray, CT scan, CBC …</span>
+│   ├── Reports            <span class="c">LIS (lab) and RIS (radiology) result documents</span>
+│   └── LIS list           <span class="c">lab investigations and their line items</span>
+│
+├── <span class="a">CONFIGURABLE TABS</span> <span class="c">— defined in web app → EMR settings → patient menu builder</span>
+│   ├── Care Team
+│   ├── Consultation Chart   <span class="c">its components are configurable too — see below</span>
+│   ├── Prescriptions
+│   ├── Vital Sheet Chart      <span class="a">EDITABLE</span>
+│   ├── Intake / Output Chart  <span class="a">EDITABLE</span>
+│   └── MAR Chart              <span class="c">medication administration record</span>
+│
+└── <span class="n">Print PDF</span>              <span class="c">export what is on screen</span>
+</pre>
+    </div>
+    <p class="swipe">Swipe the panel sideways to read the full width &rarr;</p>
+    <div class="note">
+      <p><b>Consultation Chart components are configurable.</b> Which sections appear inside the chart is set in the web application, drawn from: Vitals, Score Templates, Complaints, Diagnosis, Growth Chart, Advice, Allergies, Follow-up Date &amp; Time, Pain Scale, Image Annotations, Investigation, Medicine, Examination.</p>
+      <p>Two hospitals on the same build can therefore show different tabs and different chart sections. Always confirm a site's configuration before treating a missing section as a defect.</p>
+    </div>
+
+    <h3>1.3 Investigation History — the three parts</h3>
+    <p>This same three-part view appears in several places (Facesheet, the Investigation option, Appointment List, Search). It always means the same thing.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Part</th><th>Contains</th></tr></thead>
+        <tbody>
+          <tr><td>History</td><td>What was ordered and when — X-ray, CT scan, CBC and so on.</td></tr>
+          <tr><td>Reports</td><td>The result documents returned by LIS (lab) and RIS (radiology).</td></tr>
+          <tr><td>LIS list</td><td>The lab investigations themselves and their individual line items.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>1.4 Vitals</h3>
+    <p>Editable vital sheets covering both routine vitals and ventilator parameters, so ICU patients are recorded on the same screen as ward patients.</p>
+
+    <h3>1.5 Orders</h3>
+    <p>The order list for the patient, filtered by status, with new orders raised from the same screen.</p>
+    <div class="chips">
+      <div class="chip" style="--tone: var(--ink-2)"><span class="dot"></span><span class="text"><span class="label">All</span><span class="what">Every order on the patient, unfiltered.</span></span></div>
+      <div class="chip" style="--tone: var(--s-pending)"><span class="dot"></span><span class="text"><span class="label">Initiated</span><span class="what">Raised, waiting to be acted on.</span></span></div>
+      <div class="chip" style="--tone: var(--s-occupied)"><span class="dot"></span><span class="text"><span class="label">Approved</span><span class="what">Cleared to proceed.</span></span></div>
+      <div class="chip" style="--tone: var(--s-vacant)"><span class="dot"></span><span class="text"><span class="label">Completed</span><span class="what">Carried out and closed.</span></span></div>
+      <div class="chip" style="--tone: var(--s-transfer)"><span class="dot"></span><span class="text"><span class="label">Continue</span><span class="what">Kept running into the next period.</span></span></div>
+      <div class="chip" style="--tone: var(--s-maintenance)"><span class="dot"></span><span class="text"><span class="label">Reverse</span><span class="what">Undone after being actioned.</span></span></div>
+      <div class="chip" style="--tone: var(--s-housekeeping)"><span class="dot"></span><span class="text"><span class="label">Defer</span><span class="what">Postponed to a later time.</span></span></div>
+      <div class="chip" style="--tone: var(--s-reserved)"><span class="dot"></span><span class="text"><span class="label">DC (discontinue)</span><span class="what">Stopped — no longer to be given.</span></span></div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Action</th><th>What the doctor does</th></tr></thead>
+        <tbody>
+          <tr><td>Add order — Medicine</td><td>Prescribes a drug against the admission.</td></tr>
+          <tr><td>Add order — Lab</td><td>Raises a laboratory investigation.</td></tr>
+          <tr><td>Add order — Radiology</td><td>Raises an imaging investigation.</td></tr>
+          <tr><td>Edit order</td><td>Amends an order already on the list.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>1.6 Pen Mode</h3>
+    <p>Paperless documentation for the admitted patient — writing on documents by hand instead of on paper. The feature is identical on the nurse side and is documented separately in the <b>Paperless Documentation</b> map.</p>
+  </section>
+
+  <section id="d-today">
+    <div class="section-head">
+      <span class="eyebrow">Screen 2</span>
+      <h2>Today's Appointment</h2>
+    </div>
+    <p>The day's consulting list — both patients coming to the clinic and patients being seen online.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Element</th><th>What it does</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td>Today's list</td><td>All in-person and online consultations scheduled for today.</td><td>Search field and filters narrow it.</td></tr>
+          <tr><td>Video call</td><td>Starts a video consultation with the patient.</td><td>Online consultations only.</td></tr>
+          <tr><td>Audio call</td><td>Starts a voice consultation.</td><td>Online consultations only.</td></tr>
+          <tr><td>Messages</td><td>Text exchange with the patient.</td><td>Online consultations only.</td></tr>
+          <tr><td>Visit History</td><td>The patient's earlier medical records.</td><td>Available before the consultation starts.</td></tr>
+          <tr><td>Update status</td><td>Moves the appointment forward — for example arrived, in progress, completed.</td><td>Keeps the front desk in step with the doctor.</td></tr>
+          <tr><td>Open Facesheet</td><td>Opens the full clinical record from the appointment row.</td><td>Same Facesheet as Screen 1.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="swipe">Swipe the table sideways to read every column &rarr;</p>
+    <div class="note">
+      <p><b>Requirement for online consultation:</b> calling and messaging work only if the patient has the <b>Rescribe Patient App</b> installed and registered. If the patient has not installed it, the call cannot connect — this is the single most common "calling is not working" report, and it is not a fault on the doctor's device.</p>
+    </div>
+  </section>
+
+  <section id="d-appt">
+    <div class="section-head">
+      <span class="eyebrow">Screen 3</span>
+      <h2>Appointment List</h2>
+    </div>
+    <p>All appointments — in-person and online — not just today's. Filter by patient name, date or status, then use one of three buttons on the row.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Button</th><th>Opens</th><th>Used for</th></tr></thead>
+        <tbody>
+          <tr><td>Visit History</td><td>The patient's medical records history across OPD and IPD.</td><td>Understanding what has already been treated.</td></tr>
+          <tr><td>Investigation History</td><td>History, reports (LIS/RIS) and the LIS list.</td><td>Checking results before or during the consultation.</td></tr>
+          <tr><td>Details</td><td>The appointment booking details.</td><td>Who booked it, when, for which slot and status.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="swipe">Swipe the table sideways to read every column &rarr;</p>
+  </section>
+
+  <section id="d-search">
+    <div class="section-head">
+      <span class="eyebrow">Screen 4</span>
+      <h2>Search Screen</h2>
+    </div>
+    <p>Two tabs. One finds a <em>patient</em>, the other finds a <em>visit</em> — the distinction matters, because documents belong to a visit.</p>
+    <div class="tree-wrap">
+      <div class="tree-title">Search — two tabs</div>
+<pre class="tree"><span class="b">SEARCH</span>
+│
+├── <span class="n">TAB 1 · Patient List</span>
+│   ├── Patients with status and details · search field · filters
+│   └── Two options per patient
+│       ├── <span class="n">Visit History</span>         <span class="c">medical records — OPD / IPD</span>
+│       └── <span class="n">Investigation History</span> <span class="c">history · reports · LIS list</span>
+│
+└── <span class="n">TAB 2 · Visit List</span>
+    ├── Visited patients with status and details · search field · filters
+    └── Tap a visit → <span class="a">PEN MODE opens for that visit</span>
+        <span class="c">add, edit or update documents for a patient seen earlier</span>
+</pre>
+    </div>
+    <p class="swipe">Swipe the panel sideways to read the full width &rarr;</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Tab</th><th>Contains</th><th>What it is for</th></tr></thead>
+        <tbody>
+          <tr><td>Patient List</td><td>Every patient with status and details, searchable and filterable.</td><td>Looking someone up and reading their history.</td></tr>
+          <tr><td>Visit List</td><td>Every recorded visit with status and details, searchable and filterable.</td><td>Reopening the paperwork of a past visit.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">
+      <p><b>This is how documentation gets completed late.</b> A doctor who could not finish writing during the visit opens Search → Visit List → the visit → Pen Mode, and adds or edits the documents afterwards. Nothing is lost because the consultation has ended.</p>
+    </div>
+  </section>
+
+  <section id="d-menu">
+    <div class="section-head">
+      <span class="eyebrow">Screen 5</span>
+      <h2>Menu Screen</h2>
+    </div>
+    <p>Profile, scheduling, the two content tools (Templates and Complaint Mapper), and device housekeeping.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Item</th><th>What it does</th><th>When to use it</th></tr></thead>
+        <tbody>
+          <tr><td>Profile</td><td>View and update photo, name, education, about me, speciality services, email, experience and mobile number.</td><td>Anything patients see about the doctor.</td></tr>
+          <tr><td>Appointment History</td><td>Past appointments for this doctor.</td><td>Looking back at earlier consultations.</td></tr>
+          <tr><td>Modify Schedule</td><td>Adjusts in-person and online consultation timings by extending or delaying them.</td><td>Running late, or shifting a session.</td></tr>
+          <tr><td>Delay Notification</td><td>Sends waiting patients a notice that the doctor is running late.</td><td>Before patients start calling the front desk.</td></tr>
+          <tr><td>Change Password</td><td>Sets a new password for the logged-in doctor.</td><td>Routine credential change.</td></tr>
+          <tr><td>Templates</td><td>Lists templates with preview, edit, delete, and add new.</td><td>Reusing standard text instead of retyping it.</td></tr>
+          <tr><td>Complaint Mapper</td><td>Adds, edits and deletes the mappings attached to a complaint, so the same complaint can be reused when filing chart components.</td><td>Set up once, saves typing on every consultation after.</td></tr>
+          <tr><td>Clear Cache</td><td>Removes locally stored copies so the next open pulls fresh data.</td><td>Stale or wrong-looking data that a refresh doesn't fix.</td></tr>
+          <tr><td>View Sync Pending Offline Data</td><td>Lists everything entered offline that has not reached the server yet.</td><td>Before logging out, before clearing cache, or when work "disappears".</td></tr>
+          <tr><td>Logout</td><td>Ends the session on the device.</td><td>End of session, or handing the device over.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="swipe">Swipe the table sideways to read every column &rarr;</p>
+    <div class="note">
+      <p><b>Important sequence — the same rule as the nurse app.</b></p>
+      <p>Check <b>View Sync Pending Offline Data</b> <em>before</em> using Clear Cache or Logout. If the list is not empty, the device still holds work that has not reached the server. Get back on network and let it sync first.</p>
+    </div>
+  </section>
+
+  <section id="d-config">
+    <div class="section-head">
+      <span class="eyebrow">Important</span>
+      <h2>What the hospital configures, not the app</h2>
+    </div>
+    <p>Parts of this app are assembled per hospital in the web application. The same build therefore looks different at different sites — by design, not by fault.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Configured item</th><th>Set where</th><th>Effect in the app</th></tr></thead>
+        <tbody>
+          <tr><td>Facesheet tabs</td><td>Web app → EMR settings → patient menu builder</td><td>Which tabs appear — Care Team, Consultation Chart, Prescriptions, Vital Sheet, Intake/Output, MAR Chart.</td></tr>
+          <tr><td>Consultation Chart components</td><td>Web app</td><td>Which sections the chart contains — vitals, score templates, complaints, diagnosis, growth chart, advice, allergies, follow-up date &amp; time, pain scale, image annotations, investigation, medicine, examination.</td></tr>
+          <tr><td>Document categories &amp; colours</td><td>Web app</td><td>How paperless documents are grouped, ordered and coloured.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="swipe">Swipe the table sideways to read every column &rarr;</p>
+    <div class="note">
+      <p><b>Support rule:</b> before logging a "missing tab" or "missing section" defect, confirm the site's configuration. If it is not switched on in the web application, the app is behaving correctly.</p>
+    </div>
+  </section>
+
+  <section id="d-day">
+    <div class="section-head">
+      <span class="eyebrow">In practice</span>
+      <h2>A typical day, in order</h2>
+    </div>
+    <p>The same features, arranged the way a doctor actually meets them. This sequence is what a demo or a training session should follow.</p>
+    <ol class="flow">
+      <li><strong>Open the app and set the branch</strong><span>Main screen — select branch, read the dashboard.</span></li>
+      <li><strong>Ward round</strong><span>Admitted Patient card → patient → Facesheet for history, Vitals to record, Orders to prescribe.</span></li>
+      <li><strong>Write at the bedside</strong><span>Pen Mode — handwrite on the document instead of on paper.</span></li>
+      <li><strong>Start the consulting session</strong><span>Today's Appointment — work down the list, update status as each patient is seen.</span></li>
+      <li><strong>See online patients</strong><span>Video or audio call from the same list; message if a call is not needed.</span></li>
+      <li><strong>Look up anyone not on the list</strong><span>Search → Patient List, then Visit History or Investigation History.</span></li>
+      <li><strong>Finish yesterday's paperwork</strong><span>Search → Visit List → the visit → Pen Mode.</span></li>
+      <li><strong>Close the day</strong><span>Menu — confirm no pending offline data, then log out.</span></li>
+    </ol>
+  </section>
+
+  <section id="d-terms">
+    <div class="section-head">
+      <span class="eyebrow">Reference</span>
+      <h2>Terms used in this document</h2>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td>OPD</td><td>Outpatient department — patients seen without being admitted.</td></tr>
+          <tr><td>IPD</td><td>Inpatient department — admitted patients occupying a bed.</td></tr>
+          <tr><td>Daycare</td><td>A visit with a procedure but no overnight stay.</td></tr>
+          <tr><td>Facesheet</td><td>The consolidated clinical record for one admission or visit.</td></tr>
+          <tr><td>LIS</td><td>Laboratory Information System — the source of lab results.</td></tr>
+          <tr><td>RIS</td><td>Radiology Information System — the source of imaging reports.</td></tr>
+          <tr><td>MAR Chart</td><td>Medication Administration Record — what was given, when, by whom.</td></tr>
+          <tr><td>DC</td><td>Discontinue — an order stopped and no longer to be carried out.</td></tr>
+          <tr><td>Pen Mode</td><td>Handwritten documentation captured in the app instead of on paper.</td></tr>
+          <tr><td>Complaint Mapper</td><td>Mappings that let one complaint be reused when filing chart components.</td></tr>
+          <tr><td>Sync Pending</td><td>Data entered on the device that has not yet been accepted by the server.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="swipe">Swipe the table sideways to read every column &rarr;</p>
+  </section>
+
+  <footer>
+    <p>Prepared for support and client walkthroughs of the Rescribe doctor module. Screen names and options match the app build; tabs and chart sections marked configurable are controlled per hospital from the web application.</p>
+  </footer>
+
+</div>
+<style>
+  @media print {
+    @page { size: A4; margin: 14mm 11mm; }
+    :root {
+      --bg: #F3F6F4; --surface: #FFFFFF; --surface-2: #E9EEEB;
+      --panel: #12201C; --panel-ink: #D9E6E1; --panel-accent: #7FBFB1;
+      --ink: #14201D; --ink-2: #4B5B56; --ink-3: #7C8B86;
+      --line: #D5DEDA; --line-strong: #B9C6C1;
+      --accent: #0C6B5E; --accent-2: #0A5449; --accent-soft: #DFEDE9;
+      --s-occupied: #2E62C4; --s-vacant: #1E7F55; --s-reserved: #7A4FC7;
+      --s-housekeeping: #B0730D; --s-maintenance: #A8443A;
+      --s-pending: #5F7180; --s-transfer: #0B7A8A;
+    }
+    html, body { background: #fff !important; }
+    .page { padding: 0 !important; gap: 2.25rem !important; max-width: none !important; }
+    .docnav, .swipe, .printbtn, .tabbar { display: none !important; }
+    .tree-wrap { overflow: visible !important; break-inside: avoid; page-break-inside: avoid; }
+    .tree-wrap.tall { break-inside: auto; page-break-inside: auto; }
+    pre.tree { font-size: 0.7rem !important; line-height: 1.55 !important; }
+    .table-wrap, .wire, .note, .chips, .counts { break-inside: avoid; page-break-inside: avoid; }
+    section { break-inside: auto; }
+    h2, h3 { break-after: avoid; page-break-after: avoid; }
+    .section-head { break-inside: avoid; page-break-inside: avoid; break-after: avoid; page-break-after: avoid; }
+    .screen-card, ol.flow li, .chip, tr, figure.shot { break-inside: avoid; page-break-inside: avoid; }
+    a { text-decoration: none; color: inherit; }
+  }
+</style><script>
+(function () {
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tabbar button'));
+  var panels = {};
+  tabs.forEach(function (t) { panels[t.dataset.target] = document.getElementById(t.dataset.target); });
+  var names = Object.keys(panels);
+  var DEFAULT = names[0];
+
+  function show(name, push) {
+    if (!panels[name]) return;
+    tabs.forEach(function (t) {
+      var on = t.dataset.target === name;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      panels[t.dataset.target].hidden = !on;
+    });
+    document.title = panels[name].dataset.title;
+    if (push) history.replaceState(null, '', '#' + name);
+  }
+
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () {
+      show(t.dataset.target, true);
+      window.scrollTo(0, 0);
+    });
+  });
+
+  window.addEventListener('hashchange', function () {
+    var h = location.hash.replace('#', '');
+    if (panels[h]) { show(h, false); window.scrollTo(0, 0); }
+  });
+
+  if (DEFAULT) {
+    var initial = location.hash.replace('#', '');
+    if (panels[initial]) { show(initial, false); window.scrollTo(0, 0); }
+    else { show(DEFAULT, false); }
+  }
+
+  /* ---- go to a section, switching tab first when there is one ---- */
+  function goto(tab, id) {
+    if (tab && panels[tab]) show(tab, true);
+    var el = document.getElementById(id);
+    if (el) el.scrollIntoView();
+  }
+
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a[data-goto]') : null;
+    if (!a) return;
+    var parts = a.dataset.goto.split('#');
+    if (!panels[parts[0]] && tabs.length) return;      /* panel absent: follow the href */
+    if (!document.getElementById(parts[1])) return;
+    e.preventDefault();
+    goto(parts[0], parts[1]);
+  });
+
+  /* ---- global search across every panel on the page ---- */
+  var box = document.getElementById('q');
+  if (!box) return;
+  var wrap = box.parentNode;
+  var idx = [];
+
+  (tabs.length ? names.map(function (n) { return [n, panels[n]]; })
+               : [[null, document]]).forEach(function (pair) {
+    var tab = pair[0], root = pair[1];
+    var label = tab ? document.querySelector('.tabbar button[data-target="' + tab + '"]').textContent
+                    : (document.querySelector('.masthead h1') || {}).textContent || 'This page';
+    Array.prototype.forEach.call(root.querySelectorAll('section[id]'), function (sec) {
+      var h = sec.querySelector('h2');
+      idx.push({
+        tab: tab, id: sec.id, where: label,
+        what: h ? h.textContent.trim() : sec.id,
+        text: sec.textContent.replace(/\s+/g, ' ').trim()
+      });
+    });
+  });
+
+  var list = null, hits = [], cur = -1;
+
+  function esc(s) { return s.replace(/[&<>"]/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+  function mark(s, q) {
+    var i = s.toLowerCase().indexOf(q);
+    if (i < 0) return esc(s);
+    return esc(s.slice(0, i)) + '<mark>' + esc(s.slice(i, i + q.length)) + '</mark>' + esc(s.slice(i + q.length));
+  }
+
+  function snippet(text, q) {
+    var i = text.toLowerCase().indexOf(q);
+    if (i < 0) return '';
+    var from = Math.max(0, i - 45), to = Math.min(text.length, i + q.length + 85);
+    return (from ? '…' : '') + mark(text.slice(from, to), q) + (to < text.length ? '…' : '');
+  }
+
+  function close() { if (list) { list.remove(); list = null; } hits = []; cur = -1; }
+
+  function run() {
+    var q = box.value.trim().toLowerCase();
+    close();
+    if (q.length < 2) return;
+    hits = idx.filter(function (e) {
+      return e.what.toLowerCase().indexOf(q) >= 0 || e.text.toLowerCase().indexOf(q) >= 0;
+    }).slice(0, 30);
+    list = document.createElement('div');
+    list.className = 'results';
+    if (!hits.length) {
+      list.innerHTML = '<div class="empty">No matches for “' + esc(box.value.trim()) + '”</div>';
+    } else {
+      list.innerHTML = hits.map(function (e, n) {
+        return '<button type="button" data-n="' + n + '">' +
+               '<span class="where">' + esc(e.where) + '</span>' +
+               '<span class="what">' + mark(e.what, q) + '</span>' +
+               '<span class="snip">' + snippet(e.text, q) + '</span></button>';
+      }).join('');
+    }
+    wrap.appendChild(list);
+  }
+
+  function pick(n) {
+    var e = hits[n];
+    if (!e) return;
+    box.value = '';
+    close();
+    box.blur();
+    goto(e.tab, e.id);
+  }
+
+  box.addEventListener('input', run);
+  box.addEventListener('focus', function () { if (box.value.trim().length > 1) run(); });
+
+  box.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { box.value = ''; close(); box.blur(); return; }
+    if (!hits.length) return;
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      cur = (cur + (e.key === 'ArrowDown' ? 1 : hits.length - 1)) % hits.length;
+      Array.prototype.forEach.call(list.querySelectorAll('button'), function (b, i) {
+        b.classList.toggle('on', i === cur);
+        if (i === cur) b.scrollIntoView({ block: 'nearest' });
+      });
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      pick(cur < 0 ? 0 : cur);
+    }
+  });
+
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('.results button') : null;
+    if (b) { pick(+b.dataset.n); return; }
+    if (list && !wrap.contains(e.target)) close();
+  });
+})();
+</script>
+</body>
+</html>

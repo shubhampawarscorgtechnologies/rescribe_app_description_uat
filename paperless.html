@@ -1,0 +1,1031 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Paperless Documentation — Feature Map</title>
+<meta name="description" content="How paperless documentation (Pen Mode) works in the Rescribe doctor and nurse apps.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#8A5510" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0D1412" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖊️</text></svg>">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  body { margin: 0; }
+  img { max-width: 100%; height: auto; }
+</style>
+</head>
+<body>
+<style>
+  :root {
+    --bg: #F3F6F4;
+    --surface: #FFFFFF;
+    --surface-2: #E9EEEB;
+    --panel: #12201C;
+    --panel-ink: #D9E6E1;
+    --ink: #14201D;
+    --ink-2: #4B5B56;
+    --ink-3: #7C8B86;
+    --line: #D5DEDA;
+    --line-strong: #B9C6C1;
+    --accent: #0C6B5E;
+    --accent-2: #0A5449;
+    --accent-soft: #DFEDE9;
+
+    --s-occupied: #2E62C4;
+    --s-vacant: #1E7F55;
+    --s-reserved: #7A4FC7;
+    --s-housekeeping: #B0730D;
+    --s-maintenance: #A8443A;
+    --s-pending: #5F7180;
+    --s-transfer: #0B7A8A;
+
+    --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, ui-serif, serif;
+    --font-body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+    --panel-accent: #7FBFB1;
+
+    --wrap: 68rem;
+    --radius: 4px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0D1412;
+      --surface: #151E1B;
+      --surface-2: #1C2724;
+      --panel: #0A100E;
+      --panel-ink: #CFE0DA;
+      --ink: #E7EFEC;
+      --ink-2: #A7B8B2;
+      --ink-3: #778782;
+      --line: #29352F;
+      --line-strong: #3A4A44;
+      --accent: #56C3AE;
+      --accent-2: #7FD6C4;
+      --accent-soft: #15302A;
+
+      --s-occupied: #6E9BEE;
+      --s-vacant: #55BE8B;
+      --s-reserved: #AE8CF0;
+      --s-housekeeping: #E0A73E;
+      --s-maintenance: #E07E71;
+      --s-pending: #93A6B3;
+      --s-transfer: #45B6C6;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #0D1412;
+    --surface: #151E1B;
+    --surface-2: #1C2724;
+    --panel: #0A100E;
+    --panel-ink: #CFE0DA;
+    --ink: #E7EFEC;
+    --ink-2: #A7B8B2;
+    --ink-3: #778782;
+    --line: #29352F;
+    --line-strong: #3A4A44;
+    --accent: #56C3AE;
+    --accent-2: #7FD6C4;
+    --accent-soft: #15302A;
+    --s-occupied: #6E9BEE;
+    --s-vacant: #55BE8B;
+    --s-reserved: #AE8CF0;
+    --s-housekeeping: #E0A73E;
+    --s-maintenance: #E07E71;
+    --s-pending: #93A6B3;
+    --s-transfer: #45B6C6;
+  }
+
+  :root[data-theme="light"] {
+    --bg: #F3F6F4;
+    --surface: #FFFFFF;
+    --surface-2: #E9EEEB;
+    --panel: #12201C;
+    --panel-ink: #D9E6E1;
+    --ink: #14201D;
+    --ink-2: #4B5B56;
+    --ink-3: #7C8B86;
+    --line: #D5DEDA;
+    --line-strong: #B9C6C1;
+    --accent: #0C6B5E;
+    --accent-2: #0A5449;
+    --accent-soft: #DFEDE9;
+    --s-occupied: #2E62C4;
+    --s-vacant: #1E7F55;
+    --s-reserved: #7A4FC7;
+    --s-housekeeping: #B0730D;
+    --s-maintenance: #A8443A;
+    --s-pending: #5F7180;
+    --s-transfer: #0B7A8A;
+  }
+
+  /* Anchor offsets use scroll-padding on the scroll container: an embedding
+     WebView may force `scroll-margin-top: 0` on every element, which would
+     otherwise drop headings behind the sticky tab bar. */
+  html { scroll-padding-top: 4.5rem; }
+  html:has(.tabbar) { scroll-padding-top: 7.5rem; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: var(--wrap);
+    margin: 0 auto;
+    padding: 3rem 1.5rem 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3.5rem;
+  }
+
+  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; text-wrap: balance; line-height: 1.15; }
+  h1 { font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -0.015em; }
+  h2 { font-size: clamp(1.5rem, 3vw, 1.9rem); letter-spacing: -0.01em; }
+  h3 { font-size: 1.2rem; }
+  h4 { font-size: 1rem; font-family: var(--font-body); font-weight: 650; }
+  p { max-width: 65ch; }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  /* ---------- header ---------- */
+  .masthead { display: flex; flex-direction: column; gap: 1rem; border-bottom: 2px solid var(--ink); padding-bottom: 1.75rem; }
+  .masthead p.lede { font-size: 1.1rem; color: var(--ink-2); }
+  .meta { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-3); }
+  .meta b { color: var(--ink-2); font-weight: 500; }
+  .printbtn {
+    align-self: flex-start; cursor: pointer;
+    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em;
+    color: var(--accent); background: transparent;
+    border: 1px solid var(--accent); border-radius: 999px;
+    padding: 0.4rem 0.9rem; min-height: 2.25rem;
+  }
+  .printbtn:hover, .printbtn:focus-visible { background: var(--accent-soft); }
+
+  /* ---------- sticky nav ---------- */
+  .docnav {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; gap: 0.15rem; overflow-x: auto; overscroll-behavior-x: contain;
+    background: var(--bg); border-bottom: 1px solid var(--line);
+    margin: 0 -1.5rem; padding: 0.5rem 1.5rem;
+    scrollbar-width: none;
+  }
+  .docnav::-webkit-scrollbar { display: none; }
+  .docnav a {
+    flex: none; text-decoration: none; color: var(--ink-2);
+    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em;
+    padding: 0.35rem 0.6rem; border-radius: 999px; white-space: nowrap;
+  }
+  .docnav a:hover, .docnav a:focus-visible { color: var(--accent); background: var(--accent-soft); }
+
+  /* ---------- sections ---------- */
+  section { display: flex; flex-direction: column; gap: 1.25rem; scroll-margin-top: 4rem; min-width: 0; }
+  .page > * { min-width: 0; }
+  .tree-wrap, .table-wrap { min-width: 0; max-width: 100%; }
+  .section-head { display: flex; flex-direction: column; gap: 0.35rem; border-left: 3px solid var(--accent); padding-left: 0.9rem; }
+
+  /* ---------- screen index ---------- */
+  .screens { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1rem; }
+  .screen-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.1rem 1.2rem;
+    display: flex; flex-direction: column; gap: 0.4rem;
+    text-decoration: none; color: inherit;
+  }
+  .screen-card:hover, .screen-card:focus-visible { border-color: var(--accent); outline: none; }
+  .screen-card .num { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-3); letter-spacing: 0.1em; }
+  .screen-card .name { font-family: var(--font-display); font-size: 1.15rem; }
+  .screen-card .desc { font-size: 0.88rem; color: var(--ink-2); }
+
+  /* ---------- tree panel ---------- */
+  .tree-wrap {
+    background: var(--panel); border-radius: var(--radius); border: 1px solid var(--line-strong);
+    overflow-x: auto; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch;
+  }
+  .tree-title {
+    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--panel-accent); padding: 0.75rem 1.2rem; border-bottom: 1px solid rgba(255,255,255,0.09);
+    position: sticky; left: 0;
+  }
+  pre.tree {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    line-height: 1.65;
+    color: var(--panel-ink);
+    padding: 1.2rem;
+    margin: 0;
+    white-space: pre;
+  }
+  pre.tree .b { color: #FFFFFF; font-weight: 600; }
+  pre.tree .n { color: #8FD6C4; }
+  pre.tree .c { color: #7E9089; }
+  pre.tree .a { color: #E8B75F; }
+
+  /* ---------- tables ---------- */
+  .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
+  th, td { text-align: left; padding: 0.65rem 0.9rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); background: var(--surface-2); white-space: nowrap; }
+  tbody tr:last-child td { border-bottom: none; }
+  td:first-child { font-weight: 600; white-space: nowrap; }
+  td code, p code, li code { font-family: var(--font-mono); font-size: 0.85em; background: var(--surface-2); padding: 0.1em 0.35em; border-radius: 3px; }
+
+  /* ---------- status legend ---------- */
+  .chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); gap: 0.6rem; }
+  .chip { display: flex; gap: 0.7rem; align-items: flex-start; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 0.6rem 0.8rem; }
+  .dot { width: 0.7rem; height: 0.7rem; border-radius: 50%; margin-top: 0.4rem; flex: none; background: var(--tone); }
+  .chip .text { display: flex; flex-direction: column; gap: 0.1rem; }
+  .chip .label { display: block; font-weight: 600; font-size: 0.9rem; color: var(--tone); }
+  .chip .what { display: block; font-size: 0.82rem; color: var(--ink-2); line-height: 1.45; }
+
+  /* ---------- wireframe ---------- */
+  .wire {
+    background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--radius);
+    padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem; max-width: 34rem;
+  }
+  .wire-row { display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; }
+  .wire .bed { font-family: var(--font-mono); font-weight: 700; font-size: 1.1rem; }
+  .wire .pill { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.2rem 0.55rem; border-radius: 999px; background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent); }
+  .wire .pt { font-weight: 650; font-size: 1rem; }
+  .wire dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr)); gap: 0.6rem 1rem; margin: 0; }
+  .wire dl > div { display: flex; flex-direction: column; gap: 0.1rem; }
+  .wire dt { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); }
+  .wire dd { margin: 0; font-size: 0.88rem; font-variant-numeric: tabular-nums; }
+  .wire .actions { display: flex; gap: 0.4rem; flex-wrap: wrap; border-top: 1px dashed var(--line); padding-top: 0.7rem; }
+  .wire .btn { font-size: 0.75rem; padding: 0.25rem 0.6rem; border: 1px solid var(--line-strong); border-radius: 3px; color: var(--ink-2); }
+  .caption { font-size: 0.8rem; color: var(--ink-3); max-width: 60ch; }
+
+  /* ---------- count dashboard mock ---------- */
+  .counts { display: grid; grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr)); gap: 0.6rem; }
+  .count {
+    background: var(--surface); border: 1px solid var(--line); border-top: 3px solid var(--tone);
+    border-radius: var(--radius); padding: 0.7rem 0.8rem; display: flex; flex-direction: column; gap: 0.15rem;
+  }
+  .count .n { font-family: var(--font-mono); font-size: 1.5rem; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--tone); }
+  .count .l { font-size: 0.75rem; color: var(--ink-2); }
+
+  /* ---------- callout ---------- */
+  .note { background: var(--accent-soft); border-left: 3px solid var(--accent); border-radius: 0 var(--radius) var(--radius) 0; padding: 0.9rem 1.1rem; }
+  .note p { margin: 0; font-size: 0.92rem; color: var(--ink); }
+  .note p + p { margin-top: 0.5rem; }
+
+  /* ---------- flow ---------- */
+  ol.flow { list-style: none; counter-reset: step; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem; }
+  ol.flow li { counter-increment: step; display: grid; grid-template-columns: 2rem 1fr; gap: 0.9rem; align-items: start; }
+  ol.flow li::before {
+    content: counter(step, decimal-leading-zero);
+    font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; color: var(--accent);
+    border: 1px solid var(--line-strong); border-radius: 50%; width: 2rem; height: 2rem;
+    display: grid; place-items: center;
+  }
+  ol.flow li > strong { grid-column: 2; display: block; }
+  ol.flow li > span { grid-column: 2; font-size: 0.9rem; color: var(--ink-2); }
+
+  ul.plain { padding-left: 1.1rem; margin: 0; display: flex; flex-direction: column; gap: 0.35rem; }
+  ul.plain li { font-size: 0.92rem; color: var(--ink-2); }
+  ul.plain li b { color: var(--ink); font-weight: 650; }
+
+  footer { border-top: 1px solid var(--line); padding-top: 1.25rem; font-size: 0.82rem; color: var(--ink-3); }
+
+  a { color: var(--accent); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .swipe { display: none; font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.06em; color: var(--ink-3); }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 900px) {
+    .page { padding: 2.25rem 1.25rem 3.5rem; gap: 2.75rem; }
+    .docnav { margin: 0 -1.25rem; padding: 0.5rem 1.25rem; }
+  }
+
+  @media (max-width: 640px) {
+    body { font-size: 15px; }
+    .page { padding: 1.5rem 0.9rem 3rem; gap: 2.25rem; }
+    .docnav { margin: 0 -0.9rem; padding: 0.45rem 0.9rem; }
+    .masthead { gap: 0.7rem; padding-bottom: 1.25rem; }
+    .masthead p.lede { font-size: 1rem; }
+    .meta { flex-direction: column; gap: 0.2rem; }
+    .screens { grid-template-columns: 1fr; }
+    .chips { grid-template-columns: 1fr; }
+    .counts { grid-template-columns: repeat(2, 1fr); }
+    .section-head { padding-left: 0.7rem; }
+    .tree-title { padding: 0.6rem 0.9rem; font-size: 0.66rem; }
+    pre.tree { font-size: 0.66rem; line-height: 1.55; padding: 0.9rem; }
+    th, td { padding: 0.55rem 0.7rem; }
+    table { font-size: 0.85rem; min-width: 32rem; }
+    .wire { padding: 0.85rem; }
+    .wire dl { grid-template-columns: repeat(2, 1fr); }
+    .note { padding: 0.8rem 0.9rem; }
+    ol.flow li { grid-template-columns: 1.6rem 1fr; gap: 0.6rem; }
+    ol.flow li::before { width: 1.6rem; height: 1.6rem; font-size: 0.66rem; }
+    .swipe { display: block; }
+  }
+
+  @media (max-width: 380px) {
+    pre.tree { font-size: 0.6rem; }
+    .counts { grid-template-columns: 1fr 1fr; }
+    .wire dl { grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+  }
+
+  @media print {
+    body { background: #fff; }
+    .tree-wrap { break-inside: avoid; }
+    .docnav, .swipe { display: none !important; }
+  }
+
+  /* ---------- per-document accents ---------- */
+  .page[data-doc="doctor"] { --accent: #17537E; --accent-2: #0F3F63; --accent-soft: #E1EBF3; --panel-accent: #86BCE4; }
+  .page[data-doc="paper"]  { --accent: #8A5510; --accent-2: #6B420C; --accent-soft: #F4E9D9; --panel-accent: #E0A64B; }
+  @media (prefers-color-scheme: dark) {
+    .page[data-doc="doctor"] { --accent: #69B0E4; --accent-2: #9BCCEF; --accent-soft: #12293A; --panel-accent: #86BCE4; }
+    .page[data-doc="paper"]  { --accent: #E0A64B; --accent-2: #EEC383; --accent-soft: #2D2110; --panel-accent: #E0A64B; }
+  }
+  :root[data-theme="dark"] .page[data-doc="doctor"] { --accent: #69B0E4; --accent-2: #9BCCEF; --accent-soft: #12293A; --panel-accent: #86BCE4; }
+  :root[data-theme="dark"] .page[data-doc="paper"]  { --accent: #E0A64B; --accent-2: #EEC383; --accent-soft: #2D2110; --panel-accent: #E0A64B; }
+  :root[data-theme="light"] .page[data-doc="doctor"] { --accent: #17537E; --accent-2: #0F3F63; --accent-soft: #E1EBF3; --panel-accent: #86BCE4; }
+  :root[data-theme="light"] .page[data-doc="paper"]  { --accent: #8A5510; --accent-2: #6B420C; --accent-soft: #F4E9D9; --panel-accent: #E0A64B; }
+
+  /* ---------- module tabs (index page) ---------- */
+  .tabbar {
+    position: sticky; top: 0; z-index: 30;
+    display: flex; gap: 0.3rem; overflow-x: auto; overscroll-behavior-x: contain;
+    background: var(--bg); border-bottom: 1px solid var(--line-strong);
+    padding: 0.55rem 1.5rem; scrollbar-width: none;
+  }
+  .tabbar::-webkit-scrollbar { display: none; }
+  .tabbar .tabinner { display: flex; gap: 0.3rem; width: 100%; max-width: var(--wrap); margin: 0 auto; }
+  .tabbar button {
+    flex: none; cursor: pointer; white-space: nowrap;
+    font-family: var(--font-mono); font-size: 0.76rem; letter-spacing: 0.06em;
+    color: var(--ink-3); background: transparent;
+    border: 1px solid transparent; border-radius: 999px;
+    padding: 0.45rem 0.95rem; min-height: 2.4rem;
+  }
+  .tabbar button:hover { color: var(--ink); }
+  .tabbar button[aria-selected="true"] { color: var(--ink); background: var(--surface); border-color: var(--line-strong); }
+  body:has(.tabbar) .docnav { top: 3.4rem; }
+  [hidden] { display: none !important; }
+  @media (max-width: 640px) {
+    .tabbar { padding: 0.5rem 0.9rem; }
+    .tabbar button { font-size: 0.72rem; padding: 0.4rem 0.75rem; }
+  }
+
+  /* ---------- global search ---------- */
+  .search { position: relative; flex: 1 1 9rem; min-width: 6rem; margin-left: auto; }
+  .search input {
+    width: 100%; min-height: 2.4rem;
+    font-family: var(--font-mono); font-size: 0.76rem; color: var(--ink);
+    background: var(--surface); border: 1px solid var(--line-strong); border-radius: 999px;
+    padding: 0.4rem 0.9rem;
+  }
+  .search input::placeholder { color: var(--ink-3); }
+  .results {
+    position: absolute; top: calc(100% + 0.4rem); right: 0;
+    width: min(28rem, 88vw); max-height: 60vh; overflow-y: auto;
+    background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--radius);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.18); z-index: 40;
+  }
+  .results button {
+    display: block; width: 100%; text-align: left; cursor: pointer;
+    background: transparent; border: none; border-bottom: 1px solid var(--line);
+    padding: 0.6rem 0.85rem; color: inherit; font-family: var(--font-body);
+  }
+  .results button:last-child { border-bottom: none; }
+  .results button:hover, .results button.on { background: var(--accent-soft); }
+  .results .where { display: block; font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); }
+  .results .what { display: block; font-weight: 650; font-size: 0.9rem; }
+  .results .snip { display: block; font-size: 0.8rem; color: var(--ink-2); line-height: 1.45; }
+  .results .snip mark, .results .what mark { background: var(--accent-soft); color: var(--accent); padding: 0 0.1em; }
+  .results .empty { padding: 0.7rem 0.85rem; font-size: 0.85rem; color: var(--ink-3); }
+
+  /* ---------- what's new ---------- */
+  .page[data-doc="whatsnew"] { --accent: #6A3FA0; --accent-2: #52307E; --accent-soft: #EEE7F6; --panel-accent: #B79BE0; }
+  @media (prefers-color-scheme: dark) {
+    .page[data-doc="whatsnew"] { --accent: #B79BE0; --accent-2: #CDBAEC; --accent-soft: #241A33; --panel-accent: #B79BE0; }
+  }
+  :root[data-theme="dark"] .page[data-doc="whatsnew"] { --accent: #B79BE0; --accent-2: #CDBAEC; --accent-soft: #241A33; --panel-accent: #B79BE0; }
+  :root[data-theme="light"] .page[data-doc="whatsnew"] { --accent: #6A3FA0; --accent-2: #52307E; --accent-soft: #EEE7F6; --panel-accent: #B79BE0; }
+
+  figure.shot { margin: 0.6rem 0 0; display: flex; flex-direction: column; gap: 0.4rem; max-width: 22rem; }
+  ol.flow li > figure.shot { grid-column: 2; }
+  figure.shot img { display: block; width: 100%; border: 1px solid var(--line-strong); border-radius: var(--radius); background: var(--surface); }
+  figure.shot figcaption { font-size: 0.78rem; color: var(--ink-3); line-height: 1.45; }
+  figure.shot .missing {
+    display: grid; place-items: center; min-height: 9rem; padding: 1rem; text-align: center;
+    border: 1px dashed var(--line-strong); border-radius: var(--radius);
+    background: var(--surface-2); color: var(--ink-3);
+    font-family: var(--font-mono); font-size: 0.7rem; line-height: 1.6;
+  }
+</style><div class="tabbar"><div class="tabinner"><div class="search"><input type="search" id="q" placeholder="Search all pages…" autocomplete="off" aria-label="Search the documentation"></div></div></div>
+<div class="page" data-doc="paper">
+
+  <header class="masthead">
+    <span class="eyebrow">Shared Feature · Functional Documentation</span>
+    <h1>Paperless Documentation — Feature Map</h1>
+    <p class="lede">Writing on hospital documents by hand, inside the app, instead of on paper. The same feature runs in both the doctor app and the nurse app, where it is labelled <b>Pen Mode</b>.</p>
+    <div class="meta">
+      <span><b>Available in:</b> Doctor app &amp; Nurse app</span>
+      <span><b>Called:</b> Pen Mode</span>
+      <span><b>Works offline:</b> Yes, with sync queue</span>
+    </div>
+    <button class="printbtn" type="button" onclick="window.print()">Print / Save as PDF</button>
+  </header>
+
+  <nav class="docnav" aria-label="Sections">
+    <a href="#p-start">Start here</a>
+    <a href="#p-tree">Full tree</a>
+    <a href="#p-list">1 · Document list</a>
+    <a href="#p-history">2 · History</a>
+    <a href="#p-preview">3 · Preview</a>
+    <a href="#p-canvas">4 · Canvas</a>
+    <a href="#p-flows">Flows</a>
+    <a href="#p-offline">Offline</a>
+    <a href="#p-terms">Terms</a>
+  </nav>
+
+  <section id="p-start">
+    <div class="section-head">
+      <span class="eyebrow">Start here</span>
+      <h2>What this replaces</h2>
+    </div>
+    <p>Hospitals run on printed forms — consent sheets, nursing notes, treatment charts, referral slips. Traditionally these are filled by hand, then scanned back in, or never digitised at all. Paperless Documentation keeps the handwriting and removes the paper: the form opens on the device, the clinician writes on it with a stylus or finger, and the finished page is stored against the patient's visit.</p>
+    <div class="screens">
+      <a class="screen-card" href="#p-list">
+        <span class="num">STEP 1</span>
+        <span class="name">Document list</span>
+        <span class="desc">Documents grouped by category and sub-category. Select, print, email or send on WhatsApp.</span>
+      </a>
+      <a class="screen-card" href="#p-history">
+        <span class="num">STEP 2</span>
+        <span class="name">History screen</span>
+        <span class="desc">Everything filed under a sub-category. Upload, create new, edit or view earlier documents.</span>
+      </a>
+      <a class="screen-card" href="#p-preview">
+        <span class="num">STEP 3</span>
+        <span class="name">Preview screen</span>
+        <span class="desc">Page-level control before it goes out — edit, delete, refresh, print, activity logs.</span>
+      </a>
+      <a class="screen-card" href="#p-canvas">
+        <span class="num">STEP 4</span>
+        <span class="name">Canvas screen</span>
+        <span class="desc">The writing surface. Pen, eraser, highlighter, shapes, overlays, stamps, copy tools.</span>
+      </a>
+    </div>
+    <div class="note">
+      <p><b>Where it opens from.</b> Doctor app: Admitted Patients List → patient → <b>Pen Mode</b>, and Search → Visit List → a visit → <b>Pen Mode</b> (for patients seen earlier). Nurse app: the bed on the Bed Display screen → <b>Pen Mode</b>. The screens after that point are identical in both apps.</p>
+    </div>
+  </section>
+
+  <section id="p-tree">
+    <div class="section-head">
+      <span class="eyebrow">Overview</span>
+      <h2>Complete feature tree</h2>
+    </div>
+    <p>The full map on one page. Each branch is expanded and explained in the sections that follow.</p>
+    <div class="tree-wrap tall">
+      <div class="tree-title">Paperless documentation — full tree</div>
+<pre class="tree"><span class="b">PAPERLESS DOCUMENTATION (PEN MODE)</span>
+│
+├── <span class="b">1. DOCUMENT LIST</span>
+│   ├── <span class="n">Grouped by Category → Sub-category</span>
+│   │   └── <span class="c">sequence order and colours are managed per hospital</span>
+│   ├── <span class="n">View all documents</span>
+│   └── <span class="n">Select documents</span> → share or output
+│       ├── Print PDF
+│       ├── Send over email
+│       └── Send over WhatsApp
+│
+├── <span class="b">2. HISTORY SCREEN</span>  <span class="c">open a sub-category</span>
+│   ├── <span class="n">Upload new document</span>
+│   │   ├── From gallery
+│   │   ├── From camera
+│   │   └── From camera <span class="a">with geo tag</span>
+│   ├── <span class="n">Create new document</span>
+│   ├── <span class="n">Edit previous document</span>
+│   └── <span class="n">View previous document</span>
+│
+├── <span class="b">3. PREVIEW DOCUMENT SCREEN</span>
+│   ├── <span class="n">Edit page</span>
+│   ├── <span class="n">Delete page</span>
+│   ├── <span class="n">Refresh</span>
+│   ├── <span class="n">Investigation</span>       <span class="c">pull investigation data alongside</span>
+│   ├── <span class="n">Print PDF</span>
+│   └── <span class="n">View activity logs</span>
+│
+└── <span class="b">4. CANVAS SCREEN</span>  <span class="c">the writing surface</span>
+    │
+    ├── <span class="n">View</span>
+    │   └── Zoom
+    │
+    ├── <span class="n">Pages</span>
+    │   ├── Add new page
+    │   ├── Delete page
+    │   └── Print saved page
+    │
+    ├── <span class="n">Drawing tools</span>
+    │   ├── Edit using pen            <span class="c">stylus input</span>
+    │   ├── Edit using fingers        <span class="c">touch input</span>
+    │   ├── Eraser <span class="c">(with eraser sizing)</span>
+    │   ├── Highlight
+    │   ├── Brush settings           <span class="c">colours and draw settings</span>
+    │   └── Shapes — triangle · circle · square · line
+    │
+    ├── <span class="n">Actions history</span>
+    │   ├── Undo actions
+    │   ├── Redo actions
+    │   └── Revert to last saved
+    │
+    ├── <span class="n">Copy tools</span>
+    │   ├── Copy &amp; paste &amp; replace page content
+    │   ├── Copy &amp; paste complete page
+    │   └── Copy &amp; paste selected content
+    │
+    ├── <span class="n">Reference panels</span>  <span class="c">draggable, side by side with the page</span>
+    │   ├── View other documents      <span class="c">refer to another document while writing</span>
+    │   ├── Patient info
+    │   ├── Activity logs
+    │   └── Investigation history
+    │
+    └── <span class="n">Overlays to place on the page</span>
+        ├── Camera photo
+        ├── Camera photo <span class="a">with geo</span>
+        ├── UHID barcode
+        ├── Visit ID barcode
+        ├── QR code
+        ├── Patient image
+        ├── Patient info
+        ├── Doctor stamps
+        └── Fingerprint              <span class="c">captured from a USB scanner</span>
+</pre>
+    </div>
+    <p class="swipe">Swipe the panel sideways to read the full width &rarr;</p>
+    <p class="caption">Reading the tree: <code>├──</code> and <code>└──</code> mark items inside the branch above them.</p>
+  </section>
+
+  <section id="p-list">
+    <div class="section-head">
+      <span class="eyebrow">Step 1</span>
+      <h2>Document list</h2>
+    </div>
+    <p>All documents for the patient, grouped by category and then sub-category. Grouping, display order and colour coding are managed per hospital, so each site sees its own paperwork organised its own way.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Element</th><th>What it does</th><th>Why it matters</th></tr></thead>
+        <tbody>
+          <tr><td>Category</td><td>The top grouping of documents.</td><td>Keeps a long list navigable.</td></tr>
+          <tr><td>Sub-category</td><td>The specific document type inside a category.</td><td>This is what opens the History screen.</td></tr>
+          <tr><td>Sequence order</td><td>The order categories and sub-categories appear in.</td><td>Puts the most-used forms at the top for that hospital.</td></tr>
+          <tr><td>Colours</td><td>Colour assigned to a category or sub-category.</td><td>Fast visual identification during a busy round.</td></tr>
+          <tr><td>View all documents</td><td>Shows everything on the patient in one list.</td><td>When you don't know which category it was filed under.</td></tr>
+          <tr><td>Select documents</td><td>Multi-select, then output the selection.</td><td>Sending a set of forms together rather than one at a time.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="swipe">Swipe the table sideways to read every column &rarr;</p>
+
+    <h3>Sharing a selection</h3>
+    <div class="chips">
+      <div class="chip" style="--tone: var(--accent)"><span class="dot"></span><span class="text"><span class="label">Print PDF</span><span class="what">Produces a PDF of the selected documents for printing or filing.</span></span></div>
+      <div class="chip" style="--tone: var(--s-occupied)"><span class="dot"></span><span class="text"><span class="label">Send over email</span><span class="what">Emails the selected documents out of the app.</span></span></div>
+      <div class="chip" style="--tone: var(--s-vacant)"><span class="dot"></span><span class="text"><span class="label">Send over WhatsApp</span><span class="what">Shares the selected documents through WhatsApp.</span></span></div>
+    </div>
+    <h3>Role permissions</h3>
+    <p>Adding, editing, deleting, viewing, printing, e-mailing and WhatsApp sharing are each controlled by a <b>Patient Document</b> permission on the user&rsquo;s role. An action the role does not carry is shown greyed out and does not respond to a tap &mdash; on this screen, on the History screen, in the preview and on the canvas. Permissions are read from the server after sign-in and refreshed on the dashboard; the last known set is used while offline. Full walkthrough: <a href="whatsnew.html#wn-permissions" data-goto="whatsnew#wn-permissions">What&rsquo;s New &rarr; Document actions follow role permissions</a>.</p>
+
+    <div class="note">
+      <p><b>Patient data leaves the hospital at this point.</b> Email and WhatsApp send clinical documents to an outside service. Whoever operates the app is responsible for sending to the right recipient, and hospitals should confirm this matches their own data-sharing policy before enabling it for staff.</p>
+    </div>
+  </section>
+
+  <section id="p-history">
+    <div class="section-head">
+      <span class="eyebrow">Step 2</span>
+      <h2>History screen</h2>
+    </div>
+    <p>Opening a sub-category shows everything already filed under it for this patient, and offers the four ways to add or change a document.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Action</th><th>What it does</th><th>Typical use</th></tr></thead>
+        <tbody>
+          <tr><td>Upload from gallery</td><td>Brings in an image already stored on the device.</td><td>A form photographed earlier, or a report received as a picture.</td></tr>
+          <tr><td>Upload from camera</td><td>Takes a photo now and files it as a document.</td><td>Capturing a paper form that arrived from outside.</td></tr>
+          <tr><td>Upload with geo tag</td><td>Takes a photo and records the location with it.</td><td>Proof of where the document was captured — home visits, field work.</td></tr>
+          <tr><td>Create new document</td><td>Opens a blank document on the canvas.</td><td>Writing a fresh note or filling a blank form.</td></tr>
+          <tr><td>Edit previous document</td><td>Reopens an existing document on the canvas.</td><td>Adding to a chart already started.</td></tr>
+          <tr><td>View previous document</td><td>Opens it read-only.</td><td>Checking what was written without risking a change.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="swipe">Swipe the table sideways to read every column &rarr;</p>
+  </section>
+
+  <section id="p-preview">
+    <div class="section-head">
+      <span class="eyebrow">Step 3</span>
+      <h2>Preview document screen</h2>
+    </div>
+    <p>The checkpoint between writing and sharing. Page-level control, plus the audit trail.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Control</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td>Edit page</td><td>Sends the page back to the canvas for more writing.</td></tr>
+          <tr><td>Delete page</td><td>Removes a page from the document.</td></tr>
+          <tr><td>Refresh</td><td>Reloads the document so the latest saved version is shown.</td></tr>
+          <tr><td>Investigation</td><td>Brings investigation data alongside the document.</td></tr>
+          <tr><td>Print PDF</td><td>Produces the PDF of the document.</td></tr>
+          <tr><td>View activity logs</td><td>Shows who did what to this document and when.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">
+      <p><b>Activity logs are the accountability record.</b> Because clinical documents are edited by more than one person, the log is what answers "who changed this page and when". Point support queries about unexpected content here first.</p>
+    </div>
+  </section>
+
+  <section id="p-canvas">
+    <div class="section-head">
+      <span class="eyebrow">Step 4</span>
+      <h2>Canvas screen</h2>
+    </div>
+    <p>The writing surface, and the largest part of the feature. Grouped below by what the clinician is trying to do.</p>
+
+    <h3>4.1 Drawing</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Tool</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td>Edit using pen</td><td>Writing with a stylus — the closest thing to a pen on paper.</td></tr>
+          <tr><td>Edit using fingers</td><td>Writing or marking with a fingertip when no stylus is at hand.</td></tr>
+          <tr><td>Eraser</td><td>Removes strokes. Eraser size is adjustable for fine corrections or clearing an area.</td></tr>
+          <tr><td>Highlight</td><td>Marks existing content without covering it.</td></tr>
+          <tr><td>Brush settings</td><td>Colour and draw settings for writing and colouring.</td></tr>
+          <tr><td>Shapes</td><td>Draws a triangle, circle, square or line — for boxing values or marking a diagram.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>4.2 Pages and view</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Control</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td>Zoom</td><td>Magnifies the page for small handwriting and detailed marks.</td></tr>
+          <tr><td>Add new page</td><td>Extends the document when one page is not enough.</td></tr>
+          <tr><td>Delete page</td><td>Removes a page from the document.</td></tr>
+          <tr><td>Print saved page</td><td>Prints the page as saved.</td></tr>
+          <tr><td>Page slider</td><td>Tapping the <b>Page n / n</b> chip opens a slider under the page; dragging it and letting go jumps straight to that page. Shown on documents of three pages or more, and hides itself a few seconds after the last touch.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>4.3 Undo, redo, revert</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Control</th><th>What it does</th><th>Scope</th></tr></thead>
+        <tbody>
+          <tr><td>Undo actions</td><td>Steps back through recent strokes and edits.</td><td>Since the page was opened.</td></tr>
+          <tr><td>Redo actions</td><td>Re-applies something just undone.</td><td>Since the page was opened.</td></tr>
+          <tr><td>Revert to last saved</td><td>Discards current changes and returns the page to its last saved state.</td><td>The whole page.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="swipe">Swipe the table sideways to read every column &rarr;</p>
+
+    <h3>4.4 Copy tools</h3>
+    <p>Repeated paperwork is the norm on a ward — the same observations, the same layout, day after day. These three tools exist so a clinician does not redraw what they already drew.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Tool</th><th>What it does</th><th>Use it when</th></tr></thead>
+        <tbody>
+          <tr><td>Copy &amp; paste &amp; replace page content</td><td>Copies content and replaces what is currently on the target page.</td><td>Starting the new page from a known-good layout.</td></tr>
+          <tr><td>Copy &amp; paste complete page</td><td>Duplicates a whole page into the document.</td><td>Same form, next day.</td></tr>
+          <tr><td>Copy &amp; paste selected content</td><td>Copies only a selected part of the page.</td><td>Carrying one table or one block across.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="swipe">Swipe the table sideways to read every column &rarr;</p>
+
+    <h3>4.5 Reference panels</h3>
+    <p>Draggable panels that sit next to the page, so the clinician can read information while writing rather than leaving the canvas to find it.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Panel</th><th>Shows</th></tr></thead>
+        <tbody>
+          <tr><td>View other documents</td><td>Another document from the same patient, for reference while writing.</td></tr>
+          <tr><td>Patient info</td><td>The patient's identity and admission details.</td></tr>
+          <tr><td>Activity logs</td><td>Who acted on this document and when.</td></tr>
+          <tr><td>Investigation history</td><td>Earlier investigations and their results.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>4.6 Overlays placed on the page</h3>
+    <p>Items dropped onto the document itself. Between them they cover the three things handwriting alone cannot do: prove identity, prove provenance, and carry an image.</p>
+    <div class="chips">
+      <div class="chip" style="--tone: var(--accent)"><span class="dot"></span><span class="text"><span class="label">Camera photo</span><span class="what">Places a photo taken on the spot onto the page.</span></span></div>
+      <div class="chip" style="--tone: var(--s-vacant)"><span class="dot"></span><span class="text"><span class="label">Camera with geo</span><span class="what">Photo plus the location it was taken at.</span></span></div>
+      <div class="chip" style="--tone: var(--s-occupied)"><span class="dot"></span><span class="text"><span class="label">UHID barcode</span><span class="what">The patient's permanent hospital ID as a scannable barcode.</span></span></div>
+      <div class="chip" style="--tone: var(--s-occupied)"><span class="dot"></span><span class="text"><span class="label">Visit ID barcode</span><span class="what">Barcode identifying this specific visit or admission.</span></span></div>
+      <div class="chip" style="--tone: var(--s-transfer)"><span class="dot"></span><span class="text"><span class="label">QR code</span><span class="what">Scannable code carrying the document's reference.</span></span></div>
+      <div class="chip" style="--tone: var(--s-reserved)"><span class="dot"></span><span class="text"><span class="label">Patient image</span><span class="what">The patient's photo on the document.</span></span></div>
+      <div class="chip" style="--tone: var(--s-reserved)"><span class="dot"></span><span class="text"><span class="label">Patient info</span><span class="what">Identity and admission details printed onto the page.</span></span></div>
+      <div class="chip" style="--tone: var(--s-housekeeping)"><span class="dot"></span><span class="text"><span class="label">Doctor stamps</span><span class="what">The doctor's stamp, in place of a physical rubber stamp.</span></span></div>
+      <div class="chip" style="--tone: var(--s-maintenance)"><span class="dot"></span><span class="text"><span class="label">Fingerprint</span><span class="what">The patient's or attendant's thumb impression, taken from a USB scanner.</span></span></div>
+    </div>
+    <div class="note">
+      <p><b>Why barcodes matter:</b> a printed page with a UHID and visit-ID barcode can be scanned back into the system without anyone typing a number. Keep barcodes clear of handwriting — anything drawn across a barcode or QR code can stop it scanning.</p>
+    </div>
+
+    <h3>4.7 Fingerprint capture</h3>
+    <p>Replaces the inked thumb impression on consent forms, admission papers and discharge summaries. The scanner plugs into the tablet with a USB OTG cable; the impression is taken live and dropped onto the page as an overlay, so it can be positioned over the signature block exactly like a stamp.</p>
+    <ol class="flow">
+      <li><strong>Open the overlay menu</strong><span>On the canvas toolbar, tap the overlay button. The &ldquo;Choose one&rdquo; sheet opens.</span></li>
+      <li><strong>Tap Fingerprint</strong><span>Last option in the top row of the sheet, beside Patient Image.</span></li>
+      <li><strong>Place the finger on the scanner</strong><span>&ldquo;Place finger on scanner…&rdquo; appears while the device is being prepared. The first capture after the tablet is switched on also asks for permission to use the scanner — allow it.</span></li>
+      <li><strong>Check the impression</strong><span>The captured print is shown for approval: <b>Insert</b> to accept, <b>Retry</b> to take it again, <b>&times;</b> to cancel without placing anything.</span></li>
+      <li><strong>Position it on the page</strong><span>After Insert, the fingerprint appears on the document and can be dragged anywhere and resized — normally into the patient / attendant signature box.</span></li>
+    </ol>
+    <div class="note">
+      <p><b>Supported scanner:</b> Mantra MFS500 (recommended, tested). Secugen Hamster models are also supported. Connect the scanner before tapping Fingerprint — if nothing is plugged in, the app reports &ldquo;No fingerprint scanner connected.&rdquo;</p>
+      <p><b>What is stored:</b> the fingerprint is placed on the document as a picture of the impression, exactly like a stamp or a photo. Nothing is matched against Aadhaar and no biometric identity check is performed.</p>
+      <p><b>If the print looks partial:</b> that is the size of the scanner window, not a fault — these sensors image the pad of the fingertip, not the whole finger. Press the finger flat and centred, and keep the sensor surface clean; use Retry until the ridges read clearly.</p>
+    </div>
+  </section>
+
+  <section id="p-flows">
+    <div class="section-head">
+      <span class="eyebrow">In practice</span>
+      <h2>The three flows worth demonstrating</h2>
+    </div>
+    <p>Almost everything staff do with this feature is one of these three. A training session should walk each one end to end.</p>
+
+    <h3>Flow A — Write a new document at the bedside</h3>
+    <ol class="flow">
+      <li><strong>Open Pen Mode</strong><span>Doctor: admitted patient → Pen Mode. Nurse: bed → Pen Mode.</span></li>
+      <li><strong>Pick the paperwork</strong><span>Document list → category → sub-category.</span></li>
+      <li><strong>Create new document</strong><span>History screen → Create new document. The canvas opens.</span></li>
+      <li><strong>Write it</strong><span>Pen or finger, eraser and highlighter as needed; add a page if one is not enough.</span></li>
+      <li><strong>Stamp and identify</strong><span>Place patient info, UHID / visit barcode and the doctor stamp. On a consent or admission form, take the patient's fingerprint here too.</span></li>
+      <li><strong>Check and close</strong><span>Preview screen — read the pages, then print or leave it filed against the visit.</span></li>
+    </ol>
+
+    <h3>Flow B — Continue yesterday's chart</h3>
+    <ol class="flow">
+      <li><strong>Reopen the document</strong><span>History screen → Edit previous document.</span></li>
+      <li><strong>Carry the layout over</strong><span>Copy &amp; paste complete page, or copy only the selected block that repeats.</span></li>
+      <li><strong>Add today's entries</strong><span>Write on the new page; keep the reference panel open for the earlier document.</span></li>
+      <li><strong>Correct safely</strong><span>Undo for a slip; Revert to last saved if the page needs to go back to how it was.</span></li>
+    </ol>
+
+    <h3>Flow C — Send documents out</h3>
+    <ol class="flow">
+      <li><strong>Select what goes</strong><span>Document list → select the documents required.</span></li>
+      <li><strong>Choose the route</strong><span>Print PDF for the file, email or WhatsApp for the recipient.</span></li>
+      <li><strong>Confirm the recipient</strong><span>Clinical documents leaving the hospital cannot be recalled — check the address or number before sending.</span></li>
+    </ol>
+  </section>
+
+  <section id="p-offline">
+    <div class="section-head">
+      <span class="eyebrow">Behaviour</span>
+      <h2>Working without network</h2>
+    </div>
+    <p>Wards and clinic rooms have dead spots, and documentation cannot wait for signal.</p>
+    <ul class="plain">
+      <li><b>Writing:</b> pages written offline are saved on the device and placed in a sync queue.</li>
+      <li><b>Recovering:</b> when the device is back on network, queued documents upload on their own.</li>
+      <li><b>Checking:</b> the Menu screen in both apps lists anything still pending under <b>View Sync Pending Offline Data</b>.</li>
+      <li><b>The one risk:</b> clearing cache or logging out while documents are still pending. Check the pending list first.</li>
+    </ul>
+  </section>
+
+  <section id="p-terms">
+    <div class="section-head">
+      <span class="eyebrow">Reference</span>
+      <h2>Terms used in this document</h2>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td>Pen Mode</td><td>The name this feature carries inside the doctor and nurse apps.</td></tr>
+          <tr><td>Category / Sub-category</td><td>The two levels documents are grouped under, configured per hospital.</td></tr>
+          <tr><td>Canvas</td><td>The writing surface where a document page is drawn on.</td></tr>
+          <tr><td>Overlay</td><td>An item placed onto the page — photo, barcode, QR code, patient info, stamp.</td></tr>
+          <tr><td>Geo tag</td><td>The location recorded together with a photo.</td></tr>
+          <tr><td>UHID</td><td>Unique Hospital ID — permanent per patient, across all visits.</td></tr>
+          <tr><td>Visit ID</td><td>Identifier for one specific visit or admission.</td></tr>
+          <tr><td>Activity log</td><td>The record of who acted on a document and when.</td></tr>
+          <tr><td>Revert to last saved</td><td>Discarding current changes and returning the page to its last saved state.</td></tr>
+          <tr><td>Sync Pending</td><td>Documents held on the device that have not yet reached the server.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="swipe">Swipe the table sideways to read every column &rarr;</p>
+  </section>
+
+  <footer>
+    <p>Prepared for support and client walkthroughs of Rescribe paperless documentation. The feature is identical in the doctor and nurse apps; document categories, ordering and colours are configured per hospital.</p>
+  </footer>
+
+</div>
+<style>
+  @media print {
+    @page { size: A4; margin: 14mm 11mm; }
+    :root {
+      --bg: #F3F6F4; --surface: #FFFFFF; --surface-2: #E9EEEB;
+      --panel: #12201C; --panel-ink: #D9E6E1; --panel-accent: #7FBFB1;
+      --ink: #14201D; --ink-2: #4B5B56; --ink-3: #7C8B86;
+      --line: #D5DEDA; --line-strong: #B9C6C1;
+      --accent: #0C6B5E; --accent-2: #0A5449; --accent-soft: #DFEDE9;
+      --s-occupied: #2E62C4; --s-vacant: #1E7F55; --s-reserved: #7A4FC7;
+      --s-housekeeping: #B0730D; --s-maintenance: #A8443A;
+      --s-pending: #5F7180; --s-transfer: #0B7A8A;
+    }
+    html, body { background: #fff !important; }
+    .page { padding: 0 !important; gap: 2.25rem !important; max-width: none !important; }
+    .docnav, .swipe, .printbtn, .tabbar { display: none !important; }
+    .tree-wrap { overflow: visible !important; break-inside: avoid; page-break-inside: avoid; }
+    .tree-wrap.tall { break-inside: auto; page-break-inside: auto; }
+    pre.tree { font-size: 0.7rem !important; line-height: 1.55 !important; }
+    .table-wrap, .wire, .note, .chips, .counts { break-inside: avoid; page-break-inside: avoid; }
+    section { break-inside: auto; }
+    h2, h3 { break-after: avoid; page-break-after: avoid; }
+    .section-head { break-inside: avoid; page-break-inside: avoid; break-after: avoid; page-break-after: avoid; }
+    .screen-card, ol.flow li, .chip, tr, figure.shot { break-inside: avoid; page-break-inside: avoid; }
+    a { text-decoration: none; color: inherit; }
+  }
+</style><script>
+(function () {
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tabbar button'));
+  var panels = {};
+  tabs.forEach(function (t) { panels[t.dataset.target] = document.getElementById(t.dataset.target); });
+  var names = Object.keys(panels);
+  var DEFAULT = names[0];
+
+  function show(name, push) {
+    if (!panels[name]) return;
+    tabs.forEach(function (t) {
+      var on = t.dataset.target === name;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      panels[t.dataset.target].hidden = !on;
+    });
+    document.title = panels[name].dataset.title;
+    if (push) history.replaceState(null, '', '#' + name);
+  }
+
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () {
+      show(t.dataset.target, true);
+      window.scrollTo(0, 0);
+    });
+  });
+
+  window.addEventListener('hashchange', function () {
+    var h = location.hash.replace('#', '');
+    if (panels[h]) { show(h, false); window.scrollTo(0, 0); }
+  });
+
+  if (DEFAULT) {
+    var initial = location.hash.replace('#', '');
+    if (panels[initial]) { show(initial, false); window.scrollTo(0, 0); }
+    else { show(DEFAULT, false); }
+  }
+
+  /* ---- go to a section, switching tab first when there is one ---- */
+  function goto(tab, id) {
+    if (tab && panels[tab]) show(tab, true);
+    var el = document.getElementById(id);
+    if (el) el.scrollIntoView();
+  }
+
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a[data-goto]') : null;
+    if (!a) return;
+    var parts = a.dataset.goto.split('#');
+    if (!panels[parts[0]] && tabs.length) return;      /* panel absent: follow the href */
+    if (!document.getElementById(parts[1])) return;
+    e.preventDefault();
+    goto(parts[0], parts[1]);
+  });
+
+  /* ---- global search across every panel on the page ---- */
+  var box = document.getElementById('q');
+  if (!box) return;
+  var wrap = box.parentNode;
+  var idx = [];
+
+  (tabs.length ? names.map(function (n) { return [n, panels[n]]; })
+               : [[null, document]]).forEach(function (pair) {
+    var tab = pair[0], root = pair[1];
+    var label = tab ? document.querySelector('.tabbar button[data-target="' + tab + '"]').textContent
+                    : (document.querySelector('.masthead h1') || {}).textContent || 'This page';
+    Array.prototype.forEach.call(root.querySelectorAll('section[id]'), function (sec) {
+      var h = sec.querySelector('h2');
+      idx.push({
+        tab: tab, id: sec.id, where: label,
+        what: h ? h.textContent.trim() : sec.id,
+        text: sec.textContent.replace(/\s+/g, ' ').trim()
+      });
+    });
+  });
+
+  var list = null, hits = [], cur = -1;
+
+  function esc(s) { return s.replace(/[&<>"]/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+  function mark(s, q) {
+    var i = s.toLowerCase().indexOf(q);
+    if (i < 0) return esc(s);
+    return esc(s.slice(0, i)) + '<mark>' + esc(s.slice(i, i + q.length)) + '</mark>' + esc(s.slice(i + q.length));
+  }
+
+  function snippet(text, q) {
+    var i = text.toLowerCase().indexOf(q);
+    if (i < 0) return '';
+    var from = Math.max(0, i - 45), to = Math.min(text.length, i + q.length + 85);
+    return (from ? '…' : '') + mark(text.slice(from, to), q) + (to < text.length ? '…' : '');
+  }
+
+  function close() { if (list) { list.remove(); list = null; } hits = []; cur = -1; }
+
+  function run() {
+    var q = box.value.trim().toLowerCase();
+    close();
+    if (q.length < 2) return;
+    hits = idx.filter(function (e) {
+      return e.what.toLowerCase().indexOf(q) >= 0 || e.text.toLowerCase().indexOf(q) >= 0;
+    }).slice(0, 30);
+    list = document.createElement('div');
+    list.className = 'results';
+    if (!hits.length) {
+      list.innerHTML = '<div class="empty">No matches for “' + esc(box.value.trim()) + '”</div>';
+    } else {
+      list.innerHTML = hits.map(function (e, n) {
+        return '<button type="button" data-n="' + n + '">' +
+               '<span class="where">' + esc(e.where) + '</span>' +
+               '<span class="what">' + mark(e.what, q) + '</span>' +
+               '<span class="snip">' + snippet(e.text, q) + '</span></button>';
+      }).join('');
+    }
+    wrap.appendChild(list);
+  }
+
+  function pick(n) {
+    var e = hits[n];
+    if (!e) return;
+    box.value = '';
+    close();
+    box.blur();
+    goto(e.tab, e.id);
+  }
+
+  box.addEventListener('input', run);
+  box.addEventListener('focus', function () { if (box.value.trim().length > 1) run(); });
+
+  box.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { box.value = ''; close(); box.blur(); return; }
+    if (!hits.length) return;
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      cur = (cur + (e.key === 'ArrowDown' ? 1 : hits.length - 1)) % hits.length;
+      Array.prototype.forEach.call(list.querySelectorAll('button'), function (b, i) {
+        b.classList.toggle('on', i === cur);
+        if (i === cur) b.scrollIntoView({ block: 'nearest' });
+      });
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      pick(cur < 0 ? 0 : cur);
+    }
+  });
+
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('.results button') : null;
+    if (b) { pick(+b.dataset.n); return; }
+    if (list && !wrap.contains(e.target)) close();
+  });
+})();
+</script>
+</body>
+</html>
