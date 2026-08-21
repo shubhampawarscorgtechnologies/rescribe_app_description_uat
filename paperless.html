@@ -126,8 +126,19 @@
   /* Anchor offsets use scroll-padding on the scroll container: an embedding
      WebView may force `scroll-margin-top: 0` on every element, which would
      otherwise drop headings behind the sticky tab bar. */
-  html { scroll-padding-top: 4.5rem; }
-  html:has(.tabbar) { scroll-padding-top: 7.5rem; }
+  html {
+    scroll-padding-top: 4.5rem;
+  }
+
+  /* A standalone page's bar carries the search box alone; the index stacks the
+     tab row above it and is a row taller, so anchors need to clear more. */
+  html:has(.tabbar) {
+    scroll-padding-top: 7.5rem;
+  }
+
+  html:has(.tabrow) {
+    scroll-padding-top: 10.5rem;
+  }
 
   body {
     background: var(--bg);
@@ -147,12 +158,39 @@
     gap: 3.5rem;
   }
 
-  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; text-wrap: balance; line-height: 1.15; }
-  h1 { font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -0.015em; }
-  h2 { font-size: clamp(1.5rem, 3vw, 1.9rem); letter-spacing: -0.01em; }
-  h3 { font-size: 1.2rem; }
-  h4 { font-size: 1rem; font-family: var(--font-body); font-weight: 650; }
-  p { max-width: 65ch; }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    text-wrap: balance;
+    line-height: 1.15;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    letter-spacing: -0.015em;
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 3vw, 1.9rem);
+    letter-spacing: -0.01em;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+  }
+
+  h4 {
+    font-size: 1rem;
+    font-family: var(--font-body);
+    font-weight: 650;
+  }
+
+  p {
+    max-width: 65ch;
+  }
 
   .eyebrow {
     font-family: var(--font-mono);
@@ -163,66 +201,181 @@
   }
 
   /* ---------- header ---------- */
-  .masthead { display: flex; flex-direction: column; gap: 1rem; border-bottom: 2px solid var(--ink); padding-bottom: 1.75rem; }
-  .masthead p.lede { font-size: 1.1rem; color: var(--ink-2); }
-  .meta { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-3); }
-  .meta b { color: var(--ink-2); font-weight: 500; }
-  .printbtn {
-    align-self: flex-start; cursor: pointer;
-    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em;
-    color: var(--accent); background: transparent;
-    border: 1px solid var(--accent); border-radius: 999px;
-    padding: 0.4rem 0.9rem; min-height: 2.25rem;
+  .masthead {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 1.75rem;
   }
-  .printbtn:hover, .printbtn:focus-visible { background: var(--accent-soft); }
+
+  .masthead p.lede {
+    font-size: 1.1rem;
+    color: var(--ink-2);
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 2rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--ink-3);
+  }
+
+  .meta b {
+    color: var(--ink-2);
+    font-weight: 500;
+  }
+
+  .printbtn {
+    align-self: flex-start;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    background: transparent;
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    padding: 0.4rem 0.9rem;
+    min-height: 2.25rem;
+  }
+
+  .printbtn:hover,
+  .printbtn:focus-visible {
+    background: var(--accent-soft);
+  }
 
   /* ---------- sticky nav ---------- */
   .docnav {
-    position: sticky; top: 0; z-index: 20;
-    display: flex; gap: 0.15rem; overflow-x: auto; overscroll-behavior-x: contain;
-    background: var(--bg); border-bottom: 1px solid var(--line);
-    margin: 0 -1.5rem; padding: 0.5rem 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    gap: 0.15rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    margin: 0 -1.5rem;
+    padding: 0.5rem 1.5rem;
     scrollbar-width: none;
   }
-  .docnav::-webkit-scrollbar { display: none; }
-  .docnav a {
-    flex: none; text-decoration: none; color: var(--ink-2);
-    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em;
-    padding: 0.35rem 0.6rem; border-radius: 999px; white-space: nowrap;
+
+  .docnav::-webkit-scrollbar {
+    display: none;
   }
-  .docnav a:hover, .docnav a:focus-visible { color: var(--accent); background: var(--accent-soft); }
+
+  .docnav a {
+    flex: none;
+    text-decoration: none;
+    color: var(--ink-2);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    padding: 0.35rem 0.6rem;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  .docnav a:hover,
+  .docnav a:focus-visible {
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
 
   /* ---------- sections ---------- */
-  section { display: flex; flex-direction: column; gap: 1.25rem; scroll-margin-top: 4rem; min-width: 0; }
-  .page > * { min-width: 0; }
-  .tree-wrap, .table-wrap { min-width: 0; max-width: 100%; }
-  .section-head { display: flex; flex-direction: column; gap: 0.35rem; border-left: 3px solid var(--accent); padding-left: 0.9rem; }
+  section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    scroll-margin-top: 4rem;
+    min-width: 0;
+  }
+
+  .page>* {
+    min-width: 0;
+  }
+
+  .tree-wrap,
+  .table-wrap {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .section-head {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    border-left: 3px solid var(--accent);
+    padding-left: 0.9rem;
+  }
 
   /* ---------- screen index ---------- */
-  .screens { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1rem; }
+  .screens {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1rem;
+  }
+
   .screen-card {
     background: var(--surface);
     border: 1px solid var(--line);
     border-radius: var(--radius);
     padding: 1.1rem 1.2rem;
-    display: flex; flex-direction: column; gap: 0.4rem;
-    text-decoration: none; color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    text-decoration: none;
+    color: inherit;
   }
-  .screen-card:hover, .screen-card:focus-visible { border-color: var(--accent); outline: none; }
-  .screen-card .num { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-3); letter-spacing: 0.1em; }
-  .screen-card .name { font-family: var(--font-display); font-size: 1.15rem; }
-  .screen-card .desc { font-size: 0.88rem; color: var(--ink-2); }
+
+  .screen-card:hover,
+  .screen-card:focus-visible {
+    border-color: var(--accent);
+    outline: none;
+  }
+
+  .screen-card .num {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--ink-3);
+    letter-spacing: 0.1em;
+  }
+
+  .screen-card .name {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+  }
+
+  .screen-card .desc {
+    font-size: 0.88rem;
+    color: var(--ink-2);
+  }
 
   /* ---------- tree panel ---------- */
   .tree-wrap {
-    background: var(--panel); border-radius: var(--radius); border: 1px solid var(--line-strong);
-    overflow-x: auto; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch;
+    background: var(--panel);
+    border-radius: var(--radius);
+    border: 1px solid var(--line-strong);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
   }
+
   .tree-title {
-    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--panel-accent); padding: 0.75rem 1.2rem; border-bottom: 1px solid rgba(255,255,255,0.09);
-    position: sticky; left: 0;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--panel-accent);
+    padding: 0.75rem 1.2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+    position: sticky;
+    left: 0;
   }
+
   pre.tree {
     font-family: var(--font-mono);
     font-size: 0.82rem;
@@ -232,217 +385,839 @@
     margin: 0;
     white-space: pre;
   }
-  pre.tree .b { color: #FFFFFF; font-weight: 600; }
-  pre.tree .n { color: #8FD6C4; }
-  pre.tree .c { color: #7E9089; }
-  pre.tree .a { color: #E8B75F; }
+
+  pre.tree .b {
+    color: #FFFFFF;
+    font-weight: 600;
+  }
+
+  pre.tree .n {
+    color: #8FD6C4;
+  }
+
+  pre.tree .c {
+    color: #7E9089;
+  }
+
+  pre.tree .a {
+    color: #E8B75F;
+  }
 
   /* ---------- tables ---------- */
-  .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
-  table { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
-  th, td { text-align: left; padding: 0.65rem 0.9rem; border-bottom: 1px solid var(--line); vertical-align: top; }
-  th { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); background: var(--surface-2); white-space: nowrap; }
-  tbody tr:last-child td { border-bottom: none; }
-  td:first-child { font-weight: 600; white-space: nowrap; }
-  td code, p code, li code { font-family: var(--font-mono); font-size: 0.85em; background: var(--surface-2); padding: 0.1em 0.35em; border-radius: 3px; }
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 0.9rem;
+  }
+
+  th,
+  td {
+    text-align: left;
+    padding: 0.65rem 0.9rem;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+
+  th {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    background: var(--surface-2);
+    white-space: nowrap;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  td:first-child {
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  td code,
+  p code,
+  li code {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    background: var(--surface-2);
+    padding: 0.1em 0.35em;
+    border-radius: 3px;
+  }
 
   /* ---------- status legend ---------- */
-  .chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); gap: 0.6rem; }
-  .chip { display: flex; gap: 0.7rem; align-items: flex-start; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 0.6rem 0.8rem; }
-  .dot { width: 0.7rem; height: 0.7rem; border-radius: 50%; margin-top: 0.4rem; flex: none; background: var(--tone); }
-  .chip .text { display: flex; flex-direction: column; gap: 0.1rem; }
-  .chip .label { display: block; font-weight: 600; font-size: 0.9rem; color: var(--tone); }
-  .chip .what { display: block; font-size: 0.82rem; color: var(--ink-2); line-height: 1.45; }
+  .chips {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: 0.6rem;
+  }
+
+  .chip {
+    display: flex;
+    gap: 0.7rem;
+    align-items: flex-start;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 0.6rem 0.8rem;
+  }
+
+  .dot {
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 50%;
+    margin-top: 0.4rem;
+    flex: none;
+    background: var(--tone);
+  }
+
+  .chip .text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .chip .label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--tone);
+  }
+
+  .chip .what {
+    display: block;
+    font-size: 0.82rem;
+    color: var(--ink-2);
+    line-height: 1.45;
+  }
 
   /* ---------- wireframe ---------- */
   .wire {
-    background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--radius);
-    padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem; max-width: 34rem;
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-width: 34rem;
   }
-  .wire-row { display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; }
-  .wire .bed { font-family: var(--font-mono); font-weight: 700; font-size: 1.1rem; }
-  .wire .pill { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.2rem 0.55rem; border-radius: 999px; background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent); }
-  .wire .pt { font-weight: 650; font-size: 1rem; }
-  .wire dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr)); gap: 0.6rem 1rem; margin: 0; }
-  .wire dl > div { display: flex; flex-direction: column; gap: 0.1rem; }
-  .wire dt { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); }
-  .wire dd { margin: 0; font-size: 0.88rem; font-variant-numeric: tabular-nums; }
-  .wire .actions { display: flex; gap: 0.4rem; flex-wrap: wrap; border-top: 1px dashed var(--line); padding-top: 0.7rem; }
-  .wire .btn { font-size: 0.75rem; padding: 0.25rem 0.6rem; border: 1px solid var(--line-strong); border-radius: 3px; color: var(--ink-2); }
-  .caption { font-size: 0.8rem; color: var(--ink-3); max-width: 60ch; }
+
+  .wire-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: baseline;
+  }
+
+  .wire .bed {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+
+  .wire .pill {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+  }
+
+  .wire .pt {
+    font-weight: 650;
+    font-size: 1rem;
+  }
+
+  .wire dl {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+    gap: 0.6rem 1rem;
+    margin: 0;
+  }
+
+  .wire dl>div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .wire dt {
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .wire dd {
+    margin: 0;
+    font-size: 0.88rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .wire .actions {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    border-top: 1px dashed var(--line);
+    padding-top: 0.7rem;
+  }
+
+  .wire .btn {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.6rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    color: var(--ink-2);
+  }
+
+  .caption {
+    font-size: 0.8rem;
+    color: var(--ink-3);
+    max-width: 60ch;
+  }
 
   /* ---------- count dashboard mock ---------- */
-  .counts { display: grid; grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr)); gap: 0.6rem; }
-  .count {
-    background: var(--surface); border: 1px solid var(--line); border-top: 3px solid var(--tone);
-    border-radius: var(--radius); padding: 0.7rem 0.8rem; display: flex; flex-direction: column; gap: 0.15rem;
+  .counts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr));
+    gap: 0.6rem;
   }
-  .count .n { font-family: var(--font-mono); font-size: 1.5rem; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--tone); }
-  .count .l { font-size: 0.75rem; color: var(--ink-2); }
+
+  .count {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-top: 3px solid var(--tone);
+    border-radius: var(--radius);
+    padding: 0.7rem 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .count .n {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--tone);
+  }
+
+  .count .l {
+    font-size: 0.75rem;
+    color: var(--ink-2);
+  }
 
   /* ---------- callout ---------- */
-  .note { background: var(--accent-soft); border-left: 3px solid var(--accent); border-radius: 0 var(--radius) var(--radius) 0; padding: 0.9rem 1.1rem; }
-  .note p { margin: 0; font-size: 0.92rem; color: var(--ink); }
-  .note p + p { margin-top: 0.5rem; }
+  .note {
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 0.9rem 1.1rem;
+  }
+
+  .note p {
+    margin: 0;
+    font-size: 0.92rem;
+    color: var(--ink);
+  }
+
+  .note p+p {
+    margin-top: 0.5rem;
+  }
 
   /* ---------- flow ---------- */
-  ol.flow { list-style: none; counter-reset: step; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem; }
-  ol.flow li { counter-increment: step; display: grid; grid-template-columns: 2rem 1fr; gap: 0.9rem; align-items: start; }
+  ol.flow {
+    list-style: none;
+    counter-reset: step;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  ol.flow li {
+    counter-increment: step;
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    gap: 0.9rem;
+    align-items: start;
+  }
+
   ol.flow li::before {
     content: counter(step, decimal-leading-zero);
-    font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; color: var(--accent);
-    border: 1px solid var(--line-strong); border-radius: 50%; width: 2rem; height: 2rem;
-    display: grid; place-items: center;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--accent);
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    display: grid;
+    place-items: center;
   }
-  ol.flow li > strong { grid-column: 2; display: block; }
-  ol.flow li > span { grid-column: 2; font-size: 0.9rem; color: var(--ink-2); }
 
-  ul.plain { padding-left: 1.1rem; margin: 0; display: flex; flex-direction: column; gap: 0.35rem; }
-  ul.plain li { font-size: 0.92rem; color: var(--ink-2); }
-  ul.plain li b { color: var(--ink); font-weight: 650; }
+  ol.flow li>strong {
+    grid-column: 2;
+    display: block;
+  }
 
-  footer { border-top: 1px solid var(--line); padding-top: 1.25rem; font-size: 0.82rem; color: var(--ink-3); }
+  ol.flow li>span {
+    grid-column: 2;
+    font-size: 0.9rem;
+    color: var(--ink-2);
+  }
 
-  a { color: var(--accent); }
-  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  ul.plain {
+    padding-left: 1.1rem;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
 
-  .swipe { display: none; font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.06em; color: var(--ink-3); }
+  ul.plain li {
+    font-size: 0.92rem;
+    color: var(--ink-2);
+  }
+
+  ul.plain li b {
+    color: var(--ink);
+    font-weight: 650;
+  }
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding-top: 1.25rem;
+    font-size: 0.82rem;
+    color: var(--ink-3);
+  }
+
+  a {
+    color: var(--accent);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .swipe {
+    display: none;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    color: var(--ink-3);
+  }
 
   /* ---------- responsive ---------- */
   @media (max-width: 900px) {
-    .page { padding: 2.25rem 1.25rem 3.5rem; gap: 2.75rem; }
-    .docnav { margin: 0 -1.25rem; padding: 0.5rem 1.25rem; }
+    .page {
+      padding: 2.25rem 1.25rem 3.5rem;
+      gap: 2.75rem;
+    }
+
+    .docnav {
+      margin: 0 -1.25rem;
+      padding: 0.5rem 1.25rem;
+    }
   }
 
   @media (max-width: 640px) {
-    body { font-size: 15px; }
-    .page { padding: 1.5rem 0.9rem 3rem; gap: 2.25rem; }
-    .docnav { margin: 0 -0.9rem; padding: 0.45rem 0.9rem; }
-    .masthead { gap: 0.7rem; padding-bottom: 1.25rem; }
-    .masthead p.lede { font-size: 1rem; }
-    .meta { flex-direction: column; gap: 0.2rem; }
-    .screens { grid-template-columns: 1fr; }
-    .chips { grid-template-columns: 1fr; }
-    .counts { grid-template-columns: repeat(2, 1fr); }
-    .section-head { padding-left: 0.7rem; }
-    .tree-title { padding: 0.6rem 0.9rem; font-size: 0.66rem; }
-    pre.tree { font-size: 0.66rem; line-height: 1.55; padding: 0.9rem; }
-    th, td { padding: 0.55rem 0.7rem; }
-    table { font-size: 0.85rem; min-width: 32rem; }
-    .wire { padding: 0.85rem; }
-    .wire dl { grid-template-columns: repeat(2, 1fr); }
-    .note { padding: 0.8rem 0.9rem; }
-    ol.flow li { grid-template-columns: 1.6rem 1fr; gap: 0.6rem; }
-    ol.flow li::before { width: 1.6rem; height: 1.6rem; font-size: 0.66rem; }
-    .swipe { display: block; }
+    body {
+      font-size: 15px;
+    }
+
+    .page {
+      padding: 1.5rem 0.9rem 3rem;
+      gap: 2.25rem;
+    }
+
+    .docnav {
+      margin: 0 -0.9rem;
+      padding: 0.45rem 0.9rem;
+    }
+
+    .masthead {
+      gap: 0.7rem;
+      padding-bottom: 1.25rem;
+    }
+
+    .masthead p.lede {
+      font-size: 1rem;
+    }
+
+    .meta {
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .screens {
+      grid-template-columns: 1fr;
+    }
+
+    .chips {
+      grid-template-columns: 1fr;
+    }
+
+    .counts {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .section-head {
+      padding-left: 0.7rem;
+    }
+
+    .tree-title {
+      padding: 0.6rem 0.9rem;
+      font-size: 0.66rem;
+    }
+
+    pre.tree {
+      font-size: 0.66rem;
+      line-height: 1.55;
+      padding: 0.9rem;
+    }
+
+    th,
+    td {
+      padding: 0.55rem 0.7rem;
+    }
+
+    table {
+      font-size: 0.85rem;
+      min-width: 32rem;
+    }
+
+    .wire {
+      padding: 0.85rem;
+    }
+
+    .wire dl {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .note {
+      padding: 0.8rem 0.9rem;
+    }
+
+    ol.flow li {
+      grid-template-columns: 1.6rem 1fr;
+      gap: 0.6rem;
+    }
+
+    ol.flow li::before {
+      width: 1.6rem;
+      height: 1.6rem;
+      font-size: 0.66rem;
+    }
+
+    .swipe {
+      display: block;
+    }
   }
 
   @media (max-width: 380px) {
-    pre.tree { font-size: 0.6rem; }
-    .counts { grid-template-columns: 1fr 1fr; }
-    .wire dl { grid-template-columns: 1fr; }
+    pre.tree {
+      font-size: 0.6rem;
+    }
+
+    .counts {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .wire dl {
+      grid-template-columns: 1fr;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+    * {
+      animation-duration: 0.001ms !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 
   @media print {
-    body { background: #fff; }
-    .tree-wrap { break-inside: avoid; }
-    .docnav, .swipe { display: none !important; }
+    body {
+      background: #fff;
+    }
+
+    .tree-wrap {
+      break-inside: avoid;
+    }
+
+    .docnav,
+    .swipe {
+      display: none !important;
+    }
   }
 
   /* ---------- per-document accents ---------- */
-  .page[data-doc="doctor"] { --accent: #17537E; --accent-2: #0F3F63; --accent-soft: #E1EBF3; --panel-accent: #86BCE4; }
-  .page[data-doc="paper"]  { --accent: #8A5510; --accent-2: #6B420C; --accent-soft: #F4E9D9; --panel-accent: #E0A64B; }
-  @media (prefers-color-scheme: dark) {
-    .page[data-doc="doctor"] { --accent: #69B0E4; --accent-2: #9BCCEF; --accent-soft: #12293A; --panel-accent: #86BCE4; }
-    .page[data-doc="paper"]  { --accent: #E0A64B; --accent-2: #EEC383; --accent-soft: #2D2110; --panel-accent: #E0A64B; }
+  .page[data-doc="doctor"] {
+    --accent: #17537E;
+    --accent-2: #0F3F63;
+    --accent-soft: #E1EBF3;
+    --panel-accent: #86BCE4;
   }
-  :root[data-theme="dark"] .page[data-doc="doctor"] { --accent: #69B0E4; --accent-2: #9BCCEF; --accent-soft: #12293A; --panel-accent: #86BCE4; }
-  :root[data-theme="dark"] .page[data-doc="paper"]  { --accent: #E0A64B; --accent-2: #EEC383; --accent-soft: #2D2110; --panel-accent: #E0A64B; }
-  :root[data-theme="light"] .page[data-doc="doctor"] { --accent: #17537E; --accent-2: #0F3F63; --accent-soft: #E1EBF3; --panel-accent: #86BCE4; }
-  :root[data-theme="light"] .page[data-doc="paper"]  { --accent: #8A5510; --accent-2: #6B420C; --accent-soft: #F4E9D9; --panel-accent: #E0A64B; }
+
+  .page[data-doc="paper"] {
+    --accent: #8A5510;
+    --accent-2: #6B420C;
+    --accent-soft: #F4E9D9;
+    --panel-accent: #E0A64B;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .page[data-doc="doctor"] {
+      --accent: #69B0E4;
+      --accent-2: #9BCCEF;
+      --accent-soft: #12293A;
+      --panel-accent: #86BCE4;
+    }
+
+    .page[data-doc="paper"] {
+      --accent: #E0A64B;
+      --accent-2: #EEC383;
+      --accent-soft: #2D2110;
+      --panel-accent: #E0A64B;
+    }
+  }
+
+  :root[data-theme="dark"] .page[data-doc="doctor"] {
+    --accent: #69B0E4;
+    --accent-2: #9BCCEF;
+    --accent-soft: #12293A;
+    --panel-accent: #86BCE4;
+  }
+
+  :root[data-theme="dark"] .page[data-doc="paper"] {
+    --accent: #E0A64B;
+    --accent-2: #EEC383;
+    --accent-soft: #2D2110;
+    --panel-accent: #E0A64B;
+  }
+
+  :root[data-theme="light"] .page[data-doc="doctor"] {
+    --accent: #17537E;
+    --accent-2: #0F3F63;
+    --accent-soft: #E1EBF3;
+    --panel-accent: #86BCE4;
+  }
+
+  :root[data-theme="light"] .page[data-doc="paper"] {
+    --accent: #8A5510;
+    --accent-2: #6B420C;
+    --accent-soft: #F4E9D9;
+    --panel-accent: #E0A64B;
+  }
 
   /* ---------- module tabs (index page) ---------- */
+  /* Deliberately not a scroll container: the search results panel hangs out of
+     the bottom of this bar as an absolutely positioned child, and an
+     overflow-x here would compute overflow-y to auto and clip it. Only the row
+     of tab buttons scrolls sideways. */
   .tabbar {
-    position: sticky; top: 0; z-index: 30;
-    display: flex; gap: 0.3rem; overflow-x: auto; overscroll-behavior-x: contain;
-    background: var(--bg); border-bottom: 1px solid var(--line-strong);
-    padding: 0.55rem 1.5rem; scrollbar-width: none;
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    display: flex;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line-strong);
+    padding: 0.55rem 1.5rem;
   }
-  .tabbar::-webkit-scrollbar { display: none; }
-  .tabbar .tabinner { display: flex; gap: 0.3rem; width: 100%; max-width: var(--wrap); margin: 0 auto; }
+
+  .tabbar .tabinner {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    width: 100%;
+    max-width: var(--wrap);
+    margin: 0 auto;
+  }
+
+  .tabbar .tabrow {
+    display: flex;
+    gap: 0.3rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .tabbar .tabrow::-webkit-scrollbar {
+    display: none;
+  }
+
   .tabbar button {
-    flex: none; cursor: pointer; white-space: nowrap;
-    font-family: var(--font-mono); font-size: 0.76rem; letter-spacing: 0.06em;
-    color: var(--ink-3); background: transparent;
-    border: 1px solid transparent; border-radius: 999px;
-    padding: 0.45rem 0.95rem; min-height: 2.4rem;
+    flex: none;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    letter-spacing: 0.06em;
+    color: var(--ink-3);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    padding: 0.45rem 0.95rem;
+    min-height: 2.4rem;
   }
-  .tabbar button:hover { color: var(--ink); }
-  .tabbar button[aria-selected="true"] { color: var(--ink); background: var(--surface); border-color: var(--line-strong); }
-  body:has(.tabbar) .docnav { top: 3.4rem; }
-  [hidden] { display: none !important; }
+
+  .tabbar button:hover {
+    color: var(--ink);
+  }
+
+  .tabbar button[aria-selected="true"] {
+    color: var(--ink);
+    background: var(--surface);
+    border-color: var(--line-strong);
+  }
+
+  body:has(.tabbar) .docnav {
+    top: 3.4rem;
+  }
+
+  body:has(.tabrow) .docnav {
+    top: 6.4rem;
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+
   @media (max-width: 640px) {
-    .tabbar { padding: 0.5rem 0.9rem; }
-    .tabbar button { font-size: 0.72rem; padding: 0.4rem 0.75rem; }
+    .tabbar {
+      padding: 0.5rem 0.9rem;
+    }
+
+    .tabbar button {
+      font-size: 0.72rem;
+      padding: 0.4rem 0.75rem;
+    }
   }
 
   /* ---------- global search ---------- */
-  .search { position: relative; flex: 1 1 9rem; min-width: 6rem; margin-left: auto; }
+  /* Full width of the wrap, on its own row under the tabs. Keep position
+     relative — the results panel anchors to this box. */
+  .search {
+    position: relative;
+    width: 100%;
+  }
+
   .search input {
-    width: 100%; min-height: 2.4rem;
-    font-family: var(--font-mono); font-size: 0.76rem; color: var(--ink);
-    background: var(--surface); border: 1px solid var(--line-strong); border-radius: 999px;
+    width: 100%;
+    min-height: 2.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
     padding: 0.4rem 0.9rem;
   }
-  .search input::placeholder { color: var(--ink-3); }
+
+  .search input::placeholder {
+    color: var(--ink-3);
+  }
+
+  /* Spans the search box, which is now a full-width row of its own — a fixed
+     width anchored right would float clear of the input it belongs to. */
   .results {
-    position: absolute; top: calc(100% + 0.4rem); right: 0;
-    width: min(28rem, 88vw); max-height: 60vh; overflow-y: auto;
-    background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--radius);
-    box-shadow: 0 8px 28px rgba(0,0,0,0.18); z-index: 40;
+    position: absolute;
+    top: calc(100% + 0.4rem);
+    left: 0;
+    right: 0;
+    max-height: 60vh;
+    overflow-y: auto;
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
+    z-index: 40;
   }
+
+  /* A button does not wrap its text the way a div does — without this the
+     heading and snippet run off the edge of the panel and get cut mid-word. */
   .results button {
-    display: block; width: 100%; text-align: left; cursor: pointer;
-    background: transparent; border: none; border-bottom: 1px solid var(--line);
-    padding: 0.6rem 0.85rem; color: inherit; font-family: var(--font-body);
+    display: block;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--line);
+    padding: 0.6rem 0.85rem;
+    color: inherit;
+    font-family: var(--font-body);
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
-  .results button:last-child { border-bottom: none; }
-  .results button:hover, .results button.on { background: var(--accent-soft); }
-  .results .where { display: block; font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); }
-  .results .what { display: block; font-weight: 650; font-size: 0.9rem; }
-  .results .snip { display: block; font-size: 0.8rem; color: var(--ink-2); line-height: 1.45; }
-  .results .snip mark, .results .what mark { background: var(--accent-soft); color: var(--accent); padding: 0 0.1em; }
-  .results .empty { padding: 0.7rem 0.85rem; font-size: 0.85rem; color: var(--ink-3); }
+
+  .results button:last-child {
+    border-bottom: none;
+  }
+
+  .results button:hover,
+  .results button.on {
+    background: var(--accent-soft);
+  }
+
+  /* One line — the breadcrumb is context, not the answer. */
+  .results .where {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .results .what {
+    display: block;
+    font-weight: 650;
+    font-size: 0.9rem;
+  }
+
+  /* Two lines is enough to judge a hit; more turns the list into a wall. */
+  .results .snip {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 0.8rem;
+    color: var(--ink-2);
+    line-height: 1.45;
+  }
+
+  .results .snip mark,
+  .results .what mark {
+    background: var(--accent-soft);
+    color: var(--accent);
+    padding: 0 0.1em;
+  }
+
+  .results .empty {
+    padding: 0.7rem 0.85rem;
+    font-size: 0.85rem;
+    color: var(--ink-3);
+  }
+
+  /* A search hit can land on a subsection halfway down a long page. Tint the
+     target for a moment so the reader sees which heading they were sent to. */
+  .flash {
+    animation: flash 1.8s ease-out;
+    border-radius: 0.4rem;
+  }
+
+  @keyframes flash {
+    0%, 55% { background: var(--accent-soft); box-shadow: 0 0 0 0.4rem var(--accent-soft); }
+    100% { background: transparent; box-shadow: 0 0 0 0.4rem transparent; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .flash { animation: none; }
+  }
 
   /* ---------- what's new ---------- */
-  .page[data-doc="whatsnew"] { --accent: #6A3FA0; --accent-2: #52307E; --accent-soft: #EEE7F6; --panel-accent: #B79BE0; }
-  @media (prefers-color-scheme: dark) {
-    .page[data-doc="whatsnew"] { --accent: #B79BE0; --accent-2: #CDBAEC; --accent-soft: #241A33; --panel-accent: #B79BE0; }
+  .page[data-doc="whatsnew"] {
+    --accent: #6A3FA0;
+    --accent-2: #52307E;
+    --accent-soft: #EEE7F6;
+    --panel-accent: #B79BE0;
   }
-  :root[data-theme="dark"] .page[data-doc="whatsnew"] { --accent: #B79BE0; --accent-2: #CDBAEC; --accent-soft: #241A33; --panel-accent: #B79BE0; }
-  :root[data-theme="light"] .page[data-doc="whatsnew"] { --accent: #6A3FA0; --accent-2: #52307E; --accent-soft: #EEE7F6; --panel-accent: #B79BE0; }
 
-  figure.shot { margin: 0.6rem 0 0; display: flex; flex-direction: column; gap: 0.4rem; max-width: 22rem; }
-  ol.flow li > figure.shot { grid-column: 2; }
-  figure.shot img { display: block; width: 100%; border: 1px solid var(--line-strong); border-radius: var(--radius); background: var(--surface); }
-  figure.shot figcaption { font-size: 0.78rem; color: var(--ink-3); line-height: 1.45; }
-  figure.shot .missing {
-    display: grid; place-items: center; min-height: 9rem; padding: 1rem; text-align: center;
-    border: 1px dashed var(--line-strong); border-radius: var(--radius);
-    background: var(--surface-2); color: var(--ink-3);
-    font-family: var(--font-mono); font-size: 0.7rem; line-height: 1.6;
+  @media (prefers-color-scheme: dark) {
+    .page[data-doc="whatsnew"] {
+      --accent: #B79BE0;
+      --accent-2: #CDBAEC;
+      --accent-soft: #241A33;
+      --panel-accent: #B79BE0;
+    }
   }
-</style><div class="tabbar"><div class="tabinner"><div class="search"><input type="search" id="q" placeholder="Search all pages…" autocomplete="off" aria-label="Search the documentation"></div></div></div>
+
+  :root[data-theme="dark"] .page[data-doc="whatsnew"] {
+    --accent: #B79BE0;
+    --accent-2: #CDBAEC;
+    --accent-soft: #241A33;
+    --panel-accent: #B79BE0;
+  }
+
+  :root[data-theme="light"] .page[data-doc="whatsnew"] {
+    --accent: #6A3FA0;
+    --accent-2: #52307E;
+    --accent-soft: #EEE7F6;
+    --panel-accent: #B79BE0;
+  }
+
+  figure.shot {
+    margin: 0.6rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    max-width: 22rem;
+  }
+
+  ol.flow li>figure.shot {
+    grid-column: 2;
+  }
+
+  figure.shot img {
+    display: block;
+    width: 100%;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+
+  figure.shot figcaption {
+    font-size: 0.78rem;
+    color: var(--ink-3);
+    line-height: 1.45;
+  }
+
+  figure.shot .missing {
+    display: grid;
+    place-items: center;
+    min-height: 9rem;
+    padding: 1rem;
+    text-align: center;
+    border: 1px dashed var(--line-strong);
+    border-radius: var(--radius);
+    background: var(--surface-2);
+    color: var(--ink-3);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    line-height: 1.6;
+  }
+</style>
+<div class="tabbar"><div class="tabinner"><div class="search"><input type="search" id="q" placeholder="Search all pages…" autocomplete="off" aria-label="Search the documentation"></div></div></div>
 <div class="page" data-doc="paper">
 
   <header class="masthead">
     <span class="eyebrow">Shared Feature · Functional Documentation</span>
     <h1>Paperless Documentation — Feature Map</h1>
-    <p class="lede">Writing on hospital documents by hand, inside the app, instead of on paper. The same feature runs in both the doctor app and the nurse app, where it is labelled <b>Pen Mode</b>.</p>
+    <p class="lede">Writing on hospital documents by hand, inside the app, instead of on paper. The same feature runs in
+      both the doctor app and the nurse app, where it is labelled <b>Pen Mode</b>.</p>
     <div class="meta">
       <span><b>Available in:</b> Doctor app &amp; Nurse app</span>
       <span><b>Called:</b> Pen Mode</span>
@@ -468,17 +1243,22 @@
       <span class="eyebrow">Start here</span>
       <h2>What this replaces</h2>
     </div>
-    <p>Hospitals run on printed forms — consent sheets, nursing notes, treatment charts, referral slips. Traditionally these are filled by hand, then scanned back in, or never digitised at all. Paperless Documentation keeps the handwriting and removes the paper: the form opens on the device, the clinician writes on it with a stylus or finger, and the finished page is stored against the patient's visit.</p>
+    <p>Hospitals run on printed forms — consent sheets, nursing notes, treatment charts, referral slips. Traditionally
+      these are filled by hand, then scanned back in, or never digitised at all. Paperless Documentation keeps the
+      handwriting and removes the paper: the form opens on the device, the clinician writes on it with a stylus or
+      finger, and the finished page is stored against the patient's visit.</p>
     <div class="screens">
       <a class="screen-card" href="#p-list">
         <span class="num">STEP 1</span>
         <span class="name">Document list</span>
-        <span class="desc">Documents grouped by category and sub-category. Select, print, email or send on WhatsApp.</span>
+        <span class="desc">Documents grouped by category and sub-category. Select, print, email or send on
+          WhatsApp.</span>
       </a>
       <a class="screen-card" href="#p-history">
         <span class="num">STEP 2</span>
         <span class="name">History screen</span>
-        <span class="desc">Everything filed under a sub-category. Upload, create new, edit or view earlier documents.</span>
+        <span class="desc">Everything filed under a sub-category. Upload, create new, edit or view earlier
+          documents.</span>
       </a>
       <a class="screen-card" href="#p-preview">
         <span class="num">STEP 3</span>
@@ -492,7 +1272,9 @@
       </a>
     </div>
     <div class="note">
-      <p><b>Where it opens from.</b> Doctor app: Admitted Patients List → patient → <b>Pen Mode</b>, and Search → Visit List → a visit → <b>Pen Mode</b> (for patients seen earlier). Nurse app: the bed on the Bed Display screen → <b>Pen Mode</b>. The screens after that point are identical in both apps.</p>
+      <p><b>Where it opens from.</b> Doctor app: Admitted Patients List → patient → <b>Pen Mode</b>, and Search → Visit
+        List → a visit → <b>Pen Mode</b> (for patients seen earlier). Nurse app: the bed on the Bed Display screen →
+        <b>Pen Mode</b>. The screens after that point are identical in both apps.</p>
     </div>
   </section>
 
@@ -504,7 +1286,7 @@
     <p>The full map on one page. Each branch is expanded and explained in the sections that follow.</p>
     <div class="tree-wrap tall">
       <div class="tree-title">Paperless documentation — full tree</div>
-<pre class="tree"><span class="b">PAPERLESS DOCUMENTATION (PEN MODE)</span>
+      <pre class="tree"><span class="b">PAPERLESS DOCUMENTATION (PEN MODE)</span>
 │
 ├── <span class="b">1. DOCUMENT LIST</span>
 │   ├── <span class="n">Grouped by Category → Sub-category</span>
@@ -579,7 +1361,8 @@
 </pre>
     </div>
     <p class="swipe">Swipe the panel sideways to read the full width &rarr;</p>
-    <p class="caption">Reading the tree: <code>├──</code> and <code>└──</code> mark items inside the branch above them.</p>
+    <p class="caption">Reading the tree: <code>├──</code> and <code>└──</code> mark items inside the branch above them.
+    </p>
   </section>
 
   <section id="p-list">
@@ -587,17 +1370,48 @@
       <span class="eyebrow">Step 1</span>
       <h2>Document list</h2>
     </div>
-    <p>All documents for the patient, grouped by category and then sub-category. Grouping, display order and colour coding are managed per hospital, so each site sees its own paperwork organised its own way.</p>
+    <p>All documents for the patient, grouped by category and then sub-category. Grouping, display order and colour
+      coding are managed per hospital, so each site sees its own paperwork organised its own way.</p>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Element</th><th>What it does</th><th>Why it matters</th></tr></thead>
+        <thead>
+          <tr>
+            <th>Element</th>
+            <th>What it does</th>
+            <th>Why it matters</th>
+          </tr>
+        </thead>
         <tbody>
-          <tr><td>Category</td><td>The top grouping of documents.</td><td>Keeps a long list navigable.</td></tr>
-          <tr><td>Sub-category</td><td>The specific document type inside a category.</td><td>This is what opens the History screen.</td></tr>
-          <tr><td>Sequence order</td><td>The order categories and sub-categories appear in.</td><td>Puts the most-used forms at the top for that hospital.</td></tr>
-          <tr><td>Colours</td><td>Colour assigned to a category or sub-category.</td><td>Fast visual identification during a busy round.</td></tr>
-          <tr><td>View all documents</td><td>Shows everything on the patient in one list.</td><td>When you don't know which category it was filed under.</td></tr>
-          <tr><td>Select documents</td><td>Multi-select, then output the selection.</td><td>Sending a set of forms together rather than one at a time.</td></tr>
+          <tr>
+            <td>Category</td>
+            <td>The top grouping of documents.</td>
+            <td>Keeps a long list navigable.</td>
+          </tr>
+          <tr>
+            <td>Sub-category</td>
+            <td>The specific document type inside a category.</td>
+            <td>This is what opens the History screen.</td>
+          </tr>
+          <tr>
+            <td>Sequence order</td>
+            <td>The order categories and sub-categories appear in.</td>
+            <td>Puts the most-used forms at the top for that hospital.</td>
+          </tr>
+          <tr>
+            <td>Colours</td>
+            <td>Colour assigned to a category or sub-category.</td>
+            <td>Fast visual identification during a busy round.</td>
+          </tr>
+          <tr>
+            <td>View all documents</td>
+            <td>Shows everything on the patient in one list.</td>
+            <td>When you don't know which category it was filed under.</td>
+          </tr>
+          <tr>
+            <td>Select documents</td>
+            <td>Multi-select, then output the selection.</td>
+            <td>Sending a set of forms together rather than one at a time.</td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -605,15 +1419,28 @@
 
     <h3>Sharing a selection</h3>
     <div class="chips">
-      <div class="chip" style="--tone: var(--accent)"><span class="dot"></span><span class="text"><span class="label">Print PDF</span><span class="what">Produces a PDF of the selected documents for printing or filing.</span></span></div>
-      <div class="chip" style="--tone: var(--s-occupied)"><span class="dot"></span><span class="text"><span class="label">Send over email</span><span class="what">Emails the selected documents out of the app.</span></span></div>
-      <div class="chip" style="--tone: var(--s-vacant)"><span class="dot"></span><span class="text"><span class="label">Send over WhatsApp</span><span class="what">Shares the selected documents through WhatsApp.</span></span></div>
+      <div class="chip" style="--tone: var(--accent)"><span class="dot"></span><span class="text"><span
+            class="label">Print PDF</span><span class="what">Produces a PDF of the selected documents for printing or
+            filing.</span></span></div>
+      <div class="chip" style="--tone: var(--s-occupied)"><span class="dot"></span><span class="text"><span
+            class="label">Send over email</span><span class="what">Emails the selected documents out of the
+            app.</span></span></div>
+      <div class="chip" style="--tone: var(--s-vacant)"><span class="dot"></span><span class="text"><span
+            class="label">Send over WhatsApp</span><span class="what">Shares the selected documents through
+            WhatsApp.</span></span></div>
     </div>
     <h3>Role permissions</h3>
-    <p>Adding, editing, deleting, viewing, printing, e-mailing and WhatsApp sharing are each controlled by a <b>Patient Document</b> permission on the user&rsquo;s role. An action the role does not carry is shown greyed out and does not respond to a tap &mdash; on this screen, on the History screen, in the preview and on the canvas. Permissions are read from the server after sign-in and refreshed on the dashboard; the last known set is used while offline. Full walkthrough: <a href="whatsnew.html#wn-permissions" data-goto="whatsnew#wn-permissions">What&rsquo;s New &rarr; Document actions follow role permissions</a>.</p>
+    <p>Adding, editing, deleting, viewing, printing, e-mailing and WhatsApp sharing are each controlled by a <b>Patient
+        Document</b> permission on the user&rsquo;s role. An action the role does not carry is shown greyed out and does
+      not respond to a tap &mdash; on this screen, on the History screen, in the preview and on the canvas. Permissions
+      are read from the server after sign-in and refreshed on the dashboard; the last known set is used while offline.
+      Full walkthrough: <a href="whatsnew.html#wn-permissions" data-goto="whatsnew#wn-permissions">What&rsquo;s New
+        &rarr; Document actions follow role permissions</a>.</p>
 
     <div class="note">
-      <p><b>Patient data leaves the hospital at this point.</b> Email and WhatsApp send clinical documents to an outside service. Whoever operates the app is responsible for sending to the right recipient, and hospitals should confirm this matches their own data-sharing policy before enabling it for staff.</p>
+      <p><b>Patient data leaves the hospital at this point.</b> Email and WhatsApp send clinical documents to an outside
+        service. Whoever operates the app is responsible for sending to the right recipient, and hospitals should
+        confirm this matches their own data-sharing policy before enabling it for staff.</p>
     </div>
   </section>
 
@@ -622,17 +1449,48 @@
       <span class="eyebrow">Step 2</span>
       <h2>History screen</h2>
     </div>
-    <p>Opening a sub-category shows everything already filed under it for this patient, and offers the four ways to add or change a document.</p>
+    <p>Opening a sub-category shows everything already filed under it for this patient, and offers the four ways to add
+      or change a document.</p>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Action</th><th>What it does</th><th>Typical use</th></tr></thead>
+        <thead>
+          <tr>
+            <th>Action</th>
+            <th>What it does</th>
+            <th>Typical use</th>
+          </tr>
+        </thead>
         <tbody>
-          <tr><td>Upload from gallery</td><td>Brings in an image already stored on the device.</td><td>A form photographed earlier, or a report received as a picture.</td></tr>
-          <tr><td>Upload from camera</td><td>Takes a photo now and files it as a document.</td><td>Capturing a paper form that arrived from outside.</td></tr>
-          <tr><td>Upload with geo tag</td><td>Takes a photo and records the location with it.</td><td>Proof of where the document was captured — home visits, field work.</td></tr>
-          <tr><td>Create new document</td><td>Opens a blank document on the canvas.</td><td>Writing a fresh note or filling a blank form.</td></tr>
-          <tr><td>Edit previous document</td><td>Reopens an existing document on the canvas.</td><td>Adding to a chart already started.</td></tr>
-          <tr><td>View previous document</td><td>Opens it read-only.</td><td>Checking what was written without risking a change.</td></tr>
+          <tr>
+            <td>Upload from gallery</td>
+            <td>Brings in an image already stored on the device.</td>
+            <td>A form photographed earlier, or a report received as a picture.</td>
+          </tr>
+          <tr>
+            <td>Upload from camera</td>
+            <td>Takes a photo now and files it as a document.</td>
+            <td>Capturing a paper form that arrived from outside.</td>
+          </tr>
+          <tr>
+            <td>Upload with geo tag</td>
+            <td>Takes a photo and records the location with it.</td>
+            <td>Proof of where the document was captured — home visits, field work.</td>
+          </tr>
+          <tr>
+            <td>Create new document</td>
+            <td>Opens a blank document on the canvas.</td>
+            <td>Writing a fresh note or filling a blank form.</td>
+          </tr>
+          <tr>
+            <td>Edit previous document</td>
+            <td>Reopens an existing document on the canvas.</td>
+            <td>Adding to a chart already started.</td>
+          </tr>
+          <tr>
+            <td>View previous document</td>
+            <td>Opens it read-only.</td>
+            <td>Checking what was written without risking a change.</td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -647,19 +1505,44 @@
     <p>The checkpoint between writing and sharing. Page-level control, plus the audit trail.</p>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Control</th><th>What it does</th></tr></thead>
+        <thead>
+          <tr>
+            <th>Control</th>
+            <th>What it does</th>
+          </tr>
+        </thead>
         <tbody>
-          <tr><td>Edit page</td><td>Sends the page back to the canvas for more writing.</td></tr>
-          <tr><td>Delete page</td><td>Removes a page from the document.</td></tr>
-          <tr><td>Refresh</td><td>Reloads the document so the latest saved version is shown.</td></tr>
-          <tr><td>Investigation</td><td>Brings investigation data alongside the document.</td></tr>
-          <tr><td>Print PDF</td><td>Produces the PDF of the document.</td></tr>
-          <tr><td>View activity logs</td><td>Shows who did what to this document and when.</td></tr>
+          <tr>
+            <td>Edit page</td>
+            <td>Sends the page back to the canvas for more writing.</td>
+          </tr>
+          <tr>
+            <td>Delete page</td>
+            <td>Removes a page from the document.</td>
+          </tr>
+          <tr>
+            <td>Refresh</td>
+            <td>Reloads the document so the latest saved version is shown.</td>
+          </tr>
+          <tr>
+            <td>Investigation</td>
+            <td>Brings investigation data alongside the document.</td>
+          </tr>
+          <tr>
+            <td>Print PDF</td>
+            <td>Produces the PDF of the document.</td>
+          </tr>
+          <tr>
+            <td>View activity logs</td>
+            <td>Shows who did what to this document and when.</td>
+          </tr>
         </tbody>
       </table>
     </div>
     <div class="note">
-      <p><b>Activity logs are the accountability record.</b> Because clinical documents are edited by more than one person, the log is what answers "who changed this page and when". Point support queries about unexpected content here first.</p>
+      <p><b>Activity logs are the accountability record.</b> Because clinical documents are edited by more than one
+        person, the log is what answers "who changed this page and when". Point support queries about unexpected content
+        here first.</p>
     </div>
   </section>
 
@@ -668,19 +1551,43 @@
       <span class="eyebrow">Step 4</span>
       <h2>Canvas screen</h2>
     </div>
-    <p>The writing surface, and the largest part of the feature. Grouped below by what the clinician is trying to do.</p>
+    <p>The writing surface, and the largest part of the feature. Grouped below by what the clinician is trying to do.
+    </p>
 
     <h3>4.1 Drawing</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Tool</th><th>What it does</th></tr></thead>
+        <thead>
+          <tr>
+            <th>Tool</th>
+            <th>What it does</th>
+          </tr>
+        </thead>
         <tbody>
-          <tr><td>Edit using pen</td><td>Writing with a stylus — the closest thing to a pen on paper.</td></tr>
-          <tr><td>Edit using fingers</td><td>Writing or marking with a fingertip when no stylus is at hand.</td></tr>
-          <tr><td>Eraser</td><td>Removes strokes. Eraser size is adjustable for fine corrections or clearing an area.</td></tr>
-          <tr><td>Highlight</td><td>Marks existing content without covering it.</td></tr>
-          <tr><td>Brush settings</td><td>Colour and draw settings for writing and colouring.</td></tr>
-          <tr><td>Shapes</td><td>Draws a triangle, circle, square or line — for boxing values or marking a diagram.</td></tr>
+          <tr>
+            <td>Edit using pen</td>
+            <td>Writing with a stylus — the closest thing to a pen on paper.</td>
+          </tr>
+          <tr>
+            <td>Edit using fingers</td>
+            <td>Writing or marking with a fingertip when no stylus is at hand.</td>
+          </tr>
+          <tr>
+            <td>Eraser</td>
+            <td>Removes strokes. Eraser size is adjustable for fine corrections or clearing an area.</td>
+          </tr>
+          <tr>
+            <td>Highlight</td>
+            <td>Marks existing content without covering it.</td>
+          </tr>
+          <tr>
+            <td>Brush settings</td>
+            <td>Colour and draw settings for writing and colouring.</td>
+          </tr>
+          <tr>
+            <td>Shapes</td>
+            <td>Draws a triangle, circle, square or line — for boxing values or marking a diagram.</td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -688,13 +1595,35 @@
     <h3>4.2 Pages and view</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Control</th><th>What it does</th></tr></thead>
+        <thead>
+          <tr>
+            <th>Control</th>
+            <th>What it does</th>
+          </tr>
+        </thead>
         <tbody>
-          <tr><td>Zoom</td><td>Magnifies the page for small handwriting and detailed marks.</td></tr>
-          <tr><td>Add new page</td><td>Extends the document when one page is not enough.</td></tr>
-          <tr><td>Delete page</td><td>Removes a page from the document.</td></tr>
-          <tr><td>Print saved page</td><td>Prints the page as saved.</td></tr>
-          <tr><td>Page slider</td><td>Tapping the <b>Page n / n</b> chip opens a slider under the page; dragging it and letting go jumps straight to that page. Shown on documents of three pages or more, and hides itself a few seconds after the last touch.</td></tr>
+          <tr>
+            <td>Zoom</td>
+            <td>Magnifies the page for small handwriting and detailed marks.</td>
+          </tr>
+          <tr>
+            <td>Add new page</td>
+            <td>Extends the document when one page is not enough.</td>
+          </tr>
+          <tr>
+            <td>Delete page</td>
+            <td>Removes a page from the document.</td>
+          </tr>
+          <tr>
+            <td>Print saved page</td>
+            <td>Prints the page as saved.</td>
+          </tr>
+          <tr>
+            <td>Page slider</td>
+            <td>Tapping the <b>Page n / n</b> chip opens a slider under the page; dragging it and letting go jumps
+              straight to that page. Shown on documents of three pages or more, and hides itself a few seconds after the
+              last touch.</td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -702,74 +1631,163 @@
     <h3>4.3 Undo, redo, revert</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Control</th><th>What it does</th><th>Scope</th></tr></thead>
+        <thead>
+          <tr>
+            <th>Control</th>
+            <th>What it does</th>
+            <th>Scope</th>
+          </tr>
+        </thead>
         <tbody>
-          <tr><td>Undo actions</td><td>Steps back through recent strokes and edits.</td><td>Since the page was opened.</td></tr>
-          <tr><td>Redo actions</td><td>Re-applies something just undone.</td><td>Since the page was opened.</td></tr>
-          <tr><td>Revert to last saved</td><td>Discards current changes and returns the page to its last saved state.</td><td>The whole page.</td></tr>
+          <tr>
+            <td>Undo actions</td>
+            <td>Steps back through recent strokes and edits.</td>
+            <td>Since the page was opened.</td>
+          </tr>
+          <tr>
+            <td>Redo actions</td>
+            <td>Re-applies something just undone.</td>
+            <td>Since the page was opened.</td>
+          </tr>
+          <tr>
+            <td>Revert to last saved</td>
+            <td>Discards current changes and returns the page to its last saved state.</td>
+            <td>The whole page.</td>
+          </tr>
         </tbody>
       </table>
     </div>
     <p class="swipe">Swipe the table sideways to read every column &rarr;</p>
 
     <h3>4.4 Copy tools</h3>
-    <p>Repeated paperwork is the norm on a ward — the same observations, the same layout, day after day. These three tools exist so a clinician does not redraw what they already drew.</p>
+    <p>Repeated paperwork is the norm on a ward — the same observations, the same layout, day after day. These three
+      tools exist so a clinician does not redraw what they already drew.</p>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Tool</th><th>What it does</th><th>Use it when</th></tr></thead>
+        <thead>
+          <tr>
+            <th>Tool</th>
+            <th>What it does</th>
+            <th>Use it when</th>
+          </tr>
+        </thead>
         <tbody>
-          <tr><td>Copy &amp; paste &amp; replace page content</td><td>Copies content and replaces what is currently on the target page.</td><td>Starting the new page from a known-good layout.</td></tr>
-          <tr><td>Copy &amp; paste complete page</td><td>Duplicates a whole page into the document.</td><td>Same form, next day.</td></tr>
-          <tr><td>Copy &amp; paste selected content</td><td>Copies only a selected part of the page.</td><td>Carrying one table or one block across.</td></tr>
+          <tr>
+            <td>Copy &amp; paste &amp; replace page content</td>
+            <td>Copies content and replaces what is currently on the target page.</td>
+            <td>Starting the new page from a known-good layout.</td>
+          </tr>
+          <tr>
+            <td>Copy &amp; paste complete page</td>
+            <td>Duplicates a whole page into the document.</td>
+            <td>Same form, next day.</td>
+          </tr>
+          <tr>
+            <td>Copy &amp; paste selected content</td>
+            <td>Copies only a selected part of the page.</td>
+            <td>Carrying one table or one block across.</td>
+          </tr>
         </tbody>
       </table>
     </div>
     <p class="swipe">Swipe the table sideways to read every column &rarr;</p>
 
     <h3>4.5 Reference panels</h3>
-    <p>Draggable panels that sit next to the page, so the clinician can read information while writing rather than leaving the canvas to find it.</p>
+    <p>Draggable panels that sit next to the page, so the clinician can read information while writing rather than
+      leaving the canvas to find it.</p>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Panel</th><th>Shows</th></tr></thead>
+        <thead>
+          <tr>
+            <th>Panel</th>
+            <th>Shows</th>
+          </tr>
+        </thead>
         <tbody>
-          <tr><td>View other documents</td><td>Another document from the same patient, for reference while writing.</td></tr>
-          <tr><td>Patient info</td><td>The patient's identity and admission details.</td></tr>
-          <tr><td>Activity logs</td><td>Who acted on this document and when.</td></tr>
-          <tr><td>Investigation history</td><td>Earlier investigations and their results.</td></tr>
+          <tr>
+            <td>View other documents</td>
+            <td>Another document from the same patient, for reference while writing.</td>
+          </tr>
+          <tr>
+            <td>Patient info</td>
+            <td>The patient's identity and admission details.</td>
+          </tr>
+          <tr>
+            <td>Activity logs</td>
+            <td>Who acted on this document and when.</td>
+          </tr>
+          <tr>
+            <td>Investigation history</td>
+            <td>Earlier investigations and their results.</td>
+          </tr>
         </tbody>
       </table>
     </div>
 
     <h3>4.6 Overlays placed on the page</h3>
-    <p>Items dropped onto the document itself. Between them they cover the three things handwriting alone cannot do: prove identity, prove provenance, and carry an image.</p>
+    <p>Items dropped onto the document itself. Between them they cover the three things handwriting alone cannot do:
+      prove identity, prove provenance, and carry an image.</p>
     <div class="chips">
-      <div class="chip" style="--tone: var(--accent)"><span class="dot"></span><span class="text"><span class="label">Camera photo</span><span class="what">Places a photo taken on the spot onto the page.</span></span></div>
-      <div class="chip" style="--tone: var(--s-vacant)"><span class="dot"></span><span class="text"><span class="label">Camera with geo</span><span class="what">Photo plus the location it was taken at.</span></span></div>
-      <div class="chip" style="--tone: var(--s-occupied)"><span class="dot"></span><span class="text"><span class="label">UHID barcode</span><span class="what">The patient's permanent hospital ID as a scannable barcode.</span></span></div>
-      <div class="chip" style="--tone: var(--s-occupied)"><span class="dot"></span><span class="text"><span class="label">Visit ID barcode</span><span class="what">Barcode identifying this specific visit or admission.</span></span></div>
-      <div class="chip" style="--tone: var(--s-transfer)"><span class="dot"></span><span class="text"><span class="label">QR code</span><span class="what">Scannable code carrying the document's reference.</span></span></div>
-      <div class="chip" style="--tone: var(--s-reserved)"><span class="dot"></span><span class="text"><span class="label">Patient image</span><span class="what">The patient's photo on the document.</span></span></div>
-      <div class="chip" style="--tone: var(--s-reserved)"><span class="dot"></span><span class="text"><span class="label">Patient info</span><span class="what">Identity and admission details printed onto the page.</span></span></div>
-      <div class="chip" style="--tone: var(--s-housekeeping)"><span class="dot"></span><span class="text"><span class="label">Doctor stamps</span><span class="what">The doctor's stamp, in place of a physical rubber stamp.</span></span></div>
-      <div class="chip" style="--tone: var(--s-maintenance)"><span class="dot"></span><span class="text"><span class="label">Fingerprint</span><span class="what">The patient's or attendant's thumb impression, taken from a USB scanner.</span></span></div>
+      <div class="chip" style="--tone: var(--accent)"><span class="dot"></span><span class="text"><span
+            class="label">Camera photo</span><span class="what">Places a photo taken on the spot onto the
+            page.</span></span></div>
+      <div class="chip" style="--tone: var(--s-vacant)"><span class="dot"></span><span class="text"><span
+            class="label">Camera with geo</span><span class="what">Photo plus the location it was taken
+            at.</span></span></div>
+      <div class="chip" style="--tone: var(--s-occupied)"><span class="dot"></span><span class="text"><span
+            class="label">UHID barcode</span><span class="what">The patient's permanent hospital ID as a scannable
+            barcode.</span></span></div>
+      <div class="chip" style="--tone: var(--s-occupied)"><span class="dot"></span><span class="text"><span
+            class="label">Visit ID barcode</span><span class="what">Barcode identifying this specific visit or
+            admission.</span></span></div>
+      <div class="chip" style="--tone: var(--s-transfer)"><span class="dot"></span><span class="text"><span
+            class="label">QR code</span><span class="what">Scannable code carrying the document's
+            reference.</span></span></div>
+      <div class="chip" style="--tone: var(--s-reserved)"><span class="dot"></span><span class="text"><span
+            class="label">Patient image</span><span class="what">The patient's photo on the document.</span></span>
+      </div>
+      <div class="chip" style="--tone: var(--s-reserved)"><span class="dot"></span><span class="text"><span
+            class="label">Patient info</span><span class="what">Identity and admission details printed onto the
+            page.</span></span></div>
+      <div class="chip" style="--tone: var(--s-housekeeping)"><span class="dot"></span><span class="text"><span
+            class="label">Doctor stamps</span><span class="what">The doctor's stamp, in place of a physical rubber
+            stamp.</span></span></div>
+      <div class="chip" style="--tone: var(--s-maintenance)"><span class="dot"></span><span class="text"><span
+            class="label">Fingerprint</span><span class="what">The patient's or attendant's thumb impression, taken from
+            a USB scanner.</span></span></div>
     </div>
     <div class="note">
-      <p><b>Why barcodes matter:</b> a printed page with a UHID and visit-ID barcode can be scanned back into the system without anyone typing a number. Keep barcodes clear of handwriting — anything drawn across a barcode or QR code can stop it scanning.</p>
+      <p><b>Why barcodes matter:</b> a printed page with a UHID and visit-ID barcode can be scanned back into the system
+        without anyone typing a number. Keep barcodes clear of handwriting — anything drawn across a barcode or QR code
+        can stop it scanning.</p>
     </div>
 
     <h3>4.7 Fingerprint capture</h3>
-    <p>Replaces the inked thumb impression on consent forms, admission papers and discharge summaries. The scanner plugs into the tablet with a USB OTG cable; the impression is taken live and dropped onto the page as an overlay, so it can be positioned over the signature block exactly like a stamp.</p>
+    <p>Replaces the inked thumb impression on consent forms, admission papers and discharge summaries. The scanner plugs
+      into the tablet with a USB OTG cable; the impression is taken live and dropped onto the page as an overlay, so it
+      can be positioned over the signature block exactly like a stamp.</p>
     <ol class="flow">
-      <li><strong>Open the overlay menu</strong><span>On the canvas toolbar, tap the overlay button. The &ldquo;Choose one&rdquo; sheet opens.</span></li>
-      <li><strong>Tap Fingerprint</strong><span>Last option in the top row of the sheet, beside Patient Image.</span></li>
-      <li><strong>Place the finger on the scanner</strong><span>&ldquo;Place finger on scanner…&rdquo; appears while the device is being prepared. The first capture after the tablet is switched on also asks for permission to use the scanner — allow it.</span></li>
-      <li><strong>Check the impression</strong><span>The captured print is shown for approval: <b>Insert</b> to accept, <b>Retry</b> to take it again, <b>&times;</b> to cancel without placing anything.</span></li>
-      <li><strong>Position it on the page</strong><span>After Insert, the fingerprint appears on the document and can be dragged anywhere and resized — normally into the patient / attendant signature box.</span></li>
+      <li><strong>Open the overlay menu</strong><span>On the canvas toolbar, tap the overlay button. The &ldquo;Choose
+          one&rdquo; sheet opens.</span></li>
+      <li><strong>Tap Fingerprint</strong><span>Last option in the top row of the sheet, beside Patient Image.</span>
+      </li>
+      <li><strong>Place the finger on the scanner</strong><span>&ldquo;Place finger on scanner…&rdquo; appears while the
+          device is being prepared. The first capture after the tablet is switched on also asks for permission to use
+          the scanner — allow it.</span></li>
+      <li><strong>Check the impression</strong><span>The captured print is shown for approval: <b>Insert</b> to accept,
+          <b>Retry</b> to take it again, <b>&times;</b> to cancel without placing anything.</span></li>
+      <li><strong>Position it on the page</strong><span>After Insert, the fingerprint appears on the document and can be
+          dragged anywhere and resized — normally into the patient / attendant signature box.</span></li>
     </ol>
     <div class="note">
-      <p><b>Supported scanner:</b> Mantra MFS500 (recommended, tested). Secugen Hamster models are also supported. Connect the scanner before tapping Fingerprint — if nothing is plugged in, the app reports &ldquo;No fingerprint scanner connected.&rdquo;</p>
-      <p><b>What is stored:</b> the fingerprint is placed on the document as a picture of the impression, exactly like a stamp or a photo. Nothing is matched against Aadhaar and no biometric identity check is performed.</p>
-      <p><b>If the print looks partial:</b> that is the size of the scanner window, not a fault — these sensors image the pad of the fingertip, not the whole finger. Press the finger flat and centred, and keep the sensor surface clean; use Retry until the ridges read clearly.</p>
+      <p><b>Supported scanner:</b> Mantra MFS500 (recommended, tested). Secugen Hamster models are also supported.
+        Connect the scanner before tapping Fingerprint — if nothing is plugged in, the app reports &ldquo;No fingerprint
+        scanner connected.&rdquo;</p>
+      <p><b>What is stored:</b> the fingerprint is placed on the document as a picture of the impression, exactly like a
+        stamp or a photo. Nothing is matched against Aadhaar and no biometric identity check is performed.</p>
+      <p><b>If the print looks partial:</b> that is the size of the scanner window, not a fault — these sensors image
+        the pad of the fingertip, not the whole finger. Press the finger flat and centred, and keep the sensor surface
+        clean; use Retry until the ridges read clearly.</p>
     </div>
   </section>
 
@@ -778,31 +1796,40 @@
       <span class="eyebrow">In practice</span>
       <h2>The three flows worth demonstrating</h2>
     </div>
-    <p>Almost everything staff do with this feature is one of these three. A training session should walk each one end to end.</p>
+    <p>Almost everything staff do with this feature is one of these three. A training session should walk each one end
+      to end.</p>
 
     <h3>Flow A — Write a new document at the bedside</h3>
     <ol class="flow">
       <li><strong>Open Pen Mode</strong><span>Doctor: admitted patient → Pen Mode. Nurse: bed → Pen Mode.</span></li>
       <li><strong>Pick the paperwork</strong><span>Document list → category → sub-category.</span></li>
       <li><strong>Create new document</strong><span>History screen → Create new document. The canvas opens.</span></li>
-      <li><strong>Write it</strong><span>Pen or finger, eraser and highlighter as needed; add a page if one is not enough.</span></li>
-      <li><strong>Stamp and identify</strong><span>Place patient info, UHID / visit barcode and the doctor stamp. On a consent or admission form, take the patient's fingerprint here too.</span></li>
-      <li><strong>Check and close</strong><span>Preview screen — read the pages, then print or leave it filed against the visit.</span></li>
+      <li><strong>Write it</strong><span>Pen or finger, eraser and highlighter as needed; add a page if one is not
+          enough.</span></li>
+      <li><strong>Stamp and identify</strong><span>Place patient info, UHID / visit barcode and the doctor stamp. On a
+          consent or admission form, take the patient's fingerprint here too.</span></li>
+      <li><strong>Check and close</strong><span>Preview screen — read the pages, then print or leave it filed against
+          the visit.</span></li>
     </ol>
 
     <h3>Flow B — Continue yesterday's chart</h3>
     <ol class="flow">
       <li><strong>Reopen the document</strong><span>History screen → Edit previous document.</span></li>
-      <li><strong>Carry the layout over</strong><span>Copy &amp; paste complete page, or copy only the selected block that repeats.</span></li>
-      <li><strong>Add today's entries</strong><span>Write on the new page; keep the reference panel open for the earlier document.</span></li>
-      <li><strong>Correct safely</strong><span>Undo for a slip; Revert to last saved if the page needs to go back to how it was.</span></li>
+      <li><strong>Carry the layout over</strong><span>Copy &amp; paste complete page, or copy only the selected block
+          that repeats.</span></li>
+      <li><strong>Add today's entries</strong><span>Write on the new page; keep the reference panel open for the earlier
+          document.</span></li>
+      <li><strong>Correct safely</strong><span>Undo for a slip; Revert to last saved if the page needs to go back to how
+          it was.</span></li>
     </ol>
 
     <h3>Flow C — Send documents out</h3>
     <ol class="flow">
       <li><strong>Select what goes</strong><span>Document list → select the documents required.</span></li>
-      <li><strong>Choose the route</strong><span>Print PDF for the file, email or WhatsApp for the recipient.</span></li>
-      <li><strong>Confirm the recipient</strong><span>Clinical documents leaving the hospital cannot be recalled — check the address or number before sending.</span></li>
+      <li><strong>Choose the route</strong><span>Print PDF for the file, email or WhatsApp for the recipient.</span>
+      </li>
+      <li><strong>Confirm the recipient</strong><span>Clinical documents leaving the hospital cannot be recalled — check
+          the address or number before sending.</span></li>
     </ol>
   </section>
 
@@ -815,8 +1842,10 @@
     <ul class="plain">
       <li><b>Writing:</b> pages written offline are saved on the device and placed in a sync queue.</li>
       <li><b>Recovering:</b> when the device is back on network, queued documents upload on their own.</li>
-      <li><b>Checking:</b> the Menu screen in both apps lists anything still pending under <b>View Sync Pending Offline Data</b>.</li>
-      <li><b>The one risk:</b> clearing cache or logging out while documents are still pending. Check the pending list first.</li>
+      <li><b>Checking:</b> the Menu screen in both apps lists anything still pending under <b>View Sync Pending Offline
+          Data</b>.</li>
+      <li><b>The one risk:</b> clearing cache or logging out while documents are still pending. Check the pending list
+        first.</li>
     </ul>
   </section>
 
@@ -827,18 +1856,53 @@
     </div>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+        <thead>
+          <tr>
+            <th>Term</th>
+            <th>Meaning</th>
+          </tr>
+        </thead>
         <tbody>
-          <tr><td>Pen Mode</td><td>The name this feature carries inside the doctor and nurse apps.</td></tr>
-          <tr><td>Category / Sub-category</td><td>The two levels documents are grouped under, configured per hospital.</td></tr>
-          <tr><td>Canvas</td><td>The writing surface where a document page is drawn on.</td></tr>
-          <tr><td>Overlay</td><td>An item placed onto the page — photo, barcode, QR code, patient info, stamp.</td></tr>
-          <tr><td>Geo tag</td><td>The location recorded together with a photo.</td></tr>
-          <tr><td>UHID</td><td>Unique Hospital ID — permanent per patient, across all visits.</td></tr>
-          <tr><td>Visit ID</td><td>Identifier for one specific visit or admission.</td></tr>
-          <tr><td>Activity log</td><td>The record of who acted on a document and when.</td></tr>
-          <tr><td>Revert to last saved</td><td>Discarding current changes and returning the page to its last saved state.</td></tr>
-          <tr><td>Sync Pending</td><td>Documents held on the device that have not yet reached the server.</td></tr>
+          <tr>
+            <td>Pen Mode</td>
+            <td>The name this feature carries inside the doctor and nurse apps.</td>
+          </tr>
+          <tr>
+            <td>Category / Sub-category</td>
+            <td>The two levels documents are grouped under, configured per hospital.</td>
+          </tr>
+          <tr>
+            <td>Canvas</td>
+            <td>The writing surface where a document page is drawn on.</td>
+          </tr>
+          <tr>
+            <td>Overlay</td>
+            <td>An item placed onto the page — photo, barcode, QR code, patient info, stamp.</td>
+          </tr>
+          <tr>
+            <td>Geo tag</td>
+            <td>The location recorded together with a photo.</td>
+          </tr>
+          <tr>
+            <td>UHID</td>
+            <td>Unique Hospital ID — permanent per patient, across all visits.</td>
+          </tr>
+          <tr>
+            <td>Visit ID</td>
+            <td>Identifier for one specific visit or admission.</td>
+          </tr>
+          <tr>
+            <td>Activity log</td>
+            <td>The record of who acted on a document and when.</td>
+          </tr>
+          <tr>
+            <td>Revert to last saved</td>
+            <td>Discarding current changes and returning the page to its last saved state.</td>
+          </tr>
+          <tr>
+            <td>Sync Pending</td>
+            <td>Documents held on the device that have not yet reached the server.</td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -846,7 +1910,8 @@
   </section>
 
   <footer>
-    <p>Prepared for support and client walkthroughs of Rescribe paperless documentation. The feature is identical in the doctor and nurse apps; document categories, ordering and colours are configured per hospital.</p>
+    <p>Prepared for support and client walkthroughs of Rescribe paperless documentation. The feature is identical in the
+      doctor and nurse apps; document categories, ordering and colours are configured per hospital.</p>
   </footer>
 
 </div>
@@ -914,10 +1979,21 @@
   }
 
   /* ---- go to a section, switching tab first when there is one ---- */
+  var flashed = null, flashTimer = null;
   function goto(tab, id) {
     if (tab && panels[tab]) show(tab, true);
     var el = document.getElementById(id);
-    if (el) el.scrollIntoView();
+    if (!el) return;
+    el.scrollIntoView();
+    /* a search hit can land mid-page on a subsection — say which one it was */
+    if (flashed) flashed.classList.remove('flash');
+    clearTimeout(flashTimer);
+    flashed = el;
+    el.classList.add('flash');
+    flashTimer = setTimeout(function () {
+      el.classList.remove('flash');
+      if (flashed === el) flashed = null;
+    }, 1800);
   }
 
   document.addEventListener('click', function (e) {
@@ -936,6 +2012,28 @@
   var wrap = box.parentNode;
   var idx = [];
 
+  /* Fold the typographic characters the pages actually use onto their ASCII
+     equivalents, so typing "what's new" finds “What’s New”. Every replacement
+     is one character for one character: the normalised copy stays the same
+     length as the original, which is what lets a match offset found in the
+     normalised text slice the original for display. */
+  function norm(s) {
+    return s.toLowerCase()
+      .replace(/[’‘ʼ]/g, "'")
+      .replace(/[“”]/g, '"')
+      .replace(/[–—]/g, '-');
+  }
+
+  function entry(tab, where, id, title, text, parent) {
+    var t = String(text).replace(/\s+/g, ' ').trim();
+    idx.push({
+      tab: tab, id: id, where: where, parent: parent || id,
+      what: title, whatN: norm(title),
+      text: t, textN: norm(t),
+      sub: !!parent
+    });
+  }
+
   (tabs.length ? names.map(function (n) { return [n, panels[n]]; })
                : [[null, document]]).forEach(function (pair) {
     var tab = pair[0], root = pair[1];
@@ -943,10 +2041,21 @@
                     : (document.querySelector('.masthead h1') || {}).textContent || 'This page';
     Array.prototype.forEach.call(root.querySelectorAll('section[id]'), function (sec) {
       var h = sec.querySelector('h2');
-      idx.push({
-        tab: tab, id: sec.id, where: label,
-        what: h ? h.textContent.trim() : sec.id,
-        text: sec.textContent.replace(/\s+/g, ' ').trim()
+      var title = h ? h.textContent.trim() : sec.id;
+      entry(tab, label, sec.id, title, sec.textContent, null);
+
+      /* Second level: every h3 is indexed on its own, carrying only the text
+         between it and the next h3. Without this a hit deep inside a long
+         section resolves to the section heading and drops the reader at the
+         top to hunt for it — What's New is 15 releases under 4 sections. */
+      var subs = sec.querySelectorAll('h3');
+      Array.prototype.forEach.call(subs, function (h3, n) {
+        if (!h3.id) h3.id = sec.id + '--' + (n + 1);
+        var r = document.createRange();
+        r.setStartBefore(h3);
+        if (subs[n + 1]) r.setEndBefore(subs[n + 1]);
+        else r.setEndAfter(sec.lastChild || sec);
+        entry(tab, label + ' · ' + title, h3.id, h3.textContent.trim(), r.toString(), sec.id);
       });
     });
   });
@@ -955,38 +2064,104 @@
 
   function esc(s) { return s.replace(/[&<>"]/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 
-  function mark(s, q) {
-    var i = s.toLowerCase().indexOf(q);
-    if (i < 0) return esc(s);
-    return esc(s.slice(0, i)) + '<mark>' + esc(s.slice(i, i + q.length)) + '</mark>' + esc(s.slice(i + q.length));
+  /* Every place a term occurs, merged so overlapping terms mark once. Offsets
+     are into the normalised text and valid in the original — norm() preserves
+     length. */
+  function ranges(hay, terms) {
+    var out = [];
+    terms.forEach(function (t) {
+      var i = hay.indexOf(t);
+      while (i >= 0 && out.length < 400) {
+        out.push([i, i + t.length]);
+        i = hay.indexOf(t, i + t.length);
+      }
+    });
+    out.sort(function (a, b) { return a[0] - b[0]; });
+    var merged = [];
+    out.forEach(function (r) {
+      var last = merged[merged.length - 1];
+      if (last && r[0] <= last[1]) last[1] = Math.max(last[1], r[1]);
+      else merged.push([r[0], r[1]]);
+    });
+    return merged;
   }
 
-  function snippet(text, q) {
-    var i = text.toLowerCase().indexOf(q);
-    if (i < 0) return '';
-    var from = Math.max(0, i - 45), to = Math.min(text.length, i + q.length + 85);
-    return (from ? '…' : '') + mark(text.slice(from, to), q) + (to < text.length ? '…' : '');
+  function mark(raw, hay, terms, from, to) {
+    var out = '', pos = from;
+    ranges(hay, terms).forEach(function (r) {
+      if (r[1] <= from || r[0] >= to) return;
+      var a = Math.max(r[0], from), b = Math.min(r[1], to);
+      if (a < pos) return;
+      out += esc(raw.slice(pos, a)) + '<mark>' + esc(raw.slice(a, b)) + '</mark>';
+      pos = b;
+    });
+    return out + esc(raw.slice(pos, to));
+  }
+
+  function snippet(e, terms) {
+    var rs = ranges(e.textN, terms);
+    if (!rs.length) return '';
+    var from = Math.max(0, rs[0][0] - 60);
+    var to = Math.min(e.text.length, rs[0][0] + 150);
+    return (from ? '…' : '') + mark(e.text, e.textN, terms, from, to) +
+           (to < e.text.length ? '…' : '');
+  }
+
+  /* Negative = drop. Every term must appear somewhere (AND), a heading match
+     outweighs a body match, and an earlier match outweighs a later one. */
+  function score(e, terms, phrase) {
+    var s = 0;
+    for (var k = 0; k < terms.length; k++) {
+      var inWhat = e.whatN.indexOf(terms[k]);
+      var inText = e.textN.indexOf(terms[k]);
+      if (inWhat < 0 && inText < 0) return -1;
+      if (inWhat >= 0) s += 60 - Math.min(inWhat, 30);
+      if (inText >= 0) s += 20 - Math.min(inText / 60, 15);
+    }
+    if (e.whatN.indexOf(phrase) >= 0) s += 90;
+    else if (e.textN.indexOf(phrase) >= 0) s += 35;
+    if (e.sub) s += 10;                  /* the subsection is the tighter answer */
+    return s;
   }
 
   function close() { if (list) { list.remove(); list = null; } hits = []; cur = -1; }
 
   function run() {
-    var q = box.value.trim().toLowerCase();
+    var typed = box.value.trim();
+    var phrase = norm(typed);
     close();
-    if (q.length < 2) return;
-    hits = idx.filter(function (e) {
-      return e.what.toLowerCase().indexOf(q) >= 0 || e.text.toLowerCase().indexOf(q) >= 0;
-    }).slice(0, 30);
+    if (phrase.length < 2) return;
+
+    var terms = phrase.split(/\s+/).filter(function (t) { return t.length > 1; });
+    if (!terms.length) terms = [phrase];
+
+    var ranked = [];
+    idx.forEach(function (e) {
+      var s = score(e, terms, phrase);
+      if (s >= 0) ranked.push({ s: s, e: e });
+    });
+    ranked.sort(function (a, b) { return b.s - a.s; });
+
+    /* One section answering a query as both itself and three of its
+       subsections is noise, not depth — keep its two best rows. */
+    var perSection = {};
+    hits = [];
+    ranked.forEach(function (r) {
+      var key = r.e.tab + '/' + r.e.parent;
+      perSection[key] = (perSection[key] || 0) + 1;
+      if (perSection[key] <= 2 && hits.length < 30) hits.push(r.e);
+    });
+
     list = document.createElement('div');
     list.className = 'results';
     if (!hits.length) {
-      list.innerHTML = '<div class="empty">No matches for “' + esc(box.value.trim()) + '”</div>';
+      list.innerHTML = '<div class="empty">No matches for “' + esc(typed) + '”</div>';
     } else {
       list.innerHTML = hits.map(function (e, n) {
         return '<button type="button" data-n="' + n + '">' +
                '<span class="where">' + esc(e.where) + '</span>' +
-               '<span class="what">' + mark(e.what, q) + '</span>' +
-               '<span class="snip">' + snippet(e.text, q) + '</span></button>';
+               '<span class="what">' + mark(e.what, e.whatN, terms, 0, e.what.length) + '</span>' +
+               '<span class="snip">' + snippet(e, terms) + '</span></button>';
       }).join('');
     }
     wrap.appendChild(list);
