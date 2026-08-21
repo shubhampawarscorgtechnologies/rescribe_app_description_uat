@@ -126,8 +126,19 @@
   /* Anchor offsets use scroll-padding on the scroll container: an embedding
      WebView may force `scroll-margin-top: 0` on every element, which would
      otherwise drop headings behind the sticky tab bar. */
-  html { scroll-padding-top: 4.5rem; }
-  html:has(.tabbar) { scroll-padding-top: 7.5rem; }
+  html {
+    scroll-padding-top: 4.5rem;
+  }
+
+  /* A standalone page's bar carries the search box alone; the index stacks the
+     tab row above it and is a row taller, so anchors need to clear more. */
+  html:has(.tabbar) {
+    scroll-padding-top: 7.5rem;
+  }
+
+  html:has(.tabrow) {
+    scroll-padding-top: 10.5rem;
+  }
 
   body {
     background: var(--bg);
@@ -147,12 +158,39 @@
     gap: 3.5rem;
   }
 
-  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; text-wrap: balance; line-height: 1.15; }
-  h1 { font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -0.015em; }
-  h2 { font-size: clamp(1.5rem, 3vw, 1.9rem); letter-spacing: -0.01em; }
-  h3 { font-size: 1.2rem; }
-  h4 { font-size: 1rem; font-family: var(--font-body); font-weight: 650; }
-  p { max-width: 65ch; }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    text-wrap: balance;
+    line-height: 1.15;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    letter-spacing: -0.015em;
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 3vw, 1.9rem);
+    letter-spacing: -0.01em;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+  }
+
+  h4 {
+    font-size: 1rem;
+    font-family: var(--font-body);
+    font-weight: 650;
+  }
+
+  p {
+    max-width: 65ch;
+  }
 
   .eyebrow {
     font-family: var(--font-mono);
@@ -163,66 +201,181 @@
   }
 
   /* ---------- header ---------- */
-  .masthead { display: flex; flex-direction: column; gap: 1rem; border-bottom: 2px solid var(--ink); padding-bottom: 1.75rem; }
-  .masthead p.lede { font-size: 1.1rem; color: var(--ink-2); }
-  .meta { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-3); }
-  .meta b { color: var(--ink-2); font-weight: 500; }
-  .printbtn {
-    align-self: flex-start; cursor: pointer;
-    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em;
-    color: var(--accent); background: transparent;
-    border: 1px solid var(--accent); border-radius: 999px;
-    padding: 0.4rem 0.9rem; min-height: 2.25rem;
+  .masthead {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 1.75rem;
   }
-  .printbtn:hover, .printbtn:focus-visible { background: var(--accent-soft); }
+
+  .masthead p.lede {
+    font-size: 1.1rem;
+    color: var(--ink-2);
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 2rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--ink-3);
+  }
+
+  .meta b {
+    color: var(--ink-2);
+    font-weight: 500;
+  }
+
+  .printbtn {
+    align-self: flex-start;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    background: transparent;
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    padding: 0.4rem 0.9rem;
+    min-height: 2.25rem;
+  }
+
+  .printbtn:hover,
+  .printbtn:focus-visible {
+    background: var(--accent-soft);
+  }
 
   /* ---------- sticky nav ---------- */
   .docnav {
-    position: sticky; top: 0; z-index: 20;
-    display: flex; gap: 0.15rem; overflow-x: auto; overscroll-behavior-x: contain;
-    background: var(--bg); border-bottom: 1px solid var(--line);
-    margin: 0 -1.5rem; padding: 0.5rem 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    gap: 0.15rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    margin: 0 -1.5rem;
+    padding: 0.5rem 1.5rem;
     scrollbar-width: none;
   }
-  .docnav::-webkit-scrollbar { display: none; }
-  .docnav a {
-    flex: none; text-decoration: none; color: var(--ink-2);
-    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em;
-    padding: 0.35rem 0.6rem; border-radius: 999px; white-space: nowrap;
+
+  .docnav::-webkit-scrollbar {
+    display: none;
   }
-  .docnav a:hover, .docnav a:focus-visible { color: var(--accent); background: var(--accent-soft); }
+
+  .docnav a {
+    flex: none;
+    text-decoration: none;
+    color: var(--ink-2);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    padding: 0.35rem 0.6rem;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  .docnav a:hover,
+  .docnav a:focus-visible {
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
 
   /* ---------- sections ---------- */
-  section { display: flex; flex-direction: column; gap: 1.25rem; scroll-margin-top: 4rem; min-width: 0; }
-  .page > * { min-width: 0; }
-  .tree-wrap, .table-wrap { min-width: 0; max-width: 100%; }
-  .section-head { display: flex; flex-direction: column; gap: 0.35rem; border-left: 3px solid var(--accent); padding-left: 0.9rem; }
+  section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    scroll-margin-top: 4rem;
+    min-width: 0;
+  }
+
+  .page>* {
+    min-width: 0;
+  }
+
+  .tree-wrap,
+  .table-wrap {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .section-head {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    border-left: 3px solid var(--accent);
+    padding-left: 0.9rem;
+  }
 
   /* ---------- screen index ---------- */
-  .screens { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1rem; }
+  .screens {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1rem;
+  }
+
   .screen-card {
     background: var(--surface);
     border: 1px solid var(--line);
     border-radius: var(--radius);
     padding: 1.1rem 1.2rem;
-    display: flex; flex-direction: column; gap: 0.4rem;
-    text-decoration: none; color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    text-decoration: none;
+    color: inherit;
   }
-  .screen-card:hover, .screen-card:focus-visible { border-color: var(--accent); outline: none; }
-  .screen-card .num { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-3); letter-spacing: 0.1em; }
-  .screen-card .name { font-family: var(--font-display); font-size: 1.15rem; }
-  .screen-card .desc { font-size: 0.88rem; color: var(--ink-2); }
+
+  .screen-card:hover,
+  .screen-card:focus-visible {
+    border-color: var(--accent);
+    outline: none;
+  }
+
+  .screen-card .num {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--ink-3);
+    letter-spacing: 0.1em;
+  }
+
+  .screen-card .name {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+  }
+
+  .screen-card .desc {
+    font-size: 0.88rem;
+    color: var(--ink-2);
+  }
 
   /* ---------- tree panel ---------- */
   .tree-wrap {
-    background: var(--panel); border-radius: var(--radius); border: 1px solid var(--line-strong);
-    overflow-x: auto; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch;
+    background: var(--panel);
+    border-radius: var(--radius);
+    border: 1px solid var(--line-strong);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
   }
+
   .tree-title {
-    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--panel-accent); padding: 0.75rem 1.2rem; border-bottom: 1px solid rgba(255,255,255,0.09);
-    position: sticky; left: 0;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--panel-accent);
+    padding: 0.75rem 1.2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+    position: sticky;
+    left: 0;
   }
+
   pre.tree {
     font-family: var(--font-mono);
     font-size: 0.82rem;
@@ -232,217 +385,839 @@
     margin: 0;
     white-space: pre;
   }
-  pre.tree .b { color: #FFFFFF; font-weight: 600; }
-  pre.tree .n { color: #8FD6C4; }
-  pre.tree .c { color: #7E9089; }
-  pre.tree .a { color: #E8B75F; }
+
+  pre.tree .b {
+    color: #FFFFFF;
+    font-weight: 600;
+  }
+
+  pre.tree .n {
+    color: #8FD6C4;
+  }
+
+  pre.tree .c {
+    color: #7E9089;
+  }
+
+  pre.tree .a {
+    color: #E8B75F;
+  }
 
   /* ---------- tables ---------- */
-  .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
-  table { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
-  th, td { text-align: left; padding: 0.65rem 0.9rem; border-bottom: 1px solid var(--line); vertical-align: top; }
-  th { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); background: var(--surface-2); white-space: nowrap; }
-  tbody tr:last-child td { border-bottom: none; }
-  td:first-child { font-weight: 600; white-space: nowrap; }
-  td code, p code, li code { font-family: var(--font-mono); font-size: 0.85em; background: var(--surface-2); padding: 0.1em 0.35em; border-radius: 3px; }
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 0.9rem;
+  }
+
+  th,
+  td {
+    text-align: left;
+    padding: 0.65rem 0.9rem;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+
+  th {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    background: var(--surface-2);
+    white-space: nowrap;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  td:first-child {
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  td code,
+  p code,
+  li code {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    background: var(--surface-2);
+    padding: 0.1em 0.35em;
+    border-radius: 3px;
+  }
 
   /* ---------- status legend ---------- */
-  .chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); gap: 0.6rem; }
-  .chip { display: flex; gap: 0.7rem; align-items: flex-start; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 0.6rem 0.8rem; }
-  .dot { width: 0.7rem; height: 0.7rem; border-radius: 50%; margin-top: 0.4rem; flex: none; background: var(--tone); }
-  .chip .text { display: flex; flex-direction: column; gap: 0.1rem; }
-  .chip .label { display: block; font-weight: 600; font-size: 0.9rem; color: var(--tone); }
-  .chip .what { display: block; font-size: 0.82rem; color: var(--ink-2); line-height: 1.45; }
+  .chips {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: 0.6rem;
+  }
+
+  .chip {
+    display: flex;
+    gap: 0.7rem;
+    align-items: flex-start;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 0.6rem 0.8rem;
+  }
+
+  .dot {
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 50%;
+    margin-top: 0.4rem;
+    flex: none;
+    background: var(--tone);
+  }
+
+  .chip .text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .chip .label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--tone);
+  }
+
+  .chip .what {
+    display: block;
+    font-size: 0.82rem;
+    color: var(--ink-2);
+    line-height: 1.45;
+  }
 
   /* ---------- wireframe ---------- */
   .wire {
-    background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--radius);
-    padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem; max-width: 34rem;
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-width: 34rem;
   }
-  .wire-row { display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; }
-  .wire .bed { font-family: var(--font-mono); font-weight: 700; font-size: 1.1rem; }
-  .wire .pill { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.2rem 0.55rem; border-radius: 999px; background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent); }
-  .wire .pt { font-weight: 650; font-size: 1rem; }
-  .wire dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr)); gap: 0.6rem 1rem; margin: 0; }
-  .wire dl > div { display: flex; flex-direction: column; gap: 0.1rem; }
-  .wire dt { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); }
-  .wire dd { margin: 0; font-size: 0.88rem; font-variant-numeric: tabular-nums; }
-  .wire .actions { display: flex; gap: 0.4rem; flex-wrap: wrap; border-top: 1px dashed var(--line); padding-top: 0.7rem; }
-  .wire .btn { font-size: 0.75rem; padding: 0.25rem 0.6rem; border: 1px solid var(--line-strong); border-radius: 3px; color: var(--ink-2); }
-  .caption { font-size: 0.8rem; color: var(--ink-3); max-width: 60ch; }
+
+  .wire-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: baseline;
+  }
+
+  .wire .bed {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+
+  .wire .pill {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+  }
+
+  .wire .pt {
+    font-weight: 650;
+    font-size: 1rem;
+  }
+
+  .wire dl {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+    gap: 0.6rem 1rem;
+    margin: 0;
+  }
+
+  .wire dl>div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .wire dt {
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .wire dd {
+    margin: 0;
+    font-size: 0.88rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .wire .actions {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    border-top: 1px dashed var(--line);
+    padding-top: 0.7rem;
+  }
+
+  .wire .btn {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.6rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    color: var(--ink-2);
+  }
+
+  .caption {
+    font-size: 0.8rem;
+    color: var(--ink-3);
+    max-width: 60ch;
+  }
 
   /* ---------- count dashboard mock ---------- */
-  .counts { display: grid; grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr)); gap: 0.6rem; }
-  .count {
-    background: var(--surface); border: 1px solid var(--line); border-top: 3px solid var(--tone);
-    border-radius: var(--radius); padding: 0.7rem 0.8rem; display: flex; flex-direction: column; gap: 0.15rem;
+  .counts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr));
+    gap: 0.6rem;
   }
-  .count .n { font-family: var(--font-mono); font-size: 1.5rem; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--tone); }
-  .count .l { font-size: 0.75rem; color: var(--ink-2); }
+
+  .count {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-top: 3px solid var(--tone);
+    border-radius: var(--radius);
+    padding: 0.7rem 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .count .n {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--tone);
+  }
+
+  .count .l {
+    font-size: 0.75rem;
+    color: var(--ink-2);
+  }
 
   /* ---------- callout ---------- */
-  .note { background: var(--accent-soft); border-left: 3px solid var(--accent); border-radius: 0 var(--radius) var(--radius) 0; padding: 0.9rem 1.1rem; }
-  .note p { margin: 0; font-size: 0.92rem; color: var(--ink); }
-  .note p + p { margin-top: 0.5rem; }
+  .note {
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 0.9rem 1.1rem;
+  }
+
+  .note p {
+    margin: 0;
+    font-size: 0.92rem;
+    color: var(--ink);
+  }
+
+  .note p+p {
+    margin-top: 0.5rem;
+  }
 
   /* ---------- flow ---------- */
-  ol.flow { list-style: none; counter-reset: step; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem; }
-  ol.flow li { counter-increment: step; display: grid; grid-template-columns: 2rem 1fr; gap: 0.9rem; align-items: start; }
+  ol.flow {
+    list-style: none;
+    counter-reset: step;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  ol.flow li {
+    counter-increment: step;
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    gap: 0.9rem;
+    align-items: start;
+  }
+
   ol.flow li::before {
     content: counter(step, decimal-leading-zero);
-    font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; color: var(--accent);
-    border: 1px solid var(--line-strong); border-radius: 50%; width: 2rem; height: 2rem;
-    display: grid; place-items: center;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--accent);
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    display: grid;
+    place-items: center;
   }
-  ol.flow li > strong { grid-column: 2; display: block; }
-  ol.flow li > span { grid-column: 2; font-size: 0.9rem; color: var(--ink-2); }
 
-  ul.plain { padding-left: 1.1rem; margin: 0; display: flex; flex-direction: column; gap: 0.35rem; }
-  ul.plain li { font-size: 0.92rem; color: var(--ink-2); }
-  ul.plain li b { color: var(--ink); font-weight: 650; }
+  ol.flow li>strong {
+    grid-column: 2;
+    display: block;
+  }
 
-  footer { border-top: 1px solid var(--line); padding-top: 1.25rem; font-size: 0.82rem; color: var(--ink-3); }
+  ol.flow li>span {
+    grid-column: 2;
+    font-size: 0.9rem;
+    color: var(--ink-2);
+  }
 
-  a { color: var(--accent); }
-  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  ul.plain {
+    padding-left: 1.1rem;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
 
-  .swipe { display: none; font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.06em; color: var(--ink-3); }
+  ul.plain li {
+    font-size: 0.92rem;
+    color: var(--ink-2);
+  }
+
+  ul.plain li b {
+    color: var(--ink);
+    font-weight: 650;
+  }
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding-top: 1.25rem;
+    font-size: 0.82rem;
+    color: var(--ink-3);
+  }
+
+  a {
+    color: var(--accent);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .swipe {
+    display: none;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    color: var(--ink-3);
+  }
 
   /* ---------- responsive ---------- */
   @media (max-width: 900px) {
-    .page { padding: 2.25rem 1.25rem 3.5rem; gap: 2.75rem; }
-    .docnav { margin: 0 -1.25rem; padding: 0.5rem 1.25rem; }
+    .page {
+      padding: 2.25rem 1.25rem 3.5rem;
+      gap: 2.75rem;
+    }
+
+    .docnav {
+      margin: 0 -1.25rem;
+      padding: 0.5rem 1.25rem;
+    }
   }
 
   @media (max-width: 640px) {
-    body { font-size: 15px; }
-    .page { padding: 1.5rem 0.9rem 3rem; gap: 2.25rem; }
-    .docnav { margin: 0 -0.9rem; padding: 0.45rem 0.9rem; }
-    .masthead { gap: 0.7rem; padding-bottom: 1.25rem; }
-    .masthead p.lede { font-size: 1rem; }
-    .meta { flex-direction: column; gap: 0.2rem; }
-    .screens { grid-template-columns: 1fr; }
-    .chips { grid-template-columns: 1fr; }
-    .counts { grid-template-columns: repeat(2, 1fr); }
-    .section-head { padding-left: 0.7rem; }
-    .tree-title { padding: 0.6rem 0.9rem; font-size: 0.66rem; }
-    pre.tree { font-size: 0.66rem; line-height: 1.55; padding: 0.9rem; }
-    th, td { padding: 0.55rem 0.7rem; }
-    table { font-size: 0.85rem; min-width: 32rem; }
-    .wire { padding: 0.85rem; }
-    .wire dl { grid-template-columns: repeat(2, 1fr); }
-    .note { padding: 0.8rem 0.9rem; }
-    ol.flow li { grid-template-columns: 1.6rem 1fr; gap: 0.6rem; }
-    ol.flow li::before { width: 1.6rem; height: 1.6rem; font-size: 0.66rem; }
-    .swipe { display: block; }
+    body {
+      font-size: 15px;
+    }
+
+    .page {
+      padding: 1.5rem 0.9rem 3rem;
+      gap: 2.25rem;
+    }
+
+    .docnav {
+      margin: 0 -0.9rem;
+      padding: 0.45rem 0.9rem;
+    }
+
+    .masthead {
+      gap: 0.7rem;
+      padding-bottom: 1.25rem;
+    }
+
+    .masthead p.lede {
+      font-size: 1rem;
+    }
+
+    .meta {
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .screens {
+      grid-template-columns: 1fr;
+    }
+
+    .chips {
+      grid-template-columns: 1fr;
+    }
+
+    .counts {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .section-head {
+      padding-left: 0.7rem;
+    }
+
+    .tree-title {
+      padding: 0.6rem 0.9rem;
+      font-size: 0.66rem;
+    }
+
+    pre.tree {
+      font-size: 0.66rem;
+      line-height: 1.55;
+      padding: 0.9rem;
+    }
+
+    th,
+    td {
+      padding: 0.55rem 0.7rem;
+    }
+
+    table {
+      font-size: 0.85rem;
+      min-width: 32rem;
+    }
+
+    .wire {
+      padding: 0.85rem;
+    }
+
+    .wire dl {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .note {
+      padding: 0.8rem 0.9rem;
+    }
+
+    ol.flow li {
+      grid-template-columns: 1.6rem 1fr;
+      gap: 0.6rem;
+    }
+
+    ol.flow li::before {
+      width: 1.6rem;
+      height: 1.6rem;
+      font-size: 0.66rem;
+    }
+
+    .swipe {
+      display: block;
+    }
   }
 
   @media (max-width: 380px) {
-    pre.tree { font-size: 0.6rem; }
-    .counts { grid-template-columns: 1fr 1fr; }
-    .wire dl { grid-template-columns: 1fr; }
+    pre.tree {
+      font-size: 0.6rem;
+    }
+
+    .counts {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .wire dl {
+      grid-template-columns: 1fr;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+    * {
+      animation-duration: 0.001ms !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 
   @media print {
-    body { background: #fff; }
-    .tree-wrap { break-inside: avoid; }
-    .docnav, .swipe { display: none !important; }
+    body {
+      background: #fff;
+    }
+
+    .tree-wrap {
+      break-inside: avoid;
+    }
+
+    .docnav,
+    .swipe {
+      display: none !important;
+    }
   }
 
   /* ---------- per-document accents ---------- */
-  .page[data-doc="doctor"] { --accent: #17537E; --accent-2: #0F3F63; --accent-soft: #E1EBF3; --panel-accent: #86BCE4; }
-  .page[data-doc="paper"]  { --accent: #8A5510; --accent-2: #6B420C; --accent-soft: #F4E9D9; --panel-accent: #E0A64B; }
-  @media (prefers-color-scheme: dark) {
-    .page[data-doc="doctor"] { --accent: #69B0E4; --accent-2: #9BCCEF; --accent-soft: #12293A; --panel-accent: #86BCE4; }
-    .page[data-doc="paper"]  { --accent: #E0A64B; --accent-2: #EEC383; --accent-soft: #2D2110; --panel-accent: #E0A64B; }
+  .page[data-doc="doctor"] {
+    --accent: #17537E;
+    --accent-2: #0F3F63;
+    --accent-soft: #E1EBF3;
+    --panel-accent: #86BCE4;
   }
-  :root[data-theme="dark"] .page[data-doc="doctor"] { --accent: #69B0E4; --accent-2: #9BCCEF; --accent-soft: #12293A; --panel-accent: #86BCE4; }
-  :root[data-theme="dark"] .page[data-doc="paper"]  { --accent: #E0A64B; --accent-2: #EEC383; --accent-soft: #2D2110; --panel-accent: #E0A64B; }
-  :root[data-theme="light"] .page[data-doc="doctor"] { --accent: #17537E; --accent-2: #0F3F63; --accent-soft: #E1EBF3; --panel-accent: #86BCE4; }
-  :root[data-theme="light"] .page[data-doc="paper"]  { --accent: #8A5510; --accent-2: #6B420C; --accent-soft: #F4E9D9; --panel-accent: #E0A64B; }
+
+  .page[data-doc="paper"] {
+    --accent: #8A5510;
+    --accent-2: #6B420C;
+    --accent-soft: #F4E9D9;
+    --panel-accent: #E0A64B;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .page[data-doc="doctor"] {
+      --accent: #69B0E4;
+      --accent-2: #9BCCEF;
+      --accent-soft: #12293A;
+      --panel-accent: #86BCE4;
+    }
+
+    .page[data-doc="paper"] {
+      --accent: #E0A64B;
+      --accent-2: #EEC383;
+      --accent-soft: #2D2110;
+      --panel-accent: #E0A64B;
+    }
+  }
+
+  :root[data-theme="dark"] .page[data-doc="doctor"] {
+    --accent: #69B0E4;
+    --accent-2: #9BCCEF;
+    --accent-soft: #12293A;
+    --panel-accent: #86BCE4;
+  }
+
+  :root[data-theme="dark"] .page[data-doc="paper"] {
+    --accent: #E0A64B;
+    --accent-2: #EEC383;
+    --accent-soft: #2D2110;
+    --panel-accent: #E0A64B;
+  }
+
+  :root[data-theme="light"] .page[data-doc="doctor"] {
+    --accent: #17537E;
+    --accent-2: #0F3F63;
+    --accent-soft: #E1EBF3;
+    --panel-accent: #86BCE4;
+  }
+
+  :root[data-theme="light"] .page[data-doc="paper"] {
+    --accent: #8A5510;
+    --accent-2: #6B420C;
+    --accent-soft: #F4E9D9;
+    --panel-accent: #E0A64B;
+  }
 
   /* ---------- module tabs (index page) ---------- */
+  /* Deliberately not a scroll container: the search results panel hangs out of
+     the bottom of this bar as an absolutely positioned child, and an
+     overflow-x here would compute overflow-y to auto and clip it. Only the row
+     of tab buttons scrolls sideways. */
   .tabbar {
-    position: sticky; top: 0; z-index: 30;
-    display: flex; gap: 0.3rem; overflow-x: auto; overscroll-behavior-x: contain;
-    background: var(--bg); border-bottom: 1px solid var(--line-strong);
-    padding: 0.55rem 1.5rem; scrollbar-width: none;
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    display: flex;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line-strong);
+    padding: 0.55rem 1.5rem;
   }
-  .tabbar::-webkit-scrollbar { display: none; }
-  .tabbar .tabinner { display: flex; gap: 0.3rem; width: 100%; max-width: var(--wrap); margin: 0 auto; }
+
+  .tabbar .tabinner {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    width: 100%;
+    max-width: var(--wrap);
+    margin: 0 auto;
+  }
+
+  .tabbar .tabrow {
+    display: flex;
+    gap: 0.3rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .tabbar .tabrow::-webkit-scrollbar {
+    display: none;
+  }
+
   .tabbar button {
-    flex: none; cursor: pointer; white-space: nowrap;
-    font-family: var(--font-mono); font-size: 0.76rem; letter-spacing: 0.06em;
-    color: var(--ink-3); background: transparent;
-    border: 1px solid transparent; border-radius: 999px;
-    padding: 0.45rem 0.95rem; min-height: 2.4rem;
+    flex: none;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    letter-spacing: 0.06em;
+    color: var(--ink-3);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    padding: 0.45rem 0.95rem;
+    min-height: 2.4rem;
   }
-  .tabbar button:hover { color: var(--ink); }
-  .tabbar button[aria-selected="true"] { color: var(--ink); background: var(--surface); border-color: var(--line-strong); }
-  body:has(.tabbar) .docnav { top: 3.4rem; }
-  [hidden] { display: none !important; }
+
+  .tabbar button:hover {
+    color: var(--ink);
+  }
+
+  .tabbar button[aria-selected="true"] {
+    color: var(--ink);
+    background: var(--surface);
+    border-color: var(--line-strong);
+  }
+
+  body:has(.tabbar) .docnav {
+    top: 3.4rem;
+  }
+
+  body:has(.tabrow) .docnav {
+    top: 6.4rem;
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+
   @media (max-width: 640px) {
-    .tabbar { padding: 0.5rem 0.9rem; }
-    .tabbar button { font-size: 0.72rem; padding: 0.4rem 0.75rem; }
+    .tabbar {
+      padding: 0.5rem 0.9rem;
+    }
+
+    .tabbar button {
+      font-size: 0.72rem;
+      padding: 0.4rem 0.75rem;
+    }
   }
 
   /* ---------- global search ---------- */
-  .search { position: relative; flex: 1 1 9rem; min-width: 6rem; margin-left: auto; }
+  /* Full width of the wrap, on its own row under the tabs. Keep position
+     relative — the results panel anchors to this box. */
+  .search {
+    position: relative;
+    width: 100%;
+  }
+
   .search input {
-    width: 100%; min-height: 2.4rem;
-    font-family: var(--font-mono); font-size: 0.76rem; color: var(--ink);
-    background: var(--surface); border: 1px solid var(--line-strong); border-radius: 999px;
+    width: 100%;
+    min-height: 2.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
     padding: 0.4rem 0.9rem;
   }
-  .search input::placeholder { color: var(--ink-3); }
+
+  .search input::placeholder {
+    color: var(--ink-3);
+  }
+
+  /* Spans the search box, which is now a full-width row of its own — a fixed
+     width anchored right would float clear of the input it belongs to. */
   .results {
-    position: absolute; top: calc(100% + 0.4rem); right: 0;
-    width: min(28rem, 88vw); max-height: 60vh; overflow-y: auto;
-    background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--radius);
-    box-shadow: 0 8px 28px rgba(0,0,0,0.18); z-index: 40;
+    position: absolute;
+    top: calc(100% + 0.4rem);
+    left: 0;
+    right: 0;
+    max-height: 60vh;
+    overflow-y: auto;
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
+    z-index: 40;
   }
+
+  /* A button does not wrap its text the way a div does — without this the
+     heading and snippet run off the edge of the panel and get cut mid-word. */
   .results button {
-    display: block; width: 100%; text-align: left; cursor: pointer;
-    background: transparent; border: none; border-bottom: 1px solid var(--line);
-    padding: 0.6rem 0.85rem; color: inherit; font-family: var(--font-body);
+    display: block;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--line);
+    padding: 0.6rem 0.85rem;
+    color: inherit;
+    font-family: var(--font-body);
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
-  .results button:last-child { border-bottom: none; }
-  .results button:hover, .results button.on { background: var(--accent-soft); }
-  .results .where { display: block; font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); }
-  .results .what { display: block; font-weight: 650; font-size: 0.9rem; }
-  .results .snip { display: block; font-size: 0.8rem; color: var(--ink-2); line-height: 1.45; }
-  .results .snip mark, .results .what mark { background: var(--accent-soft); color: var(--accent); padding: 0 0.1em; }
-  .results .empty { padding: 0.7rem 0.85rem; font-size: 0.85rem; color: var(--ink-3); }
+
+  .results button:last-child {
+    border-bottom: none;
+  }
+
+  .results button:hover,
+  .results button.on {
+    background: var(--accent-soft);
+  }
+
+  /* One line — the breadcrumb is context, not the answer. */
+  .results .where {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .results .what {
+    display: block;
+    font-weight: 650;
+    font-size: 0.9rem;
+  }
+
+  /* Two lines is enough to judge a hit; more turns the list into a wall. */
+  .results .snip {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 0.8rem;
+    color: var(--ink-2);
+    line-height: 1.45;
+  }
+
+  .results .snip mark,
+  .results .what mark {
+    background: var(--accent-soft);
+    color: var(--accent);
+    padding: 0 0.1em;
+  }
+
+  .results .empty {
+    padding: 0.7rem 0.85rem;
+    font-size: 0.85rem;
+    color: var(--ink-3);
+  }
+
+  /* A search hit can land on a subsection halfway down a long page. Tint the
+     target for a moment so the reader sees which heading they were sent to. */
+  .flash {
+    animation: flash 1.8s ease-out;
+    border-radius: 0.4rem;
+  }
+
+  @keyframes flash {
+    0%, 55% { background: var(--accent-soft); box-shadow: 0 0 0 0.4rem var(--accent-soft); }
+    100% { background: transparent; box-shadow: 0 0 0 0.4rem transparent; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .flash { animation: none; }
+  }
 
   /* ---------- what's new ---------- */
-  .page[data-doc="whatsnew"] { --accent: #6A3FA0; --accent-2: #52307E; --accent-soft: #EEE7F6; --panel-accent: #B79BE0; }
-  @media (prefers-color-scheme: dark) {
-    .page[data-doc="whatsnew"] { --accent: #B79BE0; --accent-2: #CDBAEC; --accent-soft: #241A33; --panel-accent: #B79BE0; }
+  .page[data-doc="whatsnew"] {
+    --accent: #6A3FA0;
+    --accent-2: #52307E;
+    --accent-soft: #EEE7F6;
+    --panel-accent: #B79BE0;
   }
-  :root[data-theme="dark"] .page[data-doc="whatsnew"] { --accent: #B79BE0; --accent-2: #CDBAEC; --accent-soft: #241A33; --panel-accent: #B79BE0; }
-  :root[data-theme="light"] .page[data-doc="whatsnew"] { --accent: #6A3FA0; --accent-2: #52307E; --accent-soft: #EEE7F6; --panel-accent: #B79BE0; }
 
-  figure.shot { margin: 0.6rem 0 0; display: flex; flex-direction: column; gap: 0.4rem; max-width: 22rem; }
-  ol.flow li > figure.shot { grid-column: 2; }
-  figure.shot img { display: block; width: 100%; border: 1px solid var(--line-strong); border-radius: var(--radius); background: var(--surface); }
-  figure.shot figcaption { font-size: 0.78rem; color: var(--ink-3); line-height: 1.45; }
-  figure.shot .missing {
-    display: grid; place-items: center; min-height: 9rem; padding: 1rem; text-align: center;
-    border: 1px dashed var(--line-strong); border-radius: var(--radius);
-    background: var(--surface-2); color: var(--ink-3);
-    font-family: var(--font-mono); font-size: 0.7rem; line-height: 1.6;
+  @media (prefers-color-scheme: dark) {
+    .page[data-doc="whatsnew"] {
+      --accent: #B79BE0;
+      --accent-2: #CDBAEC;
+      --accent-soft: #241A33;
+      --panel-accent: #B79BE0;
+    }
   }
-</style><div class="tabbar"><div class="tabinner"><div class="search"><input type="search" id="q" placeholder="Search all pages…" autocomplete="off" aria-label="Search the documentation"></div></div></div>
+
+  :root[data-theme="dark"] .page[data-doc="whatsnew"] {
+    --accent: #B79BE0;
+    --accent-2: #CDBAEC;
+    --accent-soft: #241A33;
+    --panel-accent: #B79BE0;
+  }
+
+  :root[data-theme="light"] .page[data-doc="whatsnew"] {
+    --accent: #6A3FA0;
+    --accent-2: #52307E;
+    --accent-soft: #EEE7F6;
+    --panel-accent: #B79BE0;
+  }
+
+  figure.shot {
+    margin: 0.6rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    max-width: 22rem;
+  }
+
+  ol.flow li>figure.shot {
+    grid-column: 2;
+  }
+
+  figure.shot img {
+    display: block;
+    width: 100%;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+
+  figure.shot figcaption {
+    font-size: 0.78rem;
+    color: var(--ink-3);
+    line-height: 1.45;
+  }
+
+  figure.shot .missing {
+    display: grid;
+    place-items: center;
+    min-height: 9rem;
+    padding: 1rem;
+    text-align: center;
+    border: 1px dashed var(--line-strong);
+    border-radius: var(--radius);
+    background: var(--surface-2);
+    color: var(--ink-3);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    line-height: 1.6;
+  }
+</style>
+<div class="tabbar"><div class="tabinner"><div class="search"><input type="search" id="q" placeholder="Search all pages…" autocomplete="off" aria-label="Search the documentation"></div></div></div>
 <div class="page">
 
   <header class="masthead">
     <span class="eyebrow">Nursing Module · Functional Documentation</span>
     <h1>Nurse App — Screen &amp; Feature Map</h1>
-    <p class="lede">What a nurse can see and do inside the app, screen by screen. Written for support staff and hospital stakeholders — no technical background needed.</p>
+    <p class="lede">What a nurse can see and do inside the app, screen by screen. Written for support staff and hospital
+      stakeholders — no technical background needed.</p>
     <div class="meta">
       <span><b>Application:</b> Rescribe — Nurse login</span>
       <span><b>Screens:</b> 3 primary</span>
@@ -455,6 +1230,7 @@
     <a href="#start">Start here</a>
     <a href="#tree">Full tree</a>
     <a href="#main">1 · Main</a>
+    <a href="#n-scan">Quick Scan</a>
     <a href="#bed">2 · Bed Display</a>
     <a href="#menu">3 · Menu</a>
     <a href="#offline">Offline</a>
@@ -467,17 +1243,20 @@
       <span class="eyebrow">Start here</span>
       <h2>The app in three screens</h2>
     </div>
-    <p>A nurse logging in lands on a module with three top-level screens. Everything else in this document sits underneath one of them.</p>
+    <p>A nurse logging in lands on a module with three top-level screens. Everything else in this document sits
+      underneath one of them.</p>
     <div class="screens">
       <a class="screen-card" href="#main">
         <span class="num">SCREEN 1</span>
         <span class="name">Main</span>
-        <span class="desc">Pick the branch and the ward/floor you are working on. Sets the context for everything after.</span>
+        <span class="desc">Pick the branch and the ward/floor you are working on. Sets the context for everything
+          after.</span>
       </a>
       <a class="screen-card" href="#bed">
         <span class="num">SCREEN 2</span>
         <span class="name">Bed Display</span>
-        <span class="desc">The working screen. Live ward board, patient records, orders, medication, pen mode, bed status changes.</span>
+        <span class="desc">The working screen. Live ward board, patient records, orders, medication, pen mode, bed
+          status changes.</span>
       </a>
       <a class="screen-card" href="#menu">
         <span class="num">SCREEN 3</span>
@@ -495,7 +1274,7 @@
     <p>The full map on one page. Each branch is expanded and explained in the sections that follow.</p>
     <div class="tree-wrap tall">
       <div class="tree-title">Nurse module — full tree</div>
-<pre class="tree"><span class="b">NURSE APP</span>
+      <pre class="tree"><span class="b">NURSE APP</span>
 │
 ├── <span class="b">1. MAIN SCREEN</span>  <span class="c">— set your working context</span>
 │   ├── <span class="n">Select Branch</span>                  <span class="c">which hospital / unit</span>
@@ -554,7 +1333,9 @@
 </pre>
     </div>
     <p class="swipe">Swipe the panel sideways to read the full width &rarr;</p>
-    <p class="caption">Reading the tree: <code>├──</code> and <code>└──</code> mark items inside the branch above them. <span style="color:var(--s-housekeeping);font-weight:600">EDITABLE</span> means the nurse can enter or change data there; everything else is view-only.</p>
+    <p class="caption">Reading the tree: <code>├──</code> and <code>└──</code> mark items inside the branch above them.
+      <span style="color:var(--s-housekeeping);font-weight:600">EDITABLE</span> means the nurse can enter or change data
+      there; everything else is view-only.</p>
   </section>
 
   <section id="main">
@@ -562,20 +1343,91 @@
       <span class="eyebrow">Screen 1</span>
       <h2>Main Screen</h2>
     </div>
-    <p>The nurse tells the app <em>where</em> they are working. Nothing else can be opened until this is set, because a bed number only means something inside a specific ward.</p>
+    <p>The nurse tells the app <em>where</em> they are working. Nothing else can be opened until this is set, because a
+      bed number only means something inside a specific ward.</p>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Element</th><th>What it does</th><th>Why it matters</th></tr></thead>
+        <thead>
+          <tr>
+            <th>Element</th>
+            <th>What it does</th>
+            <th>Why it matters</th>
+          </tr>
+        </thead>
         <tbody>
-          <tr><td>Select Branch</td><td>Choose the hospital branch or unit the nurse is assigned to.</td><td>Nurses at multi-branch groups use one login across sites.</td></tr>
-          <tr><td>Select Building / Floor / Ward</td><td>Narrows the selection down to the exact nursing station.</td><td>Prevents a nurse from acting on another ward's beds by mistake.</td></tr>
-          <tr><td>Nursing Bed Display Dashboard</td><td>Shows the selected ward's bed picture and opens the Bed Display screen.</td><td>First read of the shift — how full is the ward, what needs attention.</td></tr>
+          <tr>
+            <td>Select Branch</td>
+            <td>Choose the hospital branch or unit the nurse is assigned to.</td>
+            <td>Nurses at multi-branch groups use one login across sites.</td>
+          </tr>
+          <tr>
+            <td>Select Building / Floor / Ward</td>
+            <td>Narrows the selection down to the exact nursing station.</td>
+            <td>Prevents a nurse from acting on another ward's beds by mistake.</td>
+          </tr>
+          <tr>
+            <td>Nursing Bed Display Dashboard</td>
+            <td>Shows the selected ward's bed picture and opens the Bed Display screen.</td>
+            <td>First read of the shift — how full is the ward, what needs attention.</td>
+          </tr>
         </tbody>
       </table>
     </div>
     <p class="swipe">Swipe the table sideways to read every column &rarr;</p>
     <div class="note">
-      <p><b>Support tip:</b> "I can't see my patients" is almost always a wrong branch or ward selection, not missing data. Ask the nurse to confirm the branch and ward shown at the top of the screen first.</p>
+      <p><b>Support tip:</b> "I can't see my patients" is almost always a wrong branch or ward selection, not missing
+        data. Ask the nurse to confirm the branch and ward shown at the top of the screen first.</p>
+    </div>
+  </section>
+
+  <section id="n-scan">
+    <div class="section-head">
+      <span class="eyebrow">Home app bar</span>
+      <h2>Quick Scan — QR / barcode</h2>
+    </div>
+    <p>The <b>QR</b> button on the home app bar scans a patient's wristband, file sticker or slip. It reads a
+      <em>UHID</em> or a <em>visit number</em> — the server works out which — and opens a <b>Patient Quick Actions</b>
+      sheet for that bed's patient, without scrolling the ward list to find them.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Element</th>
+            <th>What it does</th>
+            <th>Why it matters</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>QR button</td>
+            <td>Scans the code and resolves it to the patient's current active visit.</td>
+            <td>Opens one patient directly instead of hunting the ward list.</td>
+          </tr>
+          <tr>
+            <td>Patient header</td>
+            <td>Photo, name, age, gender, UHID, visit number and bed.</td>
+            <td>Confirm the right patient before acting.</td>
+          </tr>
+          <tr>
+            <td>Ward actions</td>
+            <td>Facesheet, Medication, Orders List, New Order, Documents, Visit History — plus, when the patient's status
+              allows: Transfer Out, Transfer Bed, Mark / Tentative / Cancel / Approve / Actual Discharge, Send for
+              Billing, Patient Deceased, Doctor Visit Posting.</td>
+            <td>The same actions as the Bed Display card, reached by scan.</td>
+          </tr>
+          <tr>
+            <td>Check-in gating</td>
+            <td>A patient not yet checked in shows only <b>Pending Check In</b>; one awaiting transfer shows only
+              <b>Transfer In</b>.</td>
+            <td>Mirrors the Bed Display rule — clinical actions stay hidden until the patient is in an active bed state.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="swipe">Swipe the table sideways to read every column &rarr;</p>
+    <div class="note">
+      <p><b>Online-only.</b> The scan resolve is a live lookup, so the QR button is greyed out with a message when the
+        network is out. If a scanned code has no open visit, the sheet says so instead of opening a half-empty list.</p>
     </div>
   </section>
 
@@ -584,31 +1436,57 @@
       <span class="eyebrow">Screen 2</span>
       <h2>Bed Display Screen</h2>
     </div>
-    <p>The screen a nurse lives in during a shift. It is a live board of every bed in the selected ward, and it is the doorway to each patient's record.</p>
+    <p>The screen a nurse lives in during a shift. It is a live board of every bed in the selected ward, and it is the
+      doorway to each patient's record.</p>
 
     <h3>2.1 Search &amp; Filters</h3>
-    <p>Search finds a bed by bed number, UHID, or patient name. The status filter reduces the board to one kind of bed.</p>
+    <p>Search finds a bed by bed number, UHID, or patient name. The status filter reduces the board to one kind of bed.
+    </p>
     <div class="chips">
-      <div class="chip" style="--tone: var(--ink-2)"><span class="dot"></span><span class="text"><span class="label">All</span><span class="what">Every bed in the ward, no filtering.</span></span></div>
-      <div class="chip" style="--tone: var(--s-occupied)"><span class="dot"></span><span class="text"><span class="label">Occupied</span><span class="what">A patient is currently admitted in this bed.</span></span></div>
-      <div class="chip" style="--tone: var(--s-vacant)"><span class="dot"></span><span class="text"><span class="label">Vacant</span><span class="what">Clean and free — can be allotted immediately.</span></span></div>
-      <div class="chip" style="--tone: var(--s-reserved)"><span class="dot"></span><span class="text"><span class="label">Reserved</span><span class="what">Blocked for an incoming patient; not available to others.</span></span></div>
-      <div class="chip" style="--tone: var(--s-housekeeping)"><span class="dot"></span><span class="text"><span class="label">Housekeeping</span><span class="what">Vacated but awaiting cleaning. Not allottable yet.</span></span></div>
-      <div class="chip" style="--tone: var(--s-maintenance)"><span class="dot"></span><span class="text"><span class="label">Maintenance</span><span class="what">Out of service — equipment or repair issue.</span></span></div>
-      <div class="chip" style="--tone: var(--s-pending)"><span class="dot"></span><span class="text"><span class="label">Pending Check-In</span><span class="what">Admission raised but the patient has not physically arrived.</span></span></div>
-      <div class="chip" style="--tone: var(--s-transfer)"><span class="dot"></span><span class="text"><span class="label">Transfer In</span><span class="what">Patient is coming into this ward from another ward.</span></span></div>
-      <div class="chip" style="--tone: var(--s-transfer)"><span class="dot"></span><span class="text"><span class="label">Transfer Out</span><span class="what">Patient is leaving this ward; handover pending.</span></span></div>
-      <div class="chip" style="--tone: var(--accent)"><span class="dot"></span><span class="text"><span class="label">Today's Admitted</span><span class="what">All patients admitted today — the new-arrival worklist.</span></span></div>
+      <div class="chip" style="--tone: var(--ink-2)"><span class="dot"></span><span class="text"><span
+            class="label">All</span><span class="what">Every bed in the ward, no filtering.</span></span></div>
+      <div class="chip" style="--tone: var(--s-occupied)"><span class="dot"></span><span class="text"><span
+            class="label">Occupied</span><span class="what">A patient is currently admitted in this bed.</span></span>
+      </div>
+      <div class="chip" style="--tone: var(--s-vacant)"><span class="dot"></span><span class="text"><span
+            class="label">Vacant</span><span class="what">Clean and free — can be allotted immediately.</span></span>
+      </div>
+      <div class="chip" style="--tone: var(--s-reserved)"><span class="dot"></span><span class="text"><span
+            class="label">Reserved</span><span class="what">Blocked for an incoming patient; not available to
+            others.</span></span></div>
+      <div class="chip" style="--tone: var(--s-housekeeping)"><span class="dot"></span><span class="text"><span
+            class="label">Housekeeping</span><span class="what">Vacated but awaiting cleaning. Not allottable
+            yet.</span></span></div>
+      <div class="chip" style="--tone: var(--s-maintenance)"><span class="dot"></span><span class="text"><span
+            class="label">Maintenance</span><span class="what">Out of service — equipment or repair issue.</span></span>
+      </div>
+      <div class="chip" style="--tone: var(--s-pending)"><span class="dot"></span><span class="text"><span
+            class="label">Pending Check-In</span><span class="what">Admission raised but the patient has not physically
+            arrived.</span></span></div>
+      <div class="chip" style="--tone: var(--s-transfer)"><span class="dot"></span><span class="text"><span
+            class="label">Transfer In</span><span class="what">Patient is coming into this ward from another
+            ward.</span></span></div>
+      <div class="chip" style="--tone: var(--s-transfer)"><span class="dot"></span><span class="text"><span
+            class="label">Transfer Out</span><span class="what">Patient is leaving this ward; handover
+            pending.</span></span></div>
+      <div class="chip" style="--tone: var(--accent)"><span class="dot"></span><span class="text"><span
+            class="label">Today's Admitted</span><span class="what">All patients admitted today — the new-arrival
+            worklist.</span></span></div>
     </div>
 
     <h3>2.2 Count Dashboard</h3>
-    <p>A running count per status, sitting above the list. It answers "what is the state of my ward right now" without scrolling. Tapping a count filters the list to it.</p>
+    <p>A running count per status, sitting above the list. It answers "what is the state of my ward right now" without
+      scrolling. Tapping a count filters the list to it.</p>
     <div class="counts">
-      <div class="count" style="--tone: var(--s-occupied)"><span class="n">24</span><span class="l">Occupied</span></div>
+      <div class="count" style="--tone: var(--s-occupied)"><span class="n">24</span><span class="l">Occupied</span>
+      </div>
       <div class="count" style="--tone: var(--s-vacant)"><span class="n">06</span><span class="l">Vacant</span></div>
-      <div class="count" style="--tone: var(--s-reserved)"><span class="n">03</span><span class="l">Reserved</span></div>
-      <div class="count" style="--tone: var(--s-housekeeping)"><span class="n">02</span><span class="l">Housekeeping</span></div>
-      <div class="count" style="--tone: var(--s-pending)"><span class="n">01</span><span class="l">Pending Check-In</span></div>
+      <div class="count" style="--tone: var(--s-reserved)"><span class="n">03</span><span class="l">Reserved</span>
+      </div>
+      <div class="count" style="--tone: var(--s-housekeeping)"><span class="n">02</span><span
+          class="l">Housekeeping</span></div>
+      <div class="count" style="--tone: var(--s-pending)"><span class="n">01</span><span class="l">Pending
+          Check-In</span></div>
     </div>
     <p class="caption">Illustrative figures. Live counts come from the ward selected on the Main screen.</p>
 
@@ -616,42 +1494,98 @@
     <p>One row per bed. Each row carries the identity and admission facts a nurse needs before opening the record.</p>
     <div class="wire" aria-label="Example bed row">
       <div class="wire-row"><span class="bed">B-204</span><span class="pill">Occupied</span></div>
-      <div class="wire-row"><span class="pt">Meera Deshpande</span><span class="pill" style="background:none;border-color:var(--line-strong);color:var(--ink-3)">Visit 2</span></div>
+      <div class="wire-row"><span class="pt">Meera Deshpande</span><span class="pill"
+          style="background:none;border-color:var(--line-strong);color:var(--ink-3)">Visit 2</span></div>
       <dl>
-        <div><dt>UHID</dt><dd>UH-0098421</dd></div>
-        <div><dt>Gender / Age</dt><dd>Female · 54 y</dd></div>
-        <div><dt>Admitted</dt><dd>26 Jul 2026</dd></div>
-        <div><dt>Category</dt><dd>Semi-Private</dd></div>
-        <div><dt>Bed Info</dt><dd>Ward 2 · Floor 3</dd></div>
-        <div><dt>Nurse</dt><dd>S. Kulkarni</dd></div>
+        <div>
+          <dt>UHID</dt>
+          <dd>UH-0098421</dd>
+        </div>
+        <div>
+          <dt>Gender / Age</dt>
+          <dd>Female · 54 y</dd>
+        </div>
+        <div>
+          <dt>Admitted</dt>
+          <dd>26 Jul 2026</dd>
+        </div>
+        <div>
+          <dt>Category</dt>
+          <dd>Semi-Private</dd>
+        </div>
+        <div>
+          <dt>Bed Info</dt>
+          <dd>Ward 2 · Floor 3</dd>
+        </div>
+        <div>
+          <dt>Nurse</dt>
+          <dd>S. Kulkarni</dd>
+        </div>
       </dl>
-      <div class="actions"><span class="btn">Facesheet</span><span class="btn">Orders</span><span class="btn">Medication</span><span class="btn">Pen Mode</span><span class="btn">Change Status</span></div>
+      <div class="actions"><span class="btn">Facesheet</span><span class="btn">Orders</span><span
+          class="btn">Medication</span><span class="btn">Pen Mode</span><span class="btn">Change Status</span></div>
     </div>
     <p class="caption">Layout of a bed row, shown as a wireframe. Actual styling follows the app theme.</p>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Field</th><th>Meaning</th></tr></thead>
+        <thead>
+          <tr>
+            <th>Field</th>
+            <th>Meaning</th>
+          </tr>
+        </thead>
         <tbody>
-          <tr><td>Bed Number</td><td>Physical bed identifier within the ward.</td></tr>
-          <tr><td>UHID</td><td>Unique Hospital ID — permanent per patient, across all visits.</td></tr>
-          <tr><td>Patient Name</td><td>Registered name of the admitted patient.</td></tr>
-          <tr><td>Visit No</td><td>Which admission/visit this is for that patient. Distinguishes repeat admissions.</td></tr>
-          <tr><td>Gender</td><td>Recorded gender — also drives ward allocation rules.</td></tr>
-          <tr><td>Age</td><td>Age at admission.</td></tr>
-          <tr><td>Admission Date</td><td>When this visit started. Drives length-of-stay.</td></tr>
-          <tr><td>Category</td><td>Bed class — General, Semi-Private, Private, ICU, etc. Affects billing.</td></tr>
-          <tr><td>Bed Info</td><td>Location context — building, floor, ward, room.</td></tr>
-          <tr><td>Nurse Name</td><td>Nurse currently responsible for the bed.</td></tr>
+          <tr>
+            <td>Bed Number</td>
+            <td>Physical bed identifier within the ward.</td>
+          </tr>
+          <tr>
+            <td>UHID</td>
+            <td>Unique Hospital ID — permanent per patient, across all visits.</td>
+          </tr>
+          <tr>
+            <td>Patient Name</td>
+            <td>Registered name of the admitted patient.</td>
+          </tr>
+          <tr>
+            <td>Visit No</td>
+            <td>Which admission/visit this is for that patient. Distinguishes repeat admissions.</td>
+          </tr>
+          <tr>
+            <td>Gender</td>
+            <td>Recorded gender — also drives ward allocation rules.</td>
+          </tr>
+          <tr>
+            <td>Age</td>
+            <td>Age at admission.</td>
+          </tr>
+          <tr>
+            <td>Admission Date</td>
+            <td>When this visit started. Drives length-of-stay.</td>
+          </tr>
+          <tr>
+            <td>Category</td>
+            <td>Bed class — General, Semi-Private, Private, ICU, etc. Affects billing.</td>
+          </tr>
+          <tr>
+            <td>Bed Info</td>
+            <td>Location context — building, floor, ward, room.</td>
+          </tr>
+          <tr>
+            <td>Nurse Name</td>
+            <td>Nurse currently responsible for the bed.</td>
+          </tr>
         </tbody>
       </table>
     </div>
     <p class="swipe">Swipe the table sideways to read every column &rarr;</p>
 
     <h3>2.4 Facesheet</h3>
-    <p>The patient's clinical record for this admission, opened from a bed row. Six areas, three of which the nurse writes into.</p>
+    <p>The patient's clinical record for this admission, opened from a bed row. Six areas, three of which the nurse
+      writes into.</p>
     <div class="tree-wrap">
       <div class="tree-title">Facesheet — sub-tree</div>
-<pre class="tree"><span class="b">FACESHEET</span> <span class="c">(opened from a bed)</span>
+      <pre class="tree"><span class="b">FACESHEET</span> <span class="c">(opened from a bed)</span>
 │
 ├── <span class="n">Facesheet Dashboard</span>
 │   └── Patient summary — demographics, consultant, diagnosis, stay details
@@ -679,40 +1613,89 @@
     <p class="swipe">Swipe the panel sideways to read the full width &rarr;</p>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Area</th><th>Nurse does what</th><th>Editable</th></tr></thead>
+        <thead>
+          <tr>
+            <th>Area</th>
+            <th>Nurse does what</th>
+            <th>Editable</th>
+          </tr>
+        </thead>
         <tbody>
-          <tr><td>Facesheet Dashboard</td><td>Reads the one-page summary of the patient and the current admission.</td><td>No</td></tr>
-          <tr><td>Vital Sheet</td><td>Enters observations each round; reviews the trend since admission.</td><td>Yes</td></tr>
-          <tr><td>Orders Listing</td><td>Raises Medicine, Lab and Radiology orders, and advances an order's status as it is actioned.</td><td>Yes</td></tr>
-          <tr><td>Investigation</td><td>Checks what was investigated and opens the report when it arrives.</td><td>No</td></tr>
-          <tr><td>Intake / Output Chart</td><td>Logs every fluid in and out; the chart totals the balance.</td><td>Yes</td></tr>
-          <tr><td>Medication List</td><td>Confirms what is prescribed and what is due next.</td><td>No</td></tr>
+          <tr>
+            <td>Facesheet Dashboard</td>
+            <td>Reads the one-page summary of the patient and the current admission.</td>
+            <td>No</td>
+          </tr>
+          <tr>
+            <td>Vital Sheet</td>
+            <td>Enters observations each round; reviews the trend since admission.</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td>Orders Listing</td>
+            <td>Raises Medicine, Lab and Radiology orders, and advances an order's status as it is actioned.</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td>Investigation</td>
+            <td>Checks what was investigated and opens the report when it arrives.</td>
+            <td>No</td>
+          </tr>
+          <tr>
+            <td>Intake / Output Chart</td>
+            <td>Logs every fluid in and out; the chart totals the balance.</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td>Medication List</td>
+            <td>Confirms what is prescribed and what is due next.</td>
+            <td>No</td>
+          </tr>
         </tbody>
       </table>
     </div>
     <p class="swipe">Swipe the table sideways to read every column &rarr;</p>
 
     <h3>2.5 Orders — special nursing service orders</h3>
-    <p>Separate from clinical orders in the Facesheet. These are the billable nursing services and consumables used at the bedside.</p>
+    <p>Separate from clinical orders in the Facesheet. These are the billable nursing services and consumables used at
+      the bedside.</p>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>List</th><th>Contains</th><th>Nurse action</th></tr></thead>
+        <thead>
+          <tr>
+            <th>List</th>
+            <th>Contains</th>
+            <th>Nurse action</th>
+          </tr>
+        </thead>
         <tbody>
-          <tr><td>Existing Service Orders</td><td>Nursing services already ordered for the patient.</td><td>Review, attach to the visit, post for charging.</td></tr>
-          <tr><td>Consumable Service Orders</td><td>Consumables issued at the bedside, with filters to narrow the list.</td><td>Select items and quantities used, then submit so they reach billing.</td></tr>
+          <tr>
+            <td>Existing Service Orders</td>
+            <td>Nursing services already ordered for the patient.</td>
+            <td>Review, attach to the visit, post for charging.</td>
+          </tr>
+          <tr>
+            <td>Consumable Service Orders</td>
+            <td>Consumables issued at the bedside, with filters to narrow the list.</td>
+            <td>Select items and quantities used, then submit so they reach billing.</td>
+          </tr>
         </tbody>
       </table>
     </div>
     <p class="swipe">Swipe the table sideways to read every column &rarr;</p>
     <div class="note">
-      <p><b>Why it matters commercially:</b> anything a nurse consumes but does not record here is revenue the hospital never bills. This list is the capture point.</p>
+      <p><b>Why it matters commercially:</b> anything a nurse consumes but does not record here is revenue the hospital
+        never bills. This list is the capture point.</p>
     </div>
 
     <h3>2.6 Medication</h3>
-    <p>A direct medication list for the patient, reachable from the bed without going through the full Facesheet — for a quick "what is this patient on" check during a round.</p>
+    <p>A direct medication list for the patient, reachable from the bed without going through the full Facesheet — for a
+      quick "what is this patient on" check during a round.</p>
 
     <h3>2.7 Pen Mode</h3>
-    <p>Paperless documentation. The nurse writes or annotates directly on a document with a stylus or finger, the way they would on a paper chart, and the app stores it against the patient's visit. Replaces scanning handwritten sheets back into the record.</p>
+    <p>Paperless documentation. The nurse writes or annotates directly on a document with a stylus or finger, the way
+      they would on a paper chart, and the app stores it against the patient's visit. Replaces scanning handwritten
+      sheets back into the record.</p>
     <ul class="plain">
       <li><b>Handwriting on forms</b> — annotate the document exactly where the pen would go on paper.</li>
       <li><b>Saved to the visit</b> — the marked-up document is stored with the patient, viewable later.</li>
@@ -720,10 +1703,12 @@
     </ul>
 
     <h3>2.8 Change Bed Status</h3>
-    <p>Moves a bed from one state to another, which is what keeps the ward board accurate for everyone else — admissions, billing, housekeeping. Available actions depend on the bed's current status and the hospital's configuration.</p>
+    <p>Moves a bed from one state to another, which is what keeps the ward board accurate for everyone else —
+      admissions, billing, housekeeping. Available actions depend on the bed's current status and the hospital's
+      configuration.</p>
     <div class="tree-wrap">
       <div class="tree-title">Change Bed Status — actions available in the build</div>
-<pre class="tree"><span class="b">CHANGE BED STATUS</span>
+      <pre class="tree"><span class="b">CHANGE BED STATUS</span>
 │
 ├── <span class="n">Discharge flow</span>
 │   ├── Mark for Discharge        <span class="c">nurse flags patient as ready</span>
@@ -744,7 +1729,10 @@
     </div>
     <p class="swipe">Swipe the panel sideways to read the full width &rarr;</p>
     <div class="note">
-      <p><b>Ordering rule:</b> the discharge steps run in sequence. A bed does not become Vacant straight from Occupied — it passes through discharge, then usually Housekeeping, then Vacant. If a nurse reports a "missing" option, check the bed's current status first; the app only offers the transitions that are legal from where the bed is now.</p>
+      <p><b>Ordering rule:</b> the discharge steps run in sequence. A bed does not become Vacant straight from Occupied
+        — it passes through discharge, then usually Housekeeping, then Vacant. If a nurse reports a "missing" option,
+        check the bed's current status first; the app only offers the transitions that are legal from where the bed is
+        now.</p>
     </div>
   </section>
 
@@ -753,10 +1741,11 @@
       <span class="eyebrow">Screen 3</span>
       <h2>Menu Screen</h2>
     </div>
-    <p>Account and device housekeeping. Small screen, but it holds the two controls support asks about most: cache and pending offline data.</p>
+    <p>Account and device housekeeping. Small screen, but it holds the two controls support asks about most: cache and
+      pending offline data.</p>
     <div class="tree-wrap">
       <div class="tree-title">Menu — sub-tree</div>
-<pre class="tree"><span class="b">MENU</span>
+      <pre class="tree"><span class="b">MENU</span>
 ├── <span class="n">Change Password</span>                 <span class="c">update login credentials on the device</span>
 ├── <span class="n">Clear Cache</span>                     <span class="c">drop stored copies, force fresh data</span>
 ├── <span class="n">View Sync Pending Offline Data</span>  <span class="c">what is saved locally, not yet on the server</span>
@@ -766,19 +1755,44 @@
     <p class="swipe">Swipe the panel sideways to read the full width &rarr;</p>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Item</th><th>What it does</th><th>When to use it</th></tr></thead>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>What it does</th>
+            <th>When to use it</th>
+          </tr>
+        </thead>
         <tbody>
-          <tr><td>Change Password</td><td>Sets a new password for the logged-in nurse.</td><td>Routine credential change, or after a shared-device concern.</td></tr>
-          <tr><td>Clear Cache</td><td>Removes locally stored copies of ward and patient data so the next open pulls fresh from the server.</td><td>Stale or wrong-looking data that a refresh alone doesn't fix.</td></tr>
-          <tr><td>View Sync Pending Offline Data</td><td>Lists everything entered offline that has not reached the server yet.</td><td>Before logging out, before clearing cache, or when a nurse says "I saved it but it's not showing".</td></tr>
-          <tr><td>Logout</td><td>Ends the session on the device.</td><td>End of shift, or handing the device to another nurse.</td></tr>
+          <tr>
+            <td>Change Password</td>
+            <td>Sets a new password for the logged-in nurse.</td>
+            <td>Routine credential change, or after a shared-device concern.</td>
+          </tr>
+          <tr>
+            <td>Clear Cache</td>
+            <td>Removes locally stored copies of ward and patient data so the next open pulls fresh from the server.
+            </td>
+            <td>Stale or wrong-looking data that a refresh alone doesn't fix.</td>
+          </tr>
+          <tr>
+            <td>View Sync Pending Offline Data</td>
+            <td>Lists everything entered offline that has not reached the server yet.</td>
+            <td>Before logging out, before clearing cache, or when a nurse says "I saved it but it's not showing".</td>
+          </tr>
+          <tr>
+            <td>Logout</td>
+            <td>Ends the session on the device.</td>
+            <td>End of shift, or handing the device to another nurse.</td>
+          </tr>
         </tbody>
       </table>
     </div>
     <p class="swipe">Swipe the table sideways to read every column &rarr;</p>
     <div class="note">
       <p><b>Important sequence — tell every nurse this one.</b></p>
-      <p>Check <b>View Sync Pending Offline Data</b> <em>before</em> using Clear Cache or Logout. If the list is not empty, the device still holds work that has not reached the server. Get back on network and let it sync first.</p>
+      <p>Check <b>View Sync Pending Offline Data</b> <em>before</em> using Clear Cache or Logout. If the list is not
+        empty, the device still holds work that has not reached the server. Get back on network and let it sync first.
+      </p>
     </div>
   </section>
 
@@ -789,10 +1803,13 @@
     </div>
     <p>Wards have dead spots. The app is built so a nurse can keep working through them.</p>
     <ul class="plain">
-      <li><b>Reading:</b> ward board, bed lists and previously opened patient data stay viewable from the device's stored copy.</li>
+      <li><b>Reading:</b> ward board, bed lists and previously opened patient data stay viewable from the device's
+        stored copy.</li>
       <li><b>Writing:</b> entries made offline are saved on the device and placed in a sync queue.</li>
-      <li><b>Recovering:</b> when the device is back on network, queued items upload. The Menu screen shows anything still waiting.</li>
-      <li><b>The one risk:</b> clearing cache or logging out while items are still pending. That is why the pending list exists and why it is checked first.</li>
+      <li><b>Recovering:</b> when the device is back on network, queued items upload. The Menu screen shows anything
+        still waiting.</li>
+      <li><b>The one risk:</b> clearing cache or logging out while items are still pending. That is why the pending list
+        exists and why it is checked first.</li>
     </ul>
   </section>
 
@@ -801,15 +1818,23 @@
       <span class="eyebrow">In practice</span>
       <h2>A typical shift, in order</h2>
     </div>
-    <p>The same features, arranged the way a nurse actually meets them. This sequence is what a demo or a training session should follow.</p>
+    <p>The same features, arranged the way a nurse actually meets them. This sequence is what a demo or a training
+      session should follow.</p>
     <ol class="flow">
-      <li><strong>Log in and set context</strong><span>Main screen — select branch, then building, floor and ward.</span></li>
-      <li><strong>Read the ward</strong><span>Bed Display — count dashboard first, then filter to Today's Admitted and Pending Check-In to find what changed.</span></li>
-      <li><strong>Round the patients</strong><span>Open a bed → Facesheet → record vitals on the Vital Sheet, log fluids in the Intake/Output chart.</span></li>
-      <li><strong>Action clinical orders</strong><span>Facesheet → Orders — raise Medicine, Lab or Radiology orders; move existing orders forward as they are completed.</span></li>
-      <li><strong>Capture services and consumables</strong><span>Orders — post nursing service orders and the consumables used, so nothing goes unbilled.</span></li>
-      <li><strong>Document by hand where needed</strong><span>Pen Mode — write on the form directly instead of on paper.</span></li>
-      <li><strong>Keep the board true</strong><span>Change Bed Status — discharges, transfers, handover, so the next shift and the admissions desk see reality.</span></li>
+      <li><strong>Log in and set context</strong><span>Main screen — select branch, then building, floor and
+          ward.</span></li>
+      <li><strong>Read the ward</strong><span>Bed Display — count dashboard first, then filter to Today's Admitted and
+          Pending Check-In to find what changed.</span></li>
+      <li><strong>Round the patients</strong><span>Open a bed → Facesheet → record vitals on the Vital Sheet, log fluids
+          in the Intake/Output chart.</span></li>
+      <li><strong>Action clinical orders</strong><span>Facesheet → Orders — raise Medicine, Lab or Radiology orders;
+          move existing orders forward as they are completed.</span></li>
+      <li><strong>Capture services and consumables</strong><span>Orders — post nursing service orders and the
+          consumables used, so nothing goes unbilled.</span></li>
+      <li><strong>Document by hand where needed</strong><span>Pen Mode — write on the form directly instead of on
+          paper.</span></li>
+      <li><strong>Keep the board true</strong><span>Change Bed Status — discharges, transfers, handover, so the next
+          shift and the admissions desk see reality.</span></li>
       <li><strong>Close the shift</strong><span>Menu — confirm no pending offline data, then log out.</span></li>
     </ol>
   </section>
@@ -821,16 +1846,46 @@
     </div>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+        <thead>
+          <tr>
+            <th>Term</th>
+            <th>Meaning</th>
+          </tr>
+        </thead>
         <tbody>
-          <tr><td>UHID</td><td>Unique Hospital ID. One permanent number per patient, unchanged across every visit.</td></tr>
-          <tr><td>Visit No</td><td>The number of this particular admission for that patient. One UHID, many visits.</td></tr>
-          <tr><td>Facesheet</td><td>The consolidated clinical record for one admission — summary, vitals, orders, investigations, fluids, medication.</td></tr>
-          <tr><td>Category</td><td>Bed class (General, Semi-Private, Private, ICU). Determines tariff.</td></tr>
-          <tr><td>Pen Mode</td><td>Handwritten documentation captured directly in the app instead of on paper.</td></tr>
-          <tr><td>Consumable</td><td>A billable item used at the bedside — syringes, dressings, disposables.</td></tr>
-          <tr><td>Sync Pending</td><td>Data entered on the device that has not yet been accepted by the server.</td></tr>
-          <tr><td>Handover</td><td>Formal transfer of responsibility for a bed from one nurse to the next.</td></tr>
+          <tr>
+            <td>UHID</td>
+            <td>Unique Hospital ID. One permanent number per patient, unchanged across every visit.</td>
+          </tr>
+          <tr>
+            <td>Visit No</td>
+            <td>The number of this particular admission for that patient. One UHID, many visits.</td>
+          </tr>
+          <tr>
+            <td>Facesheet</td>
+            <td>The consolidated clinical record for one admission — summary, vitals, orders, investigations, fluids,
+              medication.</td>
+          </tr>
+          <tr>
+            <td>Category</td>
+            <td>Bed class (General, Semi-Private, Private, ICU). Determines tariff.</td>
+          </tr>
+          <tr>
+            <td>Pen Mode</td>
+            <td>Handwritten documentation captured directly in the app instead of on paper.</td>
+          </tr>
+          <tr>
+            <td>Consumable</td>
+            <td>A billable item used at the bedside — syringes, dressings, disposables.</td>
+          </tr>
+          <tr>
+            <td>Sync Pending</td>
+            <td>Data entered on the device that has not yet been accepted by the server.</td>
+          </tr>
+          <tr>
+            <td>Handover</td>
+            <td>Formal transfer of responsibility for a bed from one nurse to the next.</td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -838,7 +1893,8 @@
   </section>
 
   <footer>
-    <p>Prepared for support and client walkthroughs of the Rescribe nursing module. Screen names and status labels match the app build; illustrative figures in the count dashboard and bed row are examples only.</p>
+    <p>Prepared for support and client walkthroughs of the Rescribe nursing module. Screen names and status labels match
+      the app build; illustrative figures in the count dashboard and bed row are examples only.</p>
   </footer>
 
 </div>
@@ -906,10 +1962,21 @@
   }
 
   /* ---- go to a section, switching tab first when there is one ---- */
+  var flashed = null, flashTimer = null;
   function goto(tab, id) {
     if (tab && panels[tab]) show(tab, true);
     var el = document.getElementById(id);
-    if (el) el.scrollIntoView();
+    if (!el) return;
+    el.scrollIntoView();
+    /* a search hit can land mid-page on a subsection — say which one it was */
+    if (flashed) flashed.classList.remove('flash');
+    clearTimeout(flashTimer);
+    flashed = el;
+    el.classList.add('flash');
+    flashTimer = setTimeout(function () {
+      el.classList.remove('flash');
+      if (flashed === el) flashed = null;
+    }, 1800);
   }
 
   document.addEventListener('click', function (e) {
@@ -928,6 +1995,28 @@
   var wrap = box.parentNode;
   var idx = [];
 
+  /* Fold the typographic characters the pages actually use onto their ASCII
+     equivalents, so typing "what's new" finds “What’s New”. Every replacement
+     is one character for one character: the normalised copy stays the same
+     length as the original, which is what lets a match offset found in the
+     normalised text slice the original for display. */
+  function norm(s) {
+    return s.toLowerCase()
+      .replace(/[’‘ʼ]/g, "'")
+      .replace(/[“”]/g, '"')
+      .replace(/[–—]/g, '-');
+  }
+
+  function entry(tab, where, id, title, text, parent) {
+    var t = String(text).replace(/\s+/g, ' ').trim();
+    idx.push({
+      tab: tab, id: id, where: where, parent: parent || id,
+      what: title, whatN: norm(title),
+      text: t, textN: norm(t),
+      sub: !!parent
+    });
+  }
+
   (tabs.length ? names.map(function (n) { return [n, panels[n]]; })
                : [[null, document]]).forEach(function (pair) {
     var tab = pair[0], root = pair[1];
@@ -935,10 +2024,21 @@
                     : (document.querySelector('.masthead h1') || {}).textContent || 'This page';
     Array.prototype.forEach.call(root.querySelectorAll('section[id]'), function (sec) {
       var h = sec.querySelector('h2');
-      idx.push({
-        tab: tab, id: sec.id, where: label,
-        what: h ? h.textContent.trim() : sec.id,
-        text: sec.textContent.replace(/\s+/g, ' ').trim()
+      var title = h ? h.textContent.trim() : sec.id;
+      entry(tab, label, sec.id, title, sec.textContent, null);
+
+      /* Second level: every h3 is indexed on its own, carrying only the text
+         between it and the next h3. Without this a hit deep inside a long
+         section resolves to the section heading and drops the reader at the
+         top to hunt for it — What's New is 15 releases under 4 sections. */
+      var subs = sec.querySelectorAll('h3');
+      Array.prototype.forEach.call(subs, function (h3, n) {
+        if (!h3.id) h3.id = sec.id + '--' + (n + 1);
+        var r = document.createRange();
+        r.setStartBefore(h3);
+        if (subs[n + 1]) r.setEndBefore(subs[n + 1]);
+        else r.setEndAfter(sec.lastChild || sec);
+        entry(tab, label + ' · ' + title, h3.id, h3.textContent.trim(), r.toString(), sec.id);
       });
     });
   });
@@ -947,38 +2047,104 @@
 
   function esc(s) { return s.replace(/[&<>"]/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 
-  function mark(s, q) {
-    var i = s.toLowerCase().indexOf(q);
-    if (i < 0) return esc(s);
-    return esc(s.slice(0, i)) + '<mark>' + esc(s.slice(i, i + q.length)) + '</mark>' + esc(s.slice(i + q.length));
+  /* Every place a term occurs, merged so overlapping terms mark once. Offsets
+     are into the normalised text and valid in the original — norm() preserves
+     length. */
+  function ranges(hay, terms) {
+    var out = [];
+    terms.forEach(function (t) {
+      var i = hay.indexOf(t);
+      while (i >= 0 && out.length < 400) {
+        out.push([i, i + t.length]);
+        i = hay.indexOf(t, i + t.length);
+      }
+    });
+    out.sort(function (a, b) { return a[0] - b[0]; });
+    var merged = [];
+    out.forEach(function (r) {
+      var last = merged[merged.length - 1];
+      if (last && r[0] <= last[1]) last[1] = Math.max(last[1], r[1]);
+      else merged.push([r[0], r[1]]);
+    });
+    return merged;
   }
 
-  function snippet(text, q) {
-    var i = text.toLowerCase().indexOf(q);
-    if (i < 0) return '';
-    var from = Math.max(0, i - 45), to = Math.min(text.length, i + q.length + 85);
-    return (from ? '…' : '') + mark(text.slice(from, to), q) + (to < text.length ? '…' : '');
+  function mark(raw, hay, terms, from, to) {
+    var out = '', pos = from;
+    ranges(hay, terms).forEach(function (r) {
+      if (r[1] <= from || r[0] >= to) return;
+      var a = Math.max(r[0], from), b = Math.min(r[1], to);
+      if (a < pos) return;
+      out += esc(raw.slice(pos, a)) + '<mark>' + esc(raw.slice(a, b)) + '</mark>';
+      pos = b;
+    });
+    return out + esc(raw.slice(pos, to));
+  }
+
+  function snippet(e, terms) {
+    var rs = ranges(e.textN, terms);
+    if (!rs.length) return '';
+    var from = Math.max(0, rs[0][0] - 60);
+    var to = Math.min(e.text.length, rs[0][0] + 150);
+    return (from ? '…' : '') + mark(e.text, e.textN, terms, from, to) +
+           (to < e.text.length ? '…' : '');
+  }
+
+  /* Negative = drop. Every term must appear somewhere (AND), a heading match
+     outweighs a body match, and an earlier match outweighs a later one. */
+  function score(e, terms, phrase) {
+    var s = 0;
+    for (var k = 0; k < terms.length; k++) {
+      var inWhat = e.whatN.indexOf(terms[k]);
+      var inText = e.textN.indexOf(terms[k]);
+      if (inWhat < 0 && inText < 0) return -1;
+      if (inWhat >= 0) s += 60 - Math.min(inWhat, 30);
+      if (inText >= 0) s += 20 - Math.min(inText / 60, 15);
+    }
+    if (e.whatN.indexOf(phrase) >= 0) s += 90;
+    else if (e.textN.indexOf(phrase) >= 0) s += 35;
+    if (e.sub) s += 10;                  /* the subsection is the tighter answer */
+    return s;
   }
 
   function close() { if (list) { list.remove(); list = null; } hits = []; cur = -1; }
 
   function run() {
-    var q = box.value.trim().toLowerCase();
+    var typed = box.value.trim();
+    var phrase = norm(typed);
     close();
-    if (q.length < 2) return;
-    hits = idx.filter(function (e) {
-      return e.what.toLowerCase().indexOf(q) >= 0 || e.text.toLowerCase().indexOf(q) >= 0;
-    }).slice(0, 30);
+    if (phrase.length < 2) return;
+
+    var terms = phrase.split(/\s+/).filter(function (t) { return t.length > 1; });
+    if (!terms.length) terms = [phrase];
+
+    var ranked = [];
+    idx.forEach(function (e) {
+      var s = score(e, terms, phrase);
+      if (s >= 0) ranked.push({ s: s, e: e });
+    });
+    ranked.sort(function (a, b) { return b.s - a.s; });
+
+    /* One section answering a query as both itself and three of its
+       subsections is noise, not depth — keep its two best rows. */
+    var perSection = {};
+    hits = [];
+    ranked.forEach(function (r) {
+      var key = r.e.tab + '/' + r.e.parent;
+      perSection[key] = (perSection[key] || 0) + 1;
+      if (perSection[key] <= 2 && hits.length < 30) hits.push(r.e);
+    });
+
     list = document.createElement('div');
     list.className = 'results';
     if (!hits.length) {
-      list.innerHTML = '<div class="empty">No matches for “' + esc(box.value.trim()) + '”</div>';
+      list.innerHTML = '<div class="empty">No matches for “' + esc(typed) + '”</div>';
     } else {
       list.innerHTML = hits.map(function (e, n) {
         return '<button type="button" data-n="' + n + '">' +
                '<span class="where">' + esc(e.where) + '</span>' +
-               '<span class="what">' + mark(e.what, q) + '</span>' +
-               '<span class="snip">' + snippet(e.text, q) + '</span></button>';
+               '<span class="what">' + mark(e.what, e.whatN, terms, 0, e.what.length) + '</span>' +
+               '<span class="snip">' + snippet(e, terms) + '</span></button>';
       }).join('');
     }
     wrap.appendChild(list);
