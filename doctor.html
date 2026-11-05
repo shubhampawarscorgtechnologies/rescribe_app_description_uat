@@ -1181,6 +1181,11 @@
     grid-column: 2;
   }
 
+  /* landscape screenshots need more room than a portrait phone/tablet shot */
+  figure.shot.wide {
+    max-width: 40rem;
+  }
+
   figure.shot img {
     display: block;
     width: 100%;
@@ -1303,8 +1308,8 @@
 │           │   ├── Investigation History <span class="c">history · reports (LIS/RIS) · LIS list</span>
 │           │   ├── <span class="a">Configurable tabs</span> <span class="c">(set in web app → EMR settings → patient menu builder)</span>
 │           │   │   ├── Care Team
-│           │   │   ├── Consultation Chart <span class="c">components also configurable</span>
-│           │   │   ├── Prescriptions
+│           │   │   ├── Consultation Chart <span class="c">components also configurable · Medicine = Add Orders form</span>
+│           │   │   ├── Prescriptions      <span class="c">this visit's orders, Order List design · date filter</span>
 │           │   │   ├── Vital Sheet Chart      <span class="a">EDITABLE</span>
 │           │   │   ├── Intake / Output Chart  <span class="a">EDITABLE</span>
 │           │   │   └── MAR Chart
@@ -1312,7 +1317,7 @@
 │           ├── <span class="n">Medication</span>       <span class="c">ongoing medications listing</span>
 │           ├── <span class="n">Investigation</span>    <span class="c">history · reports · LIS list</span>
 │           ├── <span class="n">Vitals</span>           <span class="a">EDITABLE</span> <span class="c">vitals + ventilator parameters</span>
-│           ├── <span class="n">Orders</span>           <span class="c">list by status · add medicine / lab / radiology · edit</span>
+│           ├── <span class="n">Orders</span>           <span class="c">Order List (status · date filter) · Add Orders: medicines + services</span>
 │           └── <span class="n">Pen Mode</span>         <span class="c">paperless documentation — see separate map</span>
 │
 ├── <span class="b">2. TODAY'S APPOINTMENT</span>
@@ -1489,7 +1494,7 @@
 ├── <span class="a">CONFIGURABLE TABS</span> <span class="c">— defined in web app → EMR settings → patient menu builder</span>
 │   ├── Care Team
 │   ├── Consultation Chart   <span class="c">its components are configurable too — see below</span>
-│   ├── Prescriptions
+│   ├── Prescriptions        <span class="c">this visit's orders, same design as the Order List</span>
 │   ├── Vital Sheet Chart      <span class="a">EDITABLE</span>
 │   ├── Intake / Output Chart  <span class="a">EDITABLE</span>
 │   └── MAR Chart              <span class="c">medication administration record</span>
@@ -1502,6 +1507,12 @@
       <p><b>Consultation Chart components are configurable.</b> Which sections appear inside the chart is set in the web
         application, drawn from: Vitals, Score Templates, Complaints, Diagnosis, Growth Chart, Advice, Allergies,
         Follow-up Date &amp; Time, Pain Scale, Image Annotations, Investigation, Medicine, Examination.</p>
+      <p id="d-consult-medicine"><b>Medicine</b> works exactly like the Medicines tab of Add Orders (see 1.5): Store
+        &middot; Order sets &middot; Favourites, search, a form to check, <b>+ Add</b>, and a list with Save as template /
+        Save as order set. The saved prescription, History and the print are unchanged. <a
+          href="whatsnew.html#wn-consult-medicine" data-goto="whatsnew#wn-consult-medicine">Walkthrough &rarr;</a></p>
+      <p><b>Prescriptions</b> shows this visit&rsquo;s orders in the Order List design, opening on All dates. <a
+          href="whatsnew.html#wn-order-list" data-goto="whatsnew#wn-order-list">Walkthrough &rarr;</a></p>
       <p>Two hospitals on the same build can therefore show different tabs and different chart sections. Always confirm
         a site's configuration before treating a missing section as a defect.</p>
     </div>
@@ -1538,8 +1549,13 @@
     <p>Editable vital sheets covering both routine vitals and ventilator parameters, so ICU patients are recorded on the
       same screen as ward patients.</p>
 
-    <h3>1.5 Orders</h3>
-    <p>The order list for the patient, filtered by status, with new orders raised from the same screen.</p>
+    <h3 id="d-orders">1.5 Orders</h3>
+    <p>The <b>Order List</b> for the patient: an All / Medicines / Services switch, search, a <b>calendar button</b>
+      (All dates, or one day up to today) and status chips with counts. Orders sit in MEDICINES and SERVICES groups;
+      expand a row or use its &#8942; menu to change its status &mdash; every change is confirmed first. <b>+ Add
+        orders</b> opens <b>Add Orders</b>. Step-by-step: <a href="whatsnew.html#wn-order-list"
+        data-goto="whatsnew#wn-order-list">Order List</a> &middot; <a href="whatsnew.html#wn-add-orders"
+        data-goto="whatsnew#wn-add-orders">Add Orders</a>.</p>
     <div class="chips">
       <div class="chip" style="--tone: var(--ink-2)"><span class="dot"></span><span class="text"><span
             class="label">All</span><span class="what">Every order on the patient, unfiltered.</span></span></div>
@@ -1548,7 +1564,7 @@
       <div class="chip" style="--tone: var(--s-occupied)"><span class="dot"></span><span class="text"><span
             class="label">Approved</span><span class="what">Cleared to proceed.</span></span></div>
       <div class="chip" style="--tone: var(--s-vacant)"><span class="dot"></span><span class="text"><span
-            class="label">Completed</span><span class="what">Carried out and closed.</span></span></div>
+            class="label">Complete</span><span class="what">Carried out and closed.</span></span></div>
       <div class="chip" style="--tone: var(--s-transfer)"><span class="dot"></span><span class="text"><span
             class="label">Continue</span><span class="what">Kept running into the next period.</span></span></div>
       <div class="chip" style="--tone: var(--s-maintenance)"><span class="dot"></span><span class="text"><span
@@ -1568,20 +1584,29 @@
         </thead>
         <tbody>
           <tr>
-            <td>Add order — Medicine</td>
-            <td>Prescribes a drug against the admission.</td>
+            <td>Filter by date</td>
+            <td>Calendar button: shows only the orders placed on one day; &times; returns to all dates.</td>
           </tr>
           <tr>
-            <td>Add order — Lab</td>
-            <td>Raises a laboratory investigation.</td>
+            <td>Change status</td>
+            <td>Defer, Continue, Complete, Approve, Discontinue or Discard an order, after a confirmation.</td>
           </tr>
           <tr>
-            <td>Add order — Radiology</td>
-            <td>Raises an imaging investigation.</td>
+            <td>Add Orders — Medicines</td>
+            <td>Search, favourites or an order set fill a form (dose, unit, days, frequency, meal; More details for
+              route, timings, start and instruction); <b>+ Add</b> puts it on the list.</td>
           </tr>
           <tr>
-            <td>Edit order</td>
-            <td>Amends an order already on the list.</td>
+            <td>Add Orders — Services</td>
+            <td>Lab, Radiology or Service, with defaults filled in (priority, frequency, time, date).</td>
+          </tr>
+          <tr>
+            <td>Order sets &amp; templates</td>
+            <td>Add a saved set (only the items of the current tab), or save the list as a set or template.</td>
+          </tr>
+          <tr>
+            <td>Save orders</td>
+            <td>Sends the whole list at once.</td>
           </tr>
         </tbody>
       </table>
