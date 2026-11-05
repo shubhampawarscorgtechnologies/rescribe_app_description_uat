@@ -1181,6 +1181,11 @@
     grid-column: 2;
   }
 
+  /* landscape screenshots need more room than a portrait phone/tablet shot */
+  figure.shot.wide {
+    max-width: 40rem;
+  }
+
   figure.shot img {
     display: block;
     width: 100%;
@@ -1301,10 +1306,10 @@
 │   ├── <span class="n">Facesheet</span>  <span class="c">the patient's clinical record</span>
 │   │   ├── Facesheet Dashboard      <span class="c">patient summary at a glance</span>
 │   │   ├── Vital Sheet              <span class="a">EDITABLE</span> <span class="c">record BP, pulse, temp, SpO₂…</span>
-│   │   ├── Orders Listing           <span class="a">EDITABLE</span>
-│   │   │   ├── Add order — Medicine
-│   │   │   ├── Add order — Lab
-│   │   │   ├── Add order — Radiology
+│   │   ├── Orders Listing           <span class="a">EDITABLE</span> <span class="c">same Order List as the doctor app</span>
+│   │   │   ├── Filter by status · by date <span class="c">(calendar)</span>
+│   │   │   ├── Add Orders — Medicines
+│   │   │   ├── Add Orders — Services <span class="c">Lab · Radiology · Service</span>
 │   │   │   └── Change order status
 │   │   ├── Investigation
 │   │   │   ├── History
@@ -1594,10 +1599,9 @@
 │   └── Record and view vitals over time — BP, pulse, temperature, SpO₂, respiration
 │
 ├── <span class="n">Orders Listing</span> <span class="a">[EDITABLE]</span>
-│   ├── Add order → <span class="n">Medicine</span>
-│   ├── Add order → <span class="n">Lab</span>
-│   ├── Add order → <span class="n">Radiology</span>
-│   └── Change status of an order <span class="c">(e.g. ordered → collected → completed)</span>
+│   ├── Filter — All / Medicines / Services · status chips · <span class="n">calendar</span> <span class="c">(one day)</span>
+│   ├── + Add orders → <span class="n">Add Orders</span> <span class="c">Medicines | Services (Lab · Radiology · Service)</span>
+│   └── Change status of an order <span class="c">(Defer, Continue, Complete, Approve, Discontinue…)</span>
 │
 ├── <span class="n">Investigation</span>
 │   ├── History  <span class="c">— what was ordered, when</span>
@@ -1633,7 +1637,8 @@
           </tr>
           <tr>
             <td>Orders Listing</td>
-            <td>Raises Medicine, Lab and Radiology orders, and advances an order's status as it is actioned.</td>
+            <td>Raises Medicine, Lab, Radiology and Service orders from <b>Add Orders</b>, filters the list by day, and
+              advances an order's status as it is actioned.</td>
             <td>Yes</td>
           </tr>
           <tr>
@@ -1655,6 +1660,13 @@
       </table>
     </div>
     <p class="swipe">Swipe the table sideways to read every column &rarr;</p>
+    <div class="note" id="n-orders-list">
+      <p><b>Orders Listing is the same screen as in the doctor app.</b> The calendar button narrows the list to one
+        day; <b>+ Add orders</b> opens Add Orders, where a pick from search, favourites or an order set fills a form,
+        <b>+ Add</b> puts it on the list and <b>Save orders</b> sends them all. Step-by-step: <a
+          href="whatsnew.html#wn-order-list" data-goto="whatsnew#wn-order-list">Order List</a> &middot; <a
+          href="whatsnew.html#wn-add-orders" data-goto="whatsnew#wn-add-orders">Add Orders</a>.</p>
+    </div>
 
     <h3>2.5 Orders — special nursing service orders</h3>
     <p>Separate from clinical orders in the Facesheet. These are the billable nursing services and consumables used at

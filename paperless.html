@@ -1181,6 +1181,11 @@
     grid-column: 2;
   }
 
+  /* landscape screenshots need more room than a portrait phone/tablet shot */
+  figure.shot.wide {
+    max-width: 40rem;
+  }
+
   figure.shot img {
     display: block;
     width: 100%;
@@ -1449,7 +1454,7 @@
       <span class="eyebrow">Step 2</span>
       <h2>History screen</h2>
     </div>
-    <p>Opening a sub-category shows everything already filed under it for this patient, and offers the four ways to add
+    <p>Opening a sub-category shows everything already filed under it for this patient, and offers the ways to add
       or change a document.</p>
     <div class="table-wrap">
       <table>
@@ -1470,6 +1475,13 @@
             <td>Upload from camera</td>
             <td>Takes a photo now and files it as a document.</td>
             <td>Capturing a paper form that arrived from outside.</td>
+          </tr>
+          <tr>
+            <td>Upload a PDF</td>
+            <td>Pick a PDF, choose the pages (tap them, or type <code>1-5, 8, 10-12</code>), and they are filed as one
+              document &mdash; up to 50 pages per upload. Works offline; it syncs later.</td>
+            <td>A report or summary received as a PDF. <a href="whatsnew.html#wn-pdf-upload"
+                data-goto="whatsnew#wn-pdf-upload">Walkthrough &rarr;</a></td>
           </tr>
           <tr>
             <td>Upload with geo tag</td>

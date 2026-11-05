@@ -1181,6 +1181,11 @@
     grid-column: 2;
   }
 
+  /* landscape screenshots need more room than a portrait phone/tablet shot */
+  figure.shot.wide {
+    max-width: 40rem;
+  }
+
   figure.shot img {
     display: block;
     width: 100%;
@@ -1220,18 +1225,473 @@
       screen you will see, and what to do when it misbehaves. Written to be read in a training session, not skimmed.</p>
     <div class="meta">
       <span><b>Covers:</b> Doctor app, Nurse app, Paperless Documentation</span>
-      <span><b>Latest entry:</b> August 2026</span>
+      <span><b>Latest entry:</b> October 2026</span>
     </div>
     <button class="printbtn" type="button" onclick="window.print()">Print / Save as PDF</button>
   </header>
 
   <nav class="docnav" aria-label="Entries">
+    <a href="#wn-add-orders">Oct 2026 · Add Orders</a>
+    <a href="#wn-order-list">Oct 2026 · Order List date filter</a>
+    <a href="#wn-consult-medicine">Oct 2026 · Consultation Medicine</a>
+    <a href="#wn-pdf-upload">Oct 2026 · PDF upload</a>
     <a href="#wn-permissions">Aug 2026 · Document permissions</a>
     <a href="#wn-page-slider">Aug 2026 · Page slider</a>
     <a href="#wn-fingerprint">Aug 2026 · Fingerprint capture</a>
     <a href="#wn-quick-scan">Aug 2026 · Scan a patient QR</a>
     <a href="#wn-fixes">Aug 2026 · Fixes &amp; improvements</a>
   </nav>
+
+  <section id="wn-add-orders">
+    <div class="section-head">
+      <span class="eyebrow">October 2026 &middot; Doctor app, Nurse app</span>
+      <h2>Add Orders: one screen for medicines and services</h2>
+    </div>
+
+    <p>Raising an order used to mean a separate screen for each type and a &ldquo;+&rdquo; button inside the list.
+      <b>Add Orders</b> is now one page with the same layout on both of its tabs: pick what you want at the top, check
+      the details in a form, tap <b>+ Add</b>, and save everything in one go. The same screen opens from the doctor&rsquo;s
+      Orders and from the nurse&rsquo;s Order tab.</p>
+
+    <div class="note">
+      <p><b>Who this is for:</b> every doctor and nurse who raises medicine, lab, radiology or service orders on an
+        admitted patient. Nothing is sent until <b>Save orders</b> is tapped, so a half-built list can be checked and
+        corrected first.</p>
+    </div>
+
+    <h3>The screen at a glance</h3>
+    <ul class="plain">
+      <li><b>Medicines | Services</b> switch at the top.</li>
+      <li><b>A row of three pickers.</b> Medicines: <b>Store</b> &middot; <b>Order sets</b> &middot; <b>Favourites
+          (n)</b>. Services: <b>Service type</b> &middot; <b>Order sets</b> &middot; <b>Favourites</b>.</li>
+      <li><b>A search box</b> under the pickers.</li>
+      <li><b>The form</b> &mdash; empty until you pick something.</li>
+      <li><b>The order list</b> &mdash; what you have added so far, grouped MEDICINES and SERVICES.</li>
+      <li><b>The save bar</b> at the bottom: &ldquo;n orders &middot; n Medicines &middot; n Services&rdquo; and
+        <b>Save orders</b>.</li>
+    </ul>
+
+    <h3>The flow, screen by screen &mdash; Medicines</h3>
+    <ol class="flow">
+      <li>
+        <strong>Open Add Orders</strong>
+        <span>From the Order List, tap <b>+ Add orders</b> at the bottom right. The page opens on the Medicines tab with
+          an empty order list and a three-step reminder of how it works.</span>
+        <figure class="shot">
+          <img src="assets/orders/add-1-start.png" alt="Add Orders opened on the Medicines tab with an empty order list"
+            loading="lazy">
+          <figcaption>Store, Order sets and Favourites on top, then the search box.</figcaption>
+        </figure>
+      </li>
+      <li>
+        <strong>Tap the search box</strong>
+        <span>A list drops down straight away, before you type anything: your <b>favourites first</b>, then all
+          medicines. For a regular drug that is often all you need.</span>
+        <figure class="shot">
+          <img src="assets/orders/add-2-starting-list.png"
+            alt="The search box open with a Favourites group above the All medicines group" loading="lazy">
+          <figcaption>Favourites (your starred items) come first.</figcaption>
+        </figure>
+      </li>
+      <li>
+        <strong>Or type two letters or more</strong>
+        <span>The list narrows to matching medicines, with the matched letters highlighted and the composition under
+          each name. <b>Store</b> limits the search to one store&rsquo;s stock.</span>
+        <figure class="shot">
+          <img src="assets/orders/add-3-search.png" alt="Search results for dolo, with the matching text highlighted"
+            loading="lazy">
+          <figcaption>Typing &ldquo;dolo&rdquo; &mdash; each row shows the type and the composition.</figcaption>
+        </figure>
+      </li>
+      <li>
+        <strong>Pick a medicine &mdash; it fills the form</strong>
+        <span>Picking does <b>not</b> add the medicine yet. It fills the form under the search box so you can check the
+          details first: <b>Dose</b>, <b>Unit</b>, <b>Days</b>, <b>Qty</b> (worked out for you), <b>Frequency</b> and
+          <b>Meal</b> (Before food / After food / Other). <b>Change</b> next to the frequency steps through OD &rarr; BD
+          &rarr; TDS &rarr; QID &rarr; HS &rarr; SOS, one tap at a time; the arrow on the frequency box lists them
+          all.</span>
+        <figure class="shot">
+          <img src="assets/orders/add-4-form.png" alt="The medicine form filled for DOLO 100MG with Dose, Unit, Days, Qty, Frequency and Meal"
+            loading="lazy">
+          <figcaption>The form, ready to check. &times; on the right clears it without adding.</figcaption>
+        </figure>
+      </li>
+      <li>
+        <strong>More details, when you need them</strong>
+        <span><b>More details &rsaquo;</b> opens a side sheet with everything else: a separate dose for
+          <b>Morning</b> / <b>Afternoon</b> / <b>Night</b>, <b>STAT</b>, <b>Route</b>, <b>Interval</b> (Daily,
+          Alternate day&hellip;), <b>Start date</b>, <b>First dose at</b> and an <b>Instruction</b>. The line at the
+          bottom of the sheet sums the order up in one sentence.</span>
+        <figure class="shot">
+          <img src="assets/orders/add-5-more-details.png" alt="The More details side sheet with per-time doses, route, meal, interval, start date and instruction"
+            loading="lazy">
+          <figcaption>More details &mdash; the summary line at the bottom reads back the whole order.</figcaption>
+        </figure>
+      </li>
+      <li>
+        <strong>Pick or type an instruction</strong>
+        <span>The arrow on the Instruction box opens a list: instructions already used for this patient first, then the
+          instructions the hospital has set for that medicine, then common phrases such as &ldquo;Take with
+          milk&rdquo;. Typing your own text works too.</span>
+        <figure class="shot">
+          <img src="assets/orders/add-6-instruction.png" alt="The Instruction dropdown open with phrases like Take with water and Take with milk"
+            loading="lazy">
+          <figcaption>Pick a phrase or type one.</figcaption>
+        </figure>
+      </li>
+      <li>
+        <strong>Tap + Add</strong>
+        <span>The medicine moves into the order list and the form clears for the next one. A message at the bottom says
+          <i>&ldquo;Added &hellip;&rdquo;</i> with <b>Undo</b> for a few seconds, in case it was the wrong one.</span>
+        <figure class="shot">
+          <img src="assets/orders/add-7-added.png" alt="The order list with medicines and services, and the Added message with Undo"
+            loading="lazy">
+          <figcaption>The order list fills up below the form. The bin removes a row (it asks first).</figcaption>
+        </figure>
+      </li>
+      <li>
+        <strong>Check the list, then Save orders</strong>
+        <span>Tap any row to change it in place. When the list is right, <b>Save orders</b> sends everything at once.
+          A confirmation box shows the hospital system&rsquo;s reply; tap OK and you are back on the Order List, which
+          reloads with the new orders. Leaving with orders still unsaved asks first (<i>&ldquo;Unsaved Orders
+          Warning&rdquo;</i>), because they would be cleared.</span>
+      </li>
+    </ol>
+
+    <h3>Order sets and favourites</h3>
+    <ol class="flow">
+      <li>
+        <strong>Order sets drop-down</strong>
+        <span>Picking a set adds <b>only the items that belong to the tab you are on</b>, with their saved details.
+          A set called &ldquo;Typhoid&rdquo; picked on the Lab type adds only its lab tests; its medicines wait until
+          you pick it again on the Medicines tab. One message covers the whole set and its <b>Undo</b> removes all of
+          them. A set with nothing of that type says so (&ldquo;no Lab&rdquo;) and adds nothing. On Medicines the list
+          also offers <b>medicine templates</b>, marked &ldquo;&middot; template&rdquo;.</span>
+        <figure class="shot">
+          <img src="assets/orders/add-8-order-sets.png" alt="The Order sets drop-down showing a template, a set and Manage order sets"
+            loading="lazy">
+          <figcaption>Each set shows how many items it will add on this tab.</figcaption>
+        </figure>
+      </li>
+      <li>
+        <strong>Manage order sets&hellip;</strong>
+        <span>The last entry in the drop-down opens a sheet with all your sets and templates, where you can open a set,
+          copy it to the order list, edit it or delete it.</span>
+        <figure class="shot">
+          <img src="assets/orders/add-9-manage-sets.png" alt="The Order sets and templates sheet with an Order sets tab and a Medicine templates tab"
+            loading="lazy">
+          <figcaption>Order sets and medicine templates in one sheet.</figcaption>
+        </figure>
+      </li>
+      <li>
+        <strong>Make a new set from the list</strong>
+        <span>Once the order list holds what you want to reuse, <b>Save as order set</b> (list header) saves the whole
+          list; <b>Save as template</b> (on the MEDICINES group) saves just the medicines.</span>
+      </li>
+      <li>
+        <strong>Favourites drop-down</strong>
+        <span>A favourite fills the form exactly like a search pick &mdash; check it, then <b>+ Add</b>.</span>
+      </li>
+    </ol>
+
+    <h3>The flow &mdash; Services</h3>
+    <ol class="flow">
+      <li>
+        <strong>Choose the service type</strong>
+        <span>The first picker on the Services tab is the type: <b>Lab</b> (the default), <b>Radiology</b> or
+          <b>Service</b>. Search, favourites and order sets follow the type you chose.</span>
+        <figure class="shot">
+          <img src="assets/orders/svc-1-types.png" alt="The Service type drop-down with Lab, Radiology and Service"
+            loading="lazy">
+          <figcaption>Lab, Radiology and Service.</figcaption>
+        </figure>
+      </li>
+      <li>
+        <strong>Pick a test &mdash; the form comes pre-filled</strong>
+        <span>Defaults are filled in so most orders need no typing: <b>Priority</b> Routine, <b>Frequency</b> Once
+          (<b>More&hellip;</b> for others), <b>Time</b> 08:00 AM and <b>Date</b> today, plus Instruction and
+          Requisition boxes. Radiology adds <b>Views</b> (AP, Lateral, Oblique) and <b>Sign &amp; symptoms</b>; a Service
+          has a note.</span>
+        <figure class="shot">
+          <img src="assets/orders/svc-2-radiology-form.png" alt="A radiology order form with Views, Priority, Frequency, Time, Date and text boxes"
+            loading="lazy">
+          <figcaption>A radiology order &mdash; tap a chip to change a default.</figcaption>
+        </figure>
+      </li>
+      <li>
+        <strong>+ Add, then Save orders</strong>
+        <span>Exactly as on the Medicines tab. Medicines and services share one order list and one <b>Save
+            orders</b>.</span>
+        <figure class="shot">
+          <img src="assets/orders/svc-3-order-set.png" alt="The Order sets drop-down on the Lab type showing HTN follow-up with 1 Lab"
+            loading="lazy">
+          <figcaption>On Services, an order set shows only its items of the chosen type.</figcaption>
+        </figure>
+      </li>
+    </ol>
+
+    <h3>When a medicine is already running</h3>
+    <p>If you pick a medicine that is already ordered on this visit, the app asks before going further:</p>
+    <figure class="shot">
+      <img src="assets/orders/add-10-already-ordered.png" alt="Confirm dialog: Already Exist in Orders, with Cancel and Discontinue"
+        loading="lazy">
+      <figcaption><b>Discontinue</b> stops the running order and adds the new one. <b>Cancel</b> clears the form and
+        leaves the running order alone.</figcaption>
+    </figure>
+
+    <h3>Phone and landscape</h3>
+    <ul class="plain">
+      <li><b>Tablet, upright:</b> the form sits above the order list, as in the screenshots above.</li>
+      <li><b>Tablet, sideways:</b> the order list on the left, the pickers and the form on the right.</li>
+      <li><b>Phone:</b> while something is in the form, the form takes the whole screen; the list comes back after
+        <b>+ Add</b> or &times;.</li>
+    </ul>
+    <figure class="shot wide">
+      <img src="assets/orders/layout-landscape.png" alt="Add Orders on a tablet held sideways: order list on the left, form on the right"
+        loading="lazy">
+      <figcaption>Tablet held sideways.</figcaption>
+    </figure>
+    <figure class="shot">
+      <img src="assets/orders/layout-phone.png" alt="Add Orders on a phone with the form filling the screen" loading="lazy">
+      <figcaption>Phone &mdash; one thing at a time.</figcaption>
+    </figure>
+
+    <h3>Worth saying in training</h3>
+    <ul class="plain">
+      <li><b>Pick, check, Add, Save.</b> Picking only fills the form; nothing reaches the patient until <b>Save
+          orders</b>.</li>
+      <li><b>Undo is right there.</b> A wrong pick or a wrong order set is one tap to take back.</li>
+      <li><b>Order sets respect the tab.</b> To add a whole set, pick it once on Medicines and once per service type.
+      </li>
+      <li><b>Only Lab, Radiology and Service</b> are offered as service types for now. Diet, Nursing and Doctor
+        instruction items that arrive inside an order set are still added and saved.</li>
+    </ul>
+
+    <p class="caption">Reference: <a href="doctor.html#d-orders" data-goto="doctor#d-orders">Doctor App &rarr; 1.5
+        Orders</a> &middot; <a href="nurse.html#n-orders-list" data-goto="nurse#n-orders-list">Nurse App &rarr; Orders
+        Listing</a>.</p>
+  </section>
+
+  <section id="wn-order-list">
+    <div class="section-head">
+      <span class="eyebrow">October 2026 &middot; Doctor app, Nurse app</span>
+      <h2>Order List: a new layout and a date filter</h2>
+    </div>
+
+    <p>The Order List &mdash; <b>Orders</b> on an admitted patient in the doctor app, the <b>Order</b> tab in the nurse
+      app &mdash; has a new layout and a <b>calendar button</b> to see only the orders placed on one day.</p>
+
+    <h3>The flow, screen by screen</h3>
+    <ol class="flow">
+      <li>
+        <strong>Read the list</strong>
+        <span>Along the top: <b>All &middot; n | Medicines &middot; n | Services &middot; n</b>, <b>Search
+            orders&hellip;</b> and the calendar button. Under them, status chips with counts: All, Approved, Complete,
+          Initiated, Continue, Reverse, Defer, DC. The orders sit in two groups, MEDICINES and SERVICES, each of which can
+          be collapsed. Every row shows a type badge (Rx, Lab, Rad&hellip;), the name, a one-line summary and a coloured
+          status.</span>
+        <figure class="shot">
+          <img src="assets/orders/list-1.png" alt="The Order List with the type switch, search, All dates button, status chips and an expanded medicine row"
+            loading="lazy">
+          <figcaption>Tap the arrow on a row to see Start, Ordered, Created by, Approved by, Route and Instruction, with
+            the action buttons underneath.</figcaption>
+        </figure>
+      </li>
+      <li>
+        <strong>Change an order&rsquo;s status</strong>
+        <span>Use the &#8942; menu on the row, or the buttons in the expanded row: Defer, Continue, Complete, Approve,
+          Discontinue, Discard &mdash; only the ones that make sense for the order&rsquo;s current status are shown.</span>
+        <figure class="shot">
+          <img src="assets/orders/list-2-menu.png" alt="The row menu with Defer, Continue, Complete and Discontinue"
+            loading="lazy">
+          <figcaption>The &#8942; menu offers the same actions.</figcaption>
+        </figure>
+      </li>
+      <li>
+        <strong>Confirm</strong>
+        <span>Every status change asks first, naming the order and the change, so a stray tap cannot discontinue a
+          drug.</span>
+        <figure class="shot">
+          <img src="assets/orders/list-3-confirm.png" alt="Complete order confirmation: Change AMIXIDE H TAB from Approved to Complete?"
+            loading="lazy">
+          <figcaption>&ldquo;Change &hellip; from Approved to Complete?&rdquo;</figcaption>
+        </figure>
+      </li>
+      <li>
+        <strong>Filter by day with the calendar button</strong>
+        <span>The button reads <b>All dates</b>. Tap it and pick today or any earlier day (later days cannot be
+          picked).</span>
+        <figure class="shot">
+          <img src="assets/orders/list-5-calendar.png" alt="The Orders placed on date picker with future days greyed out"
+            loading="lazy">
+          <figcaption>&ldquo;Orders placed on&rdquo; &mdash; days after today are greyed out.</figcaption>
+        </figure>
+      </li>
+      <li>
+        <strong>See only that day</strong>
+        <span>The groups, the Medicines / Services counts and the status chips now count only orders placed that day.
+          The button shows the date with a <b>&times;</b>; tap &times; to go back to all dates. A day with no orders says
+          <i>&ldquo;No orders on dd/mm/yyyy&rdquo;</i>.</span>
+        <figure class="shot">
+          <img src="assets/orders/list-6-day.png" alt="Order List filtered to 06/10/2026 showing No orders on 06/10/2026"
+            loading="lazy">
+          <figcaption>Filtered to one day. The save bar at the bottom still shows the visit&rsquo;s totals.</figcaption>
+        </figure>
+      </li>
+      <li>
+        <strong>Add more</strong>
+        <span><b>+ Add orders</b> at the bottom opens <a href="#wn-add-orders">Add Orders</a>. Back on the list, it
+          reloads only if something was saved.</span>
+      </li>
+    </ol>
+
+    <figure class="shot wide">
+      <img src="assets/orders/list-4-landscape.png" alt="The Order List on a tablet held sideways, Medicines and Services side by side"
+        loading="lazy">
+      <figcaption>Tablet held sideways: Medicines and Services side by side. Phone and upright tablet show them
+        one above the other.</figcaption>
+    </figure>
+
+    <h3>Consultation &rarr; Prescriptions uses the same list</h3>
+    <p>The <b>Prescriptions</b> tab in the doctor&rsquo;s consultation now shows <b>this visit&rsquo;s orders</b> in the
+      same design &mdash; the same groups, statuses, actions and search. It opens on <b>All dates</b>; the calendar
+      button narrows it to one day.</p>
+    <figure class="shot wide">
+      <img src="assets/orders/rx-1-prescriptions.png" alt="The consultation Prescriptions tab showing the visit's orders in the Order List design"
+        loading="lazy">
+      <figcaption>Prescriptions tab, opened on All dates.</figcaption>
+    </figure>
+
+    <h3>Worth saying in training</h3>
+    <ul class="plain">
+      <li>&ldquo;What was ordered yesterday?&rdquo; is now one tap: calendar &rarr; yesterday.</li>
+      <li>If the list looks empty, check the date button first &mdash; it may still be on a single day.</li>
+      <li>Nurses see the same list and the same Add Orders screen as doctors.</li>
+    </ul>
+
+    <p class="caption">Reference: <a href="doctor.html#d-orders" data-goto="doctor#d-orders">Doctor App &rarr; 1.5
+        Orders</a> &middot; <a href="nurse.html#n-orders-list" data-goto="nurse#n-orders-list">Nurse App &rarr; Orders
+        Listing</a>.</p>
+  </section>
+
+  <section id="wn-consult-medicine">
+    <div class="section-head">
+      <span class="eyebrow">October 2026 &middot; Doctor app</span>
+      <h2>Consultation Chart &rarr; Medicine now works like Add Orders</h2>
+    </div>
+
+    <p>The <b>Medicine</b> part of the Consultation Chart is now the same as the Medicines tab of <a
+        href="#wn-add-orders">Add Orders</a>: <b>Store</b> &middot; <b>Order sets</b> (templates and sets) &middot;
+      <b>Favourites</b>, the search drop-down, the same form and <b>More details</b>, <b>+ Add</b>, and the list with
+      <b>Save as template</b> and <b>Save as order set</b>. A doctor who has learned one has learned both.</p>
+
+    <h3>The flow, screen by screen</h3>
+    <ol class="flow">
+      <li>
+        <strong>Tap the search box</strong>
+        <span>Favourites first, then all medicines &mdash; or type two letters to search.</span>
+        <figure class="shot wide">
+          <img src="assets/consult-medicine/cm-1-search.png" alt="Consultation Medicine with the list on the left and the search drop-down open on the right"
+            loading="lazy">
+          <figcaption>Tablet held sideways: the prescription list on the left, search on the right.</figcaption>
+        </figure>
+      </li>
+      <li>
+        <strong>Check the form, then + Add</strong>
+        <span>Dose, Unit, Days, Qty, Frequency and Meal, with More details for the rest. <b>+ Add</b> puts it on the
+          prescription list.</span>
+        <figure class="shot wide">
+          <img src="assets/consult-medicine/cm-2-form.png" alt="Consultation Medicine with a medicine in the form on the right"
+            loading="lazy">
+          <figcaption>Same form as Add Orders.</figcaption>
+        </figure>
+      </li>
+      <li>
+        <strong>Save the consultation as usual</strong>
+        <span>The medicines are saved with the consultation, as before.</span>
+      </li>
+    </ol>
+
+    <h3>Worth knowing</h3>
+    <ul class="plain">
+      <li><b>Only the screen changed.</b> The saved prescription, History and the printed PDF look the same as before.
+      </li>
+      <li><b>Some choices are kept as words.</b> The saved prescription has no field for a meal timing other than before
+        / after food (for example With food, At bedtime), for an interval (for example Alternate day), or for
+        &ldquo;Continue&rdquo;. These are written into the prescription&rsquo;s instruction text instead, so they still
+        appear on History and the print.</li>
+      <li><b>Already running?</b> Picking a medicine already ordered on the visit shows the same Discontinue / Cancel
+        question as Add Orders.</li>
+    </ul>
+
+    <p class="caption">Reference: <a href="doctor.html#d-consult-medicine" data-goto="doctor#d-consult-medicine">Doctor
+        App &rarr; Consultation Chart &rarr; Medicine</a>.</p>
+  </section>
+
+  <section id="wn-pdf-upload">
+    <div class="section-head">
+      <span class="eyebrow">October 2026 &middot; Paperless Documentation</span>
+      <h2>Upload a PDF into a patient&rsquo;s documents</h2>
+    </div>
+
+    <p>A report that arrives as a PDF &mdash; an outside lab result, a discharge summary from another hospital &mdash;
+      no longer has to be printed and photographed. The <b>Upload Document</b> box on the History screen now has a
+      <b>PDF Document</b> button next to Camera and Gallery. Choose the pages you need and they are filed as one
+      document, one page per PDF page.</p>
+
+    <h3>The flow, screen by screen</h3>
+    <ol class="flow">
+      <li>
+        <strong>Open the History screen and tap Upload</strong>
+        <span>Pen Mode &rarr; category &rarr; sub-category opens History. The upload button opens <b>Upload
+            Document</b>: Camera With Geolocation, Camera, Gallery and now <b>PDF Document</b>. The yellow note in the
+          box gives the limits: every page is compressed to under 500 KB, gallery takes up to 10 images at a time, and a
+          PDF up to 50 pages per upload.</span>
+        <figure class="shot">
+          <div class="missing">screenshot pending<br>The Upload Document box with the PDF Document button</div>
+          <figcaption>PDF Document sits under Camera and Gallery.</figcaption>
+        </figure>
+      </li>
+      <li>
+        <strong>Pick the PDF file</strong>
+        <span>The phone&rsquo;s file picker opens, showing PDF files only.</span>
+      </li>
+      <li>
+        <strong>Choose the pages</strong>
+        <span>A page selector opens with the file name on top and a preview of every page. Pages appear as they are
+          read, so a long file fills in over a few seconds. Up to the first 50 pages start selected. Tap a page to
+          select or deselect it, use <b>Select All</b> / <b>Deselect All</b>, or type the pages into <b>Pages to
+            upload</b> &mdash; for example <code>1-5, 8, 10-12</code> &mdash; and tap <b>Apply</b>.</span>
+        <figure class="shot">
+          <div class="missing">screenshot pending<br>The page selector with page previews, the Pages to upload box and the Upload button</div>
+          <figcaption>The bottom bar counts the selection: &ldquo;n pages selected (max 50)&rdquo;.</figcaption>
+        </figure>
+      </li>
+      <li>
+        <strong>Tap Upload (n)</strong>
+        <span>The selected pages are compressed and uploaded, in page order, as one new document. A message confirms
+          <i>&ldquo;Document saved&rdquo;</i> with the page count and size.</span>
+      </li>
+    </ol>
+
+    <h3>Worth knowing</h3>
+    <ul class="plain">
+      <li><b>50 pages per upload.</b> A longer PDF shows <i>&ldquo;This PDF has n pages. Pick up to 50 to
+          upload.&rdquo;</i> Selecting a 51st page says <i>&ldquo;Maximum 50 pages can be uploaded at a
+          time.&rdquo;</i> Upload the rest as a second document.</li>
+      <li><b>Typing pages.</b> Ranges and single pages can be mixed, separated by commas. The box explains a mistake
+        in place &mdash; for example a page the file does not have (&ldquo;Page 60 does not exist (PDF has 40
+        pages)&rdquo;) or a range written backwards.</li>
+      <li><b>Offline.</b> With no network the upload is kept on the tablet: a card appears in History straight away
+        and the message reads <i>&ldquo;Saved locally &hellip; will sync when online&rdquo;</i>. It uploads by itself
+        when the connection is back.</li>
+      <li><b>A file that will not open</b> shows <i>&ldquo;Failed to load PDF pages. Please check the file.&rdquo;</i>
+        with <b>Retry</b>. Password-protected or damaged PDFs are the usual cause.</li>
+    </ul>
+
+    <p class="caption">Reference: <a href="paperless.html#p-history" data-goto="paper#p-history">Paperless
+        Documentation &rarr; History screen</a>.</p>
+  </section>
 
   <section id="wn-permissions">
     <div class="section-head">
@@ -1723,7 +2183,7 @@
 
   <section id="wn-fixes">
     <div class="section-head">
-      <span class="eyebrow">August 2026 &middot; Since the 30 July build</span>
+      <span class="eyebrow">August &ndash; October 2026 &middot; Since the 30 July build</span>
       <h2>Fixes and improvements</h2>
     </div>
 
@@ -1766,6 +2226,8 @@
         screen; the branch picker is unchanged.</li>
       <li>The home-screen loading skeleton matches the real dashboard more closely &mdash; taller bed-count card and a
         softer border, so the screen does not jump when data arrives.</li>
+      <li>The nurse <b>Order</b> tab uses the new Order List and Add Orders screens &mdash; see <a
+          href="#wn-order-list">Order List</a>.</li>
       <li><b>New Order</b> from a bed now opens the order-add screen with the bed already in context, one step shorter.</li>
     </ul>
 
@@ -1782,6 +2244,9 @@
         with a finger.</li>
       <li>Print output uses one image quality throughout, so a printed page looks the same wherever it was printed from.
       </li>
+      <li>The Order List reloads after Add Orders only when orders were actually saved, so backing out is instant.</li>
+      <li>The &ldquo;+&rdquo; in the Add Orders list header is gone &mdash; everything is added from the search box,
+        order sets or favourites above it.</li>
       <li>Fingerprint scanner USB permission handling is more forgiving when the scanner is plugged in after the app is
         already open.</li>
     </ul>
